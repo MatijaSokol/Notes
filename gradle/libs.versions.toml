@@ -8,6 +8,10 @@ androidGradlePlugin = "8.1.0"
 androidxComposeBom = "2023.08.00"
 androidxTestJunit = "1.1.5"
 junit = "4.13.2"
+ktlintGradlePlugin = "11.5.1"
+ktlint = "0.50.0"
+detekt = "1.23.1"
+detektCompose = "0.0.26"
 
 compileSdk = "34"
 minSdk = "24"
@@ -27,10 +31,17 @@ androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestJunit" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+detekt-formatting-compose = { group = "com.twitter.compose.rules", name = "detekt", version.ref = "detektCompose" }
+
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradlePlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 compose = [

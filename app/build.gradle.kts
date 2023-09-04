@@ -1,7 +1,12 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
 }
 
 private val appId = "com.matijasokol.notes"
@@ -52,6 +57,29 @@ android {
     }
 }
 
+ktlint {
+    version.set(libs.versions.ktlint.get())
+    debug.set(true)
+    android.set(true)
+
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.HTML)
+    }
+}
+
+detekt {
+    config.setFrom("$projectDir/../quality/detekt.yml")
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+        txt.required.set(true)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.ktx)
@@ -59,6 +87,9 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+
+    detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.formatting.compose)
 
     testImplementation(libs.junit)
 
