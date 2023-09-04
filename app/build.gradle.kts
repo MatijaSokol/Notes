@@ -12,7 +12,7 @@ plugins {
 private val appId = "com.matijasokol.notes"
 
 android {
-    namespace =  "com.matijasokol.notes"
+    namespace = "com.matijasokol.notes"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -33,7 +33,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
