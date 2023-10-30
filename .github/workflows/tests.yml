@@ -21,6 +21,11 @@ jobs:
         run: |
           export GRADLE_USER_HOME=`pwd`/.gradle
           chmod +x ./gradlew
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
       - name: Static Analysis
         run: |
           ./gradlew ktlintCheck detekt --stacktrace
@@ -37,6 +42,11 @@ jobs:
         run: |
           export GRADLE_USER_HOME=`pwd`/.gradle
           chmod +x ./gradlew
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
       - name: Assemble
         run: |
           ./gradlew assembleProdRelease --stacktrace
@@ -53,6 +63,11 @@ jobs:
         run: |
           export GRADLE_USER_HOME=`pwd`/.gradle
           chmod +x ./gradlew
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
       - name: Unit tests
         run: |
           ./gradlew app:test --stacktrace
