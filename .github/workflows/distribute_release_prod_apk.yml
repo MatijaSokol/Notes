@@ -1,0 +1,34 @@
+name: Distribute release prod APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  distribute_release_build:
+    runs-on: ubuntu-latest
+    env:
+      NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
+      NOTES_KEY_PASSWORD: '${{ secrets.NOTES_KEY_PASSWORD }}'
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Prepare environment
+        run: |
+          export GRADLE_USER_HOME=`pwd`/.gradle
+          chmod +x ./gradlew
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.13.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Assemble
+        run: |
+          ./gradlew assembleProdRelease --stacktrace
+
+      - name: Upload to artifacts
+        uses: actions/upload-artifact@v3.1.3
+        with:
+          name: release
+          paths: app/build/outputs/apk/release/
