@@ -28,15 +28,54 @@ android {
         }
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("../signing/debug.keystore")
+            storePassword = "TuV9Bf8jcm"
+            keyAlias = "notesdebug"
+            keyPassword = "DEl7CotoUU"
+        }
+        create("release") {
+            storeFile = file("../signing/release.keystore")
+            storePassword = System.getenv("NOTES_STORE_PASSWORD")
+            keyAlias = "notes"
+            keyPassword = System.getenv("NOTES_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
+        debug {
+            isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
+        }
         release {
-            isMinifyEnabled = false
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
+
+    flavorDimensions += "mode"
+
+    productFlavors {
+        create("dev") {
+            dimension = "mode"
+            resValue("string", "app_name", "Notes Dev")
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+
+        create("prod") {
+            dimension = "mode"
+            resValue("string", "app_name", "Notes")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
