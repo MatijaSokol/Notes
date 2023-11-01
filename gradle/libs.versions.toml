@@ -10,7 +10,7 @@ androidxTestJunit = "1.1.5"
 junit = "4.13.2"
 ktlintGradlePlugin = "11.5.1"
 ktlint = "0.50.0"
-detekt = "1.23.1"
+detekt = "1.23.3"
 detektCompose = "0.0.26"
 
 compileSdk = "34"
