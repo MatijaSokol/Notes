@@ -16,14 +16,14 @@ updates:
       - "MatijaSokol"
     labels:
       - "Dependencies"
-#  - package-ecosystem: "github-actions"
-#    directory: "/"
-#    schedule:
-#      interval: "weekly"
-#      time: "09:00"
-#      timezone: "Europe/Zagreb"
-#    open-pull-requests-limit: 5
-#    reviewers:
-#      - "MatijaSokol"
-#    labels:
-#      - "GitHub Actions"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "09:00"
+      timezone: "Europe/Zagreb"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "MatijaSokol"
+    labels:
+      - "GitHub Actions"
