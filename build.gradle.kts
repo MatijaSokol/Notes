@@ -8,3 +8,8 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.detekt) apply false
 }
+
+subprojects {
+    apply(from = rootProject.file("$projectDir/../quality/detekt.gradle"))
+    apply(from = rootProject.file("$projectDir/../quality/ktlint.gradle"))
+}

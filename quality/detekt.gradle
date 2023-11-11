@@ -1,0 +1,18 @@
+// Documentation: https://github.com/arturbosch/detekt
+
+apply plugin: libs.plugins.detekt.get().getPluginId()
+
+detekt {
+    config = files("$projectDir/../quality/detekt.yml")
+
+    reports {
+        html.required = true
+        txt.required = true
+        xml.required = false
+    }
+
+    dependencies {
+        detektPlugins(libs.detekt.formatting)
+        detektPlugins(libs.detekt.formatting.compose)
+    }
+}
