@@ -1,0 +1,14 @@
+// Documentation ktlint: https://github.com/pinterest/ktlint
+// Documentation gradle plugin: https://github.com/jlleitschuh/ktlint-gradle
+
+apply plugin: libs.plugins.ktlint.get().getPluginId()
+
+ktlint {
+    debug = true
+    android = true
+    version.set(libs.versions.ktlint.get())
+    reporters {
+        reporter "html"
+        reporter "plain"
+    }
+}
