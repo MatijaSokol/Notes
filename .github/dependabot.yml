@@ -15,7 +15,7 @@ updates:
     reviewers:
       - "MatijaSokol"
     labels:
-      - "Dependencies"
+      - "dependencies"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -26,4 +26,5 @@ updates:
     reviewers:
       - "MatijaSokol"
     labels:
-      - "GitHub Actions"
+      - "Github Actions"
+      - "dependencies"
