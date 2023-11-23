@@ -30,12 +30,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
       - name: Static Analysis
         run: |
           ./gradlew ktlintCheck detekt --stacktrace
 
   build:
-    needs: [ static_analysis ]
     runs-on: ubuntu-latest
     env:
       NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
@@ -51,6 +51,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
       - name: Assemble
         run: |
           ./gradlew assembleProdRelease --stacktrace
@@ -72,6 +73,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'gradle'
       - name: Unit tests
         run: |
           ./gradlew app:test --stacktrace
