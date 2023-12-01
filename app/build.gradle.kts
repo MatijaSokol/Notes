@@ -99,6 +99,10 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.compose.navigation)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
 
     testImplementation(libs.junit)
 
