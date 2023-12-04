@@ -92,7 +92,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":presentation"))
+    implementation(projects.presentation)
 
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
