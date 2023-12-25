@@ -14,7 +14,7 @@ ktlint = "0.50.0"
 detekt = "1.23.1"
 detektCompose = "0.0.26"
 koin = "3.5.1"
-koinCompose = "1.1.0"
+koinCompose = "1.1.2"
 
 compileSdk = "34"
 minSdk = "24"
