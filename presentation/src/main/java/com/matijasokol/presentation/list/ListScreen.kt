@@ -14,18 +14,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ListScreen(
-    modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  onButtonClick: () -> Unit,
 ) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text("List screen")
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = onButtonClick) {
-            Text(text = "To details")
-        }
+  Column(
+    modifier = modifier.fillMaxSize(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.Center,
+  ) {
+    Text("List screen")
+    Spacer(modifier = Modifier.height(20.dp))
+    Button(onClick = onButtonClick) {
+      Text(text = "To details")
     }
+  }
 }

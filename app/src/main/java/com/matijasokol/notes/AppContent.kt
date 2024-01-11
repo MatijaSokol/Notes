@@ -18,56 +18,56 @@ import org.koin.compose.koinInject
 
 @Composable
 fun AppContent() {
-    val navController = rememberNavController()
-    val navigator: Navigator = koinInject()
-    val scope = rememberCoroutineScope()
-    NavigationEffect(navController)
+  val navController = rememberNavController()
+  val navigator: Navigator = koinInject()
+  val scope = rememberCoroutineScope()
+  NavigationEffect(navController)
 
-    NavHost(
-        navController = navController,
-        startDestination = ListDestination.route(),
-    ) {
-        listScreen {
-            scope.launch {
-                navigator.emitDestination(
-                    NavigationEvent.Destination(
-                        destination = DetailsDestination.buildRoute(20),
-                    ),
-                )
-            }
-        }
-        detailsScreen {
-            scope.launch {
-                navigator.emitDestination(
-                    NavigationEvent.NavigateUp,
-                )
-            }
-        }
+  NavHost(
+    navController = navController,
+    startDestination = ListDestination.route(),
+  ) {
+    listScreen {
+      scope.launch {
+        navigator.emitDestination(
+          NavigationEvent.Destination(
+            destination = DetailsDestination.buildRoute(20),
+          ),
+        )
+      }
     }
+    detailsScreen {
+      scope.launch {
+        navigator.emitDestination(
+          NavigationEvent.NavigateUp,
+        )
+      }
+    }
+  }
 }
 
 private fun NavGraphBuilder.listScreen(
-    onButtonClick: () -> Unit,
+  onButtonClick: () -> Unit,
 ) {
-    composable(
-        route = ListDestination.route(),
-    ) {
-        ListScreen {
-            onButtonClick()
-        }
+  composable(
+    route = ListDestination.route(),
+  ) {
+    ListScreen {
+      onButtonClick()
     }
+  }
 }
 
 private fun NavGraphBuilder.detailsScreen(
-    onButtonClick: () -> Unit,
+  onButtonClick: () -> Unit,
 ) {
-    composable(
-        route = DetailsDestination.route(),
-        arguments = DetailsDestination.arguments,
-    ) {
-        DetailsScreen(
-            param = it.arguments?.getInt("noteId") ?: error("Param is not provided"),
-            onButtonClick = onButtonClick,
-        )
-    }
+  composable(
+    route = DetailsDestination.route(),
+    arguments = DetailsDestination.arguments,
+  ) {
+    DetailsScreen(
+      param = it.arguments?.getInt("noteId") ?: error("Param is not provided"),
+      onButtonClick = onButtonClick,
+    )
+  }
 }

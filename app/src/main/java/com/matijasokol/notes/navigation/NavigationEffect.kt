@@ -9,25 +9,25 @@ import org.koin.compose.koinInject
 
 @Composable
 fun NavigationEffect(
-    navController: NavHostController,
-    navigator: Navigator = koinInject(),
+  navController: NavHostController,
+  navigator: Navigator = koinInject(),
 ) {
-    LaunchedEffect(navController) {
-        navigator.navigationEvent
-            .onEach { executeNavigationRequests(navController, it) }
-            .launchIn(this)
-    }
+  LaunchedEffect(navController) {
+    navigator.navigationEvent
+      .onEach { executeNavigationRequests(navController, it) }
+      .launchIn(this)
+  }
 }
 
 private fun executeNavigationRequests(
-    navController: NavHostController,
-    navigationEvent: NavigationEvent,
+  navController: NavHostController,
+  navigationEvent: NavigationEvent,
 ) {
-    when (navigationEvent) {
-        is NavigationEvent.Destination -> navController.navigate(
-            route = navigationEvent.destination,
-            builder = navigationEvent.builder,
-        )
-        NavigationEvent.NavigateUp -> navController.popBackStack()
-    }
+  when (navigationEvent) {
+    is NavigationEvent.Destination -> navController.navigate(
+      route = navigationEvent.destination,
+      builder = navigationEvent.builder,
+    )
+    NavigationEvent.NavigateUp -> navController.popBackStack()
+  }
 }
