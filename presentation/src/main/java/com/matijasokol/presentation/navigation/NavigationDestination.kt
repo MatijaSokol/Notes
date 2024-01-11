@@ -7,19 +7,19 @@ import java.net.URLEncoder
 
 fun interface NavigationDestination<T> {
 
-    fun route(): String
-    fun buildRoute(data: T): String = route()
-    fun retrieveRouteData(): T? = null
-    val arguments: List<NamedNavArgument>
-        get() = emptyList()
+  fun route(): String
+  fun buildRoute(data: T): String = route()
+  fun retrieveRouteData(): T? = null
+  val arguments: List<NamedNavArgument>
+    get() = emptyList()
 
-    val deepLinks: List<NavDeepLink>
-        get() = emptyList()
+  val deepLinks: List<NavDeepLink>
+    get() = emptyList()
 
-    @Suppress("UnnecessaryAbstractClass")
-    abstract class ParamType<T> : NavType<T>(isNullableAllowed = false)
+  @Suppress("UnnecessaryAbstractClass")
+  abstract class ParamType<T> : NavType<T>(isNullableAllowed = false)
 
-    fun String.encodeUrl(): String = URLEncoder.encode(this, UTF_8_ENC)
+  fun String.encodeUrl(): String = URLEncoder.encode(this, UTF_8_ENC)
 }
 
 private const val UTF_8_ENC = "UTF-8"

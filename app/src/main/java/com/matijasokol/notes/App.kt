@@ -9,19 +9,19 @@ import org.koin.core.logger.Level
 
 class App : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        initKoin()
-    }
+    initKoin()
+  }
 
-    private fun initKoin() {
-        startKoin {
-            if (BuildConfig.DEBUG) {
-                androidLogger(Level.DEBUG)
-            }
-            androidContext(this@App)
-            modules(appModule)
-        }
+  private fun initKoin() {
+    startKoin {
+      if (BuildConfig.DEBUG) {
+        androidLogger(Level.DEBUG)
+      }
+      androidContext(this@App)
+      modules(appModule)
     }
+  }
 }

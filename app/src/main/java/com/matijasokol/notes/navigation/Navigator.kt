@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface Navigator {
 
-    val navigationEvent: Flow<NavigationEvent>
+  val navigationEvent: Flow<NavigationEvent>
 
-    suspend fun emitDestination(event: NavigationEvent)
+  suspend fun emitDestination(event: NavigationEvent)
 
-    fun tryEmitDestination(event: NavigationEvent)
+  fun tryEmitDestination(event: NavigationEvent)
 }
