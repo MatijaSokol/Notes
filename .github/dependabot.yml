@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "gradle" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       time: "09:00"
       timezone: "Europe/Zagreb"
     open-pull-requests-limit: 5
@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       time: "09:00"
       timezone: "Europe/Zagreb"
     open-pull-requests-limit: 5
