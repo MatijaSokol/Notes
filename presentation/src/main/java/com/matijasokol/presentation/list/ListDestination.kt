@@ -1,8 +1,6 @@
 package com.matijasokol.presentation.list
 
-import com.matijasokol.presentation.navigation.NavigationDestination
+import kotlinx.serialization.Serializable
 
-object ListDestination : NavigationDestination<Unit> {
-
-  override fun route(): String = "list"
-}
+@Serializable
+object ListDestination

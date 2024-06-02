@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose.compiler)
+  alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -46,6 +47,8 @@ dependencies {
   implementation(platform(libs.androidx.compose.bom))
   implementation(libs.bundles.compose)
   implementation(libs.androidx.compose.navigation)
+
+  implementation(libs.kotlinx.serialization)
 
   implementation(platform(libs.koin.bom))
   implementation(libs.bundles.koin)

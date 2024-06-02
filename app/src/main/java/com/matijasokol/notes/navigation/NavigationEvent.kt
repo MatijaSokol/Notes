@@ -6,8 +6,8 @@ sealed interface NavigationEvent {
 
   data object NavigateUp : NavigationEvent
 
-  data class Destination(
-    val destination: String,
+  data class Destination<T>(
+    val route: T,
     val builder: NavOptionsBuilder.() -> Unit = {},
   ) : NavigationEvent
 }
