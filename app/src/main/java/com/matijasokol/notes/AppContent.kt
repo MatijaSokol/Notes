@@ -2,10 +2,10 @@ package com.matijasokol.notes
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.matijasokol.notes.navigation.NavigationEffect
 import com.matijasokol.notes.navigation.NavigationEvent
 import com.matijasokol.notes.navigation.Navigator
@@ -25,49 +25,31 @@ fun AppContent() {
 
   NavHost(
     navController = navController,
-    startDestination = ListDestination.route(),
+    startDestination = ListDestination,
   ) {
-    listScreen {
-      scope.launch {
-        navigator.emitDestination(
-          NavigationEvent.Destination(
-            destination = DetailsDestination.buildRoute(20),
-          ),
-        )
+    composable<ListDestination> {
+      ListScreen {
+        scope.launch {
+          navigator.emitDestination(
+            NavigationEvent.Destination(
+              route = DetailsDestination(noteId = 20),
+            ),
+          )
+        }
       }
     }
-    detailsScreen {
-      scope.launch {
-        navigator.emitDestination(
-          NavigationEvent.NavigateUp,
-        )
-      }
-    }
-  }
-}
 
-private fun NavGraphBuilder.listScreen(
-  onButtonClick: () -> Unit,
-) {
-  composable(
-    route = ListDestination.route(),
-  ) {
-    ListScreen {
-      onButtonClick()
+    composable<DetailsDestination> {
+      DetailsScreen(
+        param = it.toRoute<DetailsDestination>().noteId,
+        onButtonClick = {
+          scope.launch {
+            navigator.emitDestination(
+              NavigationEvent.NavigateUp,
+            )
+          }
+        },
+      )
     }
-  }
-}
-
-private fun NavGraphBuilder.detailsScreen(
-  onButtonClick: () -> Unit,
-) {
-  composable(
-    route = DetailsDestination.route(),
-    arguments = DetailsDestination.arguments,
-  ) {
-    DetailsScreen(
-      param = it.arguments?.getInt("noteId") ?: error("Param is not provided"),
-      onButtonClick = onButtonClick,
-    )
   }
 }

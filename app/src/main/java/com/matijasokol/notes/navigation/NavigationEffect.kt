@@ -3,8 +3,6 @@ package com.matijasokol.notes.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.compose.koinInject
 
 @Composable
@@ -14,8 +12,7 @@ fun NavigationEffect(
 ) {
   LaunchedEffect(navController) {
     navigator.navigationEvent
-      .onEach { executeNavigationRequests(navController, it) }
-      .launchIn(this)
+      .collect { executeNavigationRequests(navController, it) }
   }
 }
 
@@ -24,8 +21,8 @@ private fun executeNavigationRequests(
   navigationEvent: NavigationEvent,
 ) {
   when (navigationEvent) {
-    is NavigationEvent.Destination -> navController.navigate(
-      route = navigationEvent.destination,
+    is NavigationEvent.Destination<*> -> navController.navigate(
+      route = navigationEvent.route as Any,
       builder = navigationEvent.builder,
     )
     NavigationEvent.NavigateUp -> navController.popBackStack()
