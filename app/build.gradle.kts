@@ -2,6 +2,7 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.compose.compiler)
 }
 
 private val appId = "com.matijasokol.notes"
@@ -80,9 +81,6 @@ android {
   }
   buildFeatures {
     compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
   }
   packaging {
     resources {
