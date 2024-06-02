@@ -9,9 +9,9 @@ plugins {
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.kotlin.compose.compiler) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
-subprojects {
-    apply(from = rootProject.file("$projectDir/../quality/detekt.gradle"))
-    apply(from = rootProject.file("$projectDir/../quality/ktlint.gradle"))
+task<Delete>("clean") {
+  delete(rootProject.layout.buildDirectory)
 }

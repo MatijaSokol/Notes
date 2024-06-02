@@ -1,4 +1,5 @@
 pluginManagement {
+  includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -16,7 +17,4 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Notes"
-include(":app")
-include(":data")
-include(":domain")
-include(":presentation")
+include("app", "data", "domain", "presentation")
