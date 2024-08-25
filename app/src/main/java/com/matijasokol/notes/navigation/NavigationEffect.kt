@@ -25,6 +25,6 @@ private fun executeNavigationRequests(
       route = navigationEvent.route as Any,
       builder = navigationEvent.builder,
     )
-    NavigationEvent.NavigateUp -> navController.popBackStack()
+    NavigationEvent.NavigateUp -> navController.navigateUp()
   }
 }
