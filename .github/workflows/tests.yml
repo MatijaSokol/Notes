@@ -57,7 +57,6 @@ jobs:
           ./gradlew assembleProdRelease --stacktrace
 
   unit_tests:
-    needs: [ build ]
     runs-on: ubuntu-latest
     env:
       NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
