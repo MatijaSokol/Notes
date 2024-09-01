@@ -15,7 +15,7 @@ detekt = "1.23.6"
 detektCompose = "0.0.26"
 koin = "3.5.3"
 koinCompose = "1.1.2"
-kotlinxSerialization = "1.7.1"
+kotlinxSerialization = "1.7.2"
 coreLibraryDesugaring = "2.0.4"
 
 compileSdk = "34"
