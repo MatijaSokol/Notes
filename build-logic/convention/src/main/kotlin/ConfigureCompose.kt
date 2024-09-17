@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
@@ -29,7 +30,13 @@ internal fun Project.configureAndroidCompose(
   }
 
   extensions.configure<ComposeCompilerGradlePluginExtension> {
-    enableStrongSkippingMode.set(true)
+    featureFlags.set(
+      setOf(
+        ComposeFeatureFlag.StrongSkipping,
+        ComposeFeatureFlag.IntrinsicRemember,
+        ComposeFeatureFlag.OptimizeNonSkippingGroups,
+      ),
+    )
     includeSourceInformation.set(true)
   }
 
