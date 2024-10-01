@@ -2,7 +2,7 @@
 kotlin = "2.0.20"
 ksp = "2.0.20-1.0.24"
 ktx = "1.13.1"
-lifecycleRuntimeKtx = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeNavigation = "2.8.0"
 androidGradlePlugin = "8.6.0"
