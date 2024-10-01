@@ -11,7 +11,7 @@ jobs:
       NOTES_KEY_PASSWORD: '${{ secrets.NOTES_KEY_PASSWORD }}'
 
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.0
       - name: Prepare environment
         run: |
           export GRADLE_USER_HOME=`pwd`/.gradle
