@@ -1,4 +1,4 @@
-package com.matijasokol.presentation.list
+package com.matijasokol.notes.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.matijasokol.notes.platformName
 
 @Composable
 fun ListScreen(
@@ -22,7 +23,7 @@ fun ListScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center,
   ) {
-    Text("List screen")
+    Text("List screen: ${platformName()}")
     Spacer(modifier = Modifier.height(20.dp))
     Button(onClick = onButtonClick) {
       Text(text = "To details")

@@ -1,4 +1,4 @@
-package com.matijasokol.presentation.details
+package com.matijasokol.notes.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
