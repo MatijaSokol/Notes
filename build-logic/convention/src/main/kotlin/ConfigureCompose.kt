@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
@@ -20,13 +19,14 @@ internal fun Project.configureAndroidCompose(
       compose = true
     }
 
-    dependencies {
-      val bom = libs.androidx.compose.bom
-      add("implementation", platform(bom))
-      add("implementation", libs.bundles.compose)
-      add("debugImplementation", libs.bundles.compose.debug)
-      add("androidTestImplementation", platform(bom))
-    }
+    // comment because Jetpack Compose is not used in this project anymore (CMP instead)
+    // dependencies {
+    //   val bom = libs.androidx.compose.bom
+    //   add("implementation", platform(bom))
+    //   add("implementation", libs.bundles.compose)
+    //   add("debugImplementation", libs.bundles.compose.debug)
+    //   add("androidTestImplementation", platform(bom))
+    // }
   }
 
   extensions.configure<ComposeCompilerGradlePluginExtension> {
