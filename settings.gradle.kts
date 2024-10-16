@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Notes"
-include("composeApp", "shared")
+include("composeApp")
