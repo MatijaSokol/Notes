@@ -47,6 +47,10 @@ class QualityConventionPlugin : Plugin<Project> {
         reporter(ReporterType.HTML)
         reporter(ReporterType.PLAIN)
       }
+      filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+      }
     }
   }
 }
