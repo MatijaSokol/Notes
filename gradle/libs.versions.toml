@@ -1,55 +1,52 @@
 [versions]
-kotlin = "2.0.20"
-ksp = "2.0.20-1.0.24"
-ktx = "1.13.1"
-lifecycleRuntimeKtx = "2.8.5"
-activityCompose = "1.9.2"
-composeNavigation = "2.8.0"
-androidGradlePlugin = "8.6.0"
-androidxComposeBom = "2024.09.01"
-androidxTestJunit = "1.2.1"
-junit = "4.13.2"
-ktlintGradlePlugin = "12.1.1"
-ktlint = "0.50.0"
-detekt = "1.23.6"
-detektCompose = "0.0.26"
-koin = "3.5.6"
-koinCompose = "1.1.5"
-kotlinxSerialization = "1.7.2"
-coreLibraryDesugaring = "2.1.2"
-
+# Android
 compileSdk = "34"
 minSdk = "24"
 targetSdk = "34"
 
+androidxActivityCompose = "1.9.2"
+agp = "8.5.2"
+coreLibraryDesugaring = "2.1.2"
+
+# Kotlin
+kotlin = "2.0.21"
+kotlinxCoroutines = "1.9.0"
+kotlinxSerialization = "1.7.3"
+ksp = "2.0.21-1.0.25"
+
+# Compose
+composeMultiplatform = "1.7.0"
+composeNavigation = "2.8.0-alpha10"
+
+# Shared
+ktlintGradlePlugin = "12.1.1"
+ktlint = "0.50.0"
+detekt = "1.23.6"
+detektCompose = "0.0.26"
+koin = "4.0.0"
+
 [libraries]
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
-androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestJunit" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-
-koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
-koin-core = { group = "io.insert-koin", name = "koin-core" }
-koin-android = { group = "io.insert-koin", name = "koin-android" }
-koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
-koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koinCompose" }
-
-kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
-
+# Android
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
 core-library-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "coreLibraryDesugaring" }
 
+# Kotlin
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Compose
+compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+
+# Shared
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose" }
+
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+
 # Dependencies of the included build-logic
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
@@ -59,43 +56,33 @@ ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle"
 kotlin-compose-compiler-gradlePlugin = { group ="org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+# Android
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradlePlugin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# Kotlin
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+
+# Compose
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+
+# Shared
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintGradlePlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 # Plugins defined by this project
-notes-application = { id = "notes.android.application", version = "unspecified" }
+notes-multiplatform-application = { id = "notes.multiplatform.application", version = "unspecified" }
+notes-android-application = { id = "notes.android.application", version = "unspecified" }
 notes-library = { id = "notes.android.library", version = "unspecified" }
-notes-application-compose = { id = "notes.android.application.compose", version = "unspecified" }
+notes-multiplatform-application-compose = { id = "notes.multiplatform.application.compose", version = "unspecified" }
 notes-library-compose = { id = "notes.android.library.compose", version = "unspecified" }
 notes-jvm-library = { id = "notes.jvm.library", version = "unspecified" }
 notes-productflavors = { id = "notes.productflavors", version = "unspecified" }
 notes-buildtypes = { id = "notes.buildtypes", version = "unspecified" }
 notes-versioning = { id = "notes.versioning", version = "unspecified" }
 notes-quality = { id = "notes.quality", version = "unspecified" }
-
-[bundles]
-compose = [
-    "androidx-compose-ui",
-    "androidx-compose-ui-graphics",
-    "androidx-compose-ui-tooling-preview",
-    "androidx-compose-material3",
-    "androidx-compose-navigation",
-]
-compose-debug = [
-    "androidx-compose-ui-tooling",
-    "androidx-compose-ui-test-manifest"
-]
-compose-test = ["androidx-compose-ui-test-junit4"]
-koin = [
-    "koin-core",
-    "koin-android",
-    "koin-androidx-compose",
-    "koin-compose",
-]

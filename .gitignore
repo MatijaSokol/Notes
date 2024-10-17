@@ -8,12 +8,20 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/composeApp/build
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
 
 # Since Kotlin 2.0.0, folder named ".kotlin" is created at compile time
 .kotlin/
