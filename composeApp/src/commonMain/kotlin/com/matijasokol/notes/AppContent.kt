@@ -1,23 +1,27 @@
 package com.matijasokol.notes
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.matijasokol.notes.details.DetailsScreen
-import com.matijasokol.notes.list.ListScreen
 import com.matijasokol.notes.navigation.Destination
 import com.matijasokol.notes.navigation.NavigationEffect
 import com.matijasokol.notes.navigation.NavigationEvent
 import com.matijasokol.notes.navigation.Navigator
+import com.matijasokol.notes.presentation.details.DetailsScreen
+import com.matijasokol.notes.presentation.list.ListScreen
+import com.matijasokol.notes.presentation.list.NotesListViewModel
 import com.matijasokol.notes.ui.theme.NotesTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppContent() {
@@ -45,15 +49,21 @@ private fun NavGraphBuilder.List(
     navigator: Navigator,
 ) {
     composable<Destination.List> {
-        ListScreen {
-            scope.launch {
-                navigator.emitDestination(
-                    NavigationEvent.Destination(
-                        route = Destination.Details(noteId = 20),
-                    ),
-                )
-            }
-        }
+        val viewModel = koinViewModel<NotesListViewModel>()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
+        ListScreen(
+            state = state,
+            onButtonClick = {
+                scope.launch {
+                    navigator.emitDestination(
+                        NavigationEvent.Destination(
+                            route = Destination.Details(noteId = 20),
+                        ),
+                    )
+                }
+            },
+        )
     }
 }
 
