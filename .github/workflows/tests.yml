@@ -75,7 +75,4 @@ jobs:
           cache: 'gradle'
       - name: Unit tests
         run: |
-          ./gradlew app:test --stacktrace
-          ./gradlew data:test --stacktrace
-          ./gradlew domain:test --stacktrace
-          ./gradlew presentation:test --stacktrace
+          ./gradlew composeApp:test --stacktrace
