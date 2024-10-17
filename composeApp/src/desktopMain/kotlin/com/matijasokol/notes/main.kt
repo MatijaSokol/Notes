@@ -7,14 +7,14 @@ import androidx.compose.ui.window.application
 import com.matijasokol.notes.di.initKoin
 
 fun main() {
-  initKoin()
+    initKoin()
 
-  application {
-    Window(
-      onCloseRequest = ::exitApplication,
-      title = "Notes",
-    ) {
-      AppContent()
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Notes",
+        ) {
+            AppContent()
+        }
     }
-  }
 }

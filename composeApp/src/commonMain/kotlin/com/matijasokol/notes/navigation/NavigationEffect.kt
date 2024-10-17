@@ -7,24 +7,24 @@ import org.koin.compose.koinInject
 
 @Composable
 fun NavigationEffect(
-  navController: NavHostController,
-  navigator: Navigator = koinInject(),
+    navController: NavHostController,
+    navigator: Navigator = koinInject(),
 ) {
-  LaunchedEffect(navController) {
-    navigator.navigationEvent
-      .collect { executeNavigationRequests(navController, it) }
-  }
+    LaunchedEffect(navController) {
+        navigator.navigationEvent
+            .collect { executeNavigationRequests(navController, it) }
+    }
 }
 
 private fun executeNavigationRequests(
-  navController: NavHostController,
-  navigationEvent: NavigationEvent,
+    navController: NavHostController,
+    navigationEvent: NavigationEvent,
 ) {
-  when (navigationEvent) {
-    is NavigationEvent.Destination<*> -> navController.navigate(
-      route = navigationEvent.route as Any,
-      builder = navigationEvent.builder,
-    )
-    NavigationEvent.NavigateUp -> navController.navigateUp()
-  }
+    when (navigationEvent) {
+        is NavigationEvent.Destination<*> -> navController.navigate(
+            route = navigationEvent.route as Any,
+            builder = navigationEvent.builder,
+        )
+        NavigationEvent.NavigateUp -> navController.navigateUp()
+    }
 }

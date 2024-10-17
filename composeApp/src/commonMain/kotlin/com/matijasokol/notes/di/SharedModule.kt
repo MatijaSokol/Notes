@@ -7,5 +7,5 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val sharedModule = module {
-  singleOf(::NavigatorImpl) bind Navigator::class
+    singleOf(::NavigatorImpl) bind Navigator::class
 }
