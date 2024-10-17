@@ -14,19 +14,19 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DetailsScreen(
-  param: Int,
-  modifier: Modifier = Modifier,
-  onButtonClick: () -> Unit,
+    param: Int,
+    modifier: Modifier = Modifier,
+    onButtonClick: () -> Unit,
 ) {
-  Column(
-    modifier = modifier.fillMaxSize(),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Center,
-  ) {
-    Text("Details screen with param: $param")
-    Spacer(modifier = Modifier.height(20.dp))
-    Button(onClick = onButtonClick) {
-      Text(text = "Go back")
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text("Details screen with param: $param")
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(onClick = onButtonClick) {
+            Text(text = "Go back")
+        }
     }
-  }
 }
