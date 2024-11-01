@@ -5,7 +5,7 @@ minSdk = "24"
 targetSdk = "34"
 
 androidxActivityCompose = "1.9.2"
-agp = "8.5.2"
+agp = "8.7.2"
 coreLibraryDesugaring = "2.1.2"
 
 # Kotlin
