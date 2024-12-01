@@ -15,7 +15,7 @@ kotlinxSerialization = "1.7.3"
 ksp = "2.0.21-1.0.26"
 
 # Compose
-composeMultiplatform = "1.7.0"
+composeMultiplatform = "1.7.1"
 composeNavigation = "2.8.0-alpha10"
 
 # Shared
