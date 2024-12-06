@@ -1,0 +1,13 @@
+ktor:
+    application:
+        modules:
+            - com.matijasokol.notes.server.ApplicationKt.module
+    deployment:
+        port: 8888
+
+# local database configuration for testing
+database:
+    connection: "jdbc:postgresql://localhost:5431/postgres"
+    username: "postgres"
+    password: ""
+    poolSize: 5

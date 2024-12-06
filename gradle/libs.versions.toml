@@ -25,6 +25,15 @@ detekt = "1.23.6"
 detektCompose = "0.0.26"
 koin = "4.0.0"
 arrow = "2.0.0"
+sqldelight = "2.0.2"
+
+# Server
+ktor = "2.3.12" # update to 3.x.x when available (check Koin support), check https://github.com/InsertKoinIO/koin/pull/1978
+logback = "1.5.7"
+postgresql = "42.5.1"
+h2-version = "2.2.224"
+firebaseAdmin = "9.3.0"
+hikari = "6.0.0"
 
 [libraries]
 # Android
@@ -49,6 +58,44 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 arrow-coroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrow" }
 
+# shared ktor dependencies
+ktor-bom = { group = "io.ktor", name = "ktor-bom", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json" }
+
+# ktor client specific dependencies
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core" }
+ktor-auth = { group = "io.ktor", name = "ktor-client-auth" }
+ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin" }
+ktor-client-js = { group = "io.ktor", name = "ktor-client-js" }
+ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation" }
+ktor-client-resources = { group = "io.ktor", name = "ktor-client-resources" }
+
+# ktor server specific dependencies
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm" }
+ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm" }
+ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging-jvm" }
+ktor-server-default-headers = { group = "io.ktor", name = "ktor-server-default-headers-jvm" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors-jvm" }
+ktor-server-resources = { group = "io.ktor", name = "ktor-server-resources-jvm" }
+ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth-jvm" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm" }
+ktor-server-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml" }
+ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages" }
+sqldelight-driver-jdbc = { group = "app.cash.sqldelight", name = "jdbc-driver", version.ref = "sqldelight" }
+sqldelight-dialect-postgresql = { group = "app.cash.sqldelight", name = "postgresql-dialect", version.ref = "sqldelight" }
+hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
+
+# ktor server related dependencies
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+h2 = { module = "com.h2database:h2", version.ref = "h2-version" }
+firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebaseAdmin" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -70,6 +117,8 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 
 # Compose
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -95,4 +144,28 @@ notes-quality = { id = "notes.quality", version = "unspecified" }
 arrow = [
     "arrow-core",
     "arrow-coroutines",
+]
+
+ktor-client = [
+    "ktor-client-core",
+    "ktor-auth",
+    "ktor-client-encoding",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-content-negotiation",
+    "ktor-client-resources",
+]
+
+ktor-server = [
+    "ktor-server-core",
+    "ktor-server-content-negotiation",
+    "ktor-server-call-logging",
+    "ktor-server-default-headers",
+    "ktor-server-cors",
+    "ktor-server-resources",
+    "ktor-server-auth",
+    "ktor-server-netty",
+    "ktor-server-config-yaml",
+    "ktor-serialization-kotlinx-json",
+    "ktor-server-status-pages",
 ]
