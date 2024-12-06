@@ -5,17 +5,17 @@ minSdk = "24"
 targetSdk = "34"
 
 androidxActivityCompose = "1.9.3"
-agp = "8.5.2"
-coreLibraryDesugaring = "2.1.2"
+agp = "8.7.2"
+coreLibraryDesugaring = "2.1.3"
 
 # Kotlin
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerialization = "1.7.3"
-ksp = "2.0.21-1.0.26"
+ksp = "2.1.0-1.0.29"
 
 # Compose
-composeMultiplatform = "1.7.0"
+composeMultiplatform = "1.7.1"
 composeNavigation = "2.8.0-alpha10"
 
 # Shared
@@ -24,6 +24,7 @@ ktlint = "0.50.0"
 detekt = "1.23.6"
 detektCompose = "0.0.26"
 koin = "4.0.0"
+arrow = "2.0.0"
 
 [libraries]
 # Android
@@ -44,6 +45,9 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose" }
 
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+arrow-coroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrow" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -86,3 +90,9 @@ notes-productflavors = { id = "notes.productflavors", version = "unspecified" }
 notes-buildtypes = { id = "notes.buildtypes", version = "unspecified" }
 notes-versioning = { id = "notes.versioning", version = "unspecified" }
 notes-quality = { id = "notes.quality", version = "unspecified" }
+
+[bundles]
+arrow = [
+    "arrow-core",
+    "arrow-coroutines",
+]
