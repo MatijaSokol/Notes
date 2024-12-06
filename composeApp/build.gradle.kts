@@ -58,6 +58,8 @@ kotlin {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+
+            api(libs.bundles.arrow)
         }
 
         desktopMain.dependencies {
