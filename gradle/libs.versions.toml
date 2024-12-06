@@ -37,8 +37,8 @@ hikari = "6.0.0"
 
 [libraries]
 # Android
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
-core-library-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "coreLibraryDesugaring" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
+core-library-desugaring = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "coreLibraryDesugaring" }
 
 # Kotlin
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
@@ -55,7 +55,7 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 
-arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
 arrow-coroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrow" }
 
 # shared ktor dependencies
@@ -89,12 +89,12 @@ sqldelight-dialect-postgresql = { group = "app.cash.sqldelight", name = "postgre
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 
 # ktor server related dependencies
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
-koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
-koin-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
-h2 = { module = "com.h2database:h2", version.ref = "h2-version" }
-firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebaseAdmin" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
+koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2-version" }
+firebase-admin = { group = "com.google.firebase", name = "firebase-admin", version.ref = "firebaseAdmin" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
