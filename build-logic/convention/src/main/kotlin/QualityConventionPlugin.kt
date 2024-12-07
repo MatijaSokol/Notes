@@ -48,8 +48,8 @@ class QualityConventionPlugin : Plugin<Project> {
         reporter(ReporterType.PLAIN)
       }
       filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
+        exclude { it.file.path.contains(layout.buildDirectory.dir("generated").get().toString()) }
+        include { it.file.path.contains(layout.buildDirectory.dir("kotlin").get().toString()) }
       }
     }
   }
