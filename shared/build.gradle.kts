@@ -42,6 +42,9 @@ kotlin {
             implementation(libs.bundles.ktor.client)
             implementation(libs.arrow.core)
             implementation(libs.arrow.coroutines)
+
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
         }
 
         val clientMain by creating {

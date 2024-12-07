@@ -1,6 +1,7 @@
 package com.matijasokol.notes.server
 
 import com.matijasokol.notes.server.plugins.configureHTTP
+import com.matijasokol.notes.server.plugins.configureKoin
 import com.matijasokol.notes.server.plugins.configureMonitoring
 import com.matijasokol.notes.server.plugins.configureRouting
 import com.matijasokol.notes.server.plugins.configureSerialization
@@ -11,6 +12,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    configureKoin()
     configureSerialization()
     configureMonitoring()
     configureHTTP()

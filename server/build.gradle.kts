@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.h2)
     implementation(libs.logback.classic)
     implementation(libs.firebase.admin)
+    implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger)
