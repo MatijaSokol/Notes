@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS UserEntity (
+    id UUID PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE
+);
+
+CREATE INDEX IF NOT EXISTS index_userEntity_email ON UserEntity(email);
+
+insert:
+INSERT INTO UserEntity (id, email) VALUES (?, ?);
+
+getAll:
+SELECT id, email FROM UserEntity;
+
+getById:
+SELECT id, email FROM UserEntity WHERE id = ?;
+
+getByEmail:
+SELECT id, email FROM UserEntity WHERE email = ?;
+
+delete:
+DELETE FROM UserEntity WHERE id = ?;
