@@ -1,5 +1,6 @@
 package com.matijasokol.notes.server
 
+import com.matijasokol.notes.server.plugins.configureAuth
 import com.matijasokol.notes.server.plugins.configureHTTP
 import com.matijasokol.notes.server.plugins.configureKoin
 import com.matijasokol.notes.server.plugins.configureMonitoring
@@ -16,5 +17,6 @@ fun Application.module() {
     configureSerialization()
     configureMonitoring()
     configureHTTP()
+    configureAuth()
     configureRouting()
 }

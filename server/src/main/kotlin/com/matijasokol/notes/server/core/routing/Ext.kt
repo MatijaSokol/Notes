@@ -1,9 +1,12 @@
 package com.matijasokol.notes.server.core.routing
 
 import arrow.core.Either
+import arrow.core.raise.either
+import arrow.core.raise.ensureNotNull
 import arrow.core.toNonEmptyListOrNull
 import com.matijasokol.notes.core.error.getCauseOrNull
 import com.matijasokol.notes.core.models.InvalidField
+import com.matijasokol.notes.server.auth.TokenPrincipal
 import com.matijasokol.notes.server.core.DatabaseError
 import com.matijasokol.notes.server.core.ServerError
 import com.matijasokol.notes.server.core.UserError
@@ -11,11 +14,15 @@ import com.matijasokol.notes.server.core.ValidationError
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
+import io.ktor.server.auth.principal
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.util.pipeline.PipelineContext
 import kotlinx.serialization.MissingFieldException
+
+fun ApplicationCall.tokenOrError(): Either<ValidationError.InvalidToken, TokenPrincipal> =
+    either { ensureNotNull(principal()) { ValidationError.InvalidToken } }
 
 suspend inline fun <reified T : Any> ApplicationCall.receiveOrError(): Either<ValidationError.IncorrectInput, T> =
     Either.catchOrThrow<BadRequestException, T> {
