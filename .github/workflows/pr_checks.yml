@@ -84,3 +84,5 @@ jobs:
       - name: Unit tests
         run: |
           ./gradlew composeApp:test --stacktrace
+          ./gradlew shared:test --stacktrace
+          ./gradlew server:test --stacktrace
