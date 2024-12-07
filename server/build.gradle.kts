@@ -30,6 +30,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 }
 
 dependencies {
+    implementation(projects.shared)
     implementation(project.dependencies.platform(libs.ktor.bom))
     implementation(libs.bundles.ktor.server)
     implementation(libs.postgresql)
