@@ -1,4 +1,4 @@
-name: Distribute release prod APK
+name: Distribute release prod APK as artifact
 
 on:
   workflow_dispatch:
