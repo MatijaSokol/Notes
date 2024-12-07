@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   static_analysis:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Prepare environment
@@ -36,7 +36,7 @@ jobs:
           ./gradlew ktlintCheck detekt --stacktrace
 
   build_android:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
       NOTES_KEY_PASSWORD: '${{ secrets.NOTES_KEY_PASSWORD }}'
@@ -57,7 +57,7 @@ jobs:
           ./gradlew assembleProdRelease --stacktrace
 
   build_server:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Build server
@@ -65,7 +65,7 @@ jobs:
           ./gradlew :server:build --stacktrace
 
   unit_tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
       NOTES_KEY_PASSWORD: '${{ secrets.NOTES_KEY_PASSWORD }}'
