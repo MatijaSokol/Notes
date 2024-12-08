@@ -8,6 +8,7 @@ import com.matijasokol.notes.core.error.getCauseOrNull
 import com.matijasokol.notes.core.models.InvalidField
 import com.matijasokol.notes.server.auth.TokenPrincipal
 import com.matijasokol.notes.server.core.DatabaseError
+import com.matijasokol.notes.server.core.NoteError
 import com.matijasokol.notes.server.core.ServerError
 import com.matijasokol.notes.server.core.UserError
 import com.matijasokol.notes.server.core.ValidationError
@@ -58,6 +59,7 @@ suspend fun PipelineContext<Unit, ApplicationCall>.respond(error: ServerError): 
         is ValidationError.IncorrectInput -> unprocessable(
             "Invalid input: ${error.errors.joinToString { field -> "${field.field}: ${field.message}" }}",
         )
+        is NoteError.NoteNotFoundById -> unprocessable("Note not found for id: ${error.id}")
     }
 
 private suspend inline fun PipelineContext<Unit, ApplicationCall>.unprocessable(
