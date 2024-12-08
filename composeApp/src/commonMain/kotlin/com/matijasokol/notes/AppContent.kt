@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.matijasokol.notes.auth.AuthScreen
 import com.matijasokol.notes.details.DetailsScreen
 import com.matijasokol.notes.list.ListScreen
 import com.matijasokol.notes.navigation.Destination
@@ -20,7 +21,9 @@ import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 
 @Composable
-fun AppContent() {
+fun AppContent(
+    loggedIn: Boolean,
+) {
     KoinContext {
         NotesTheme {
             val navController = rememberNavController()
@@ -31,12 +34,22 @@ fun AppContent() {
 
             NavHost(
                 navController = navController,
-                startDestination = Destination.List,
+                startDestination = when (loggedIn) {
+                    true -> Destination.List
+                    false -> Destination.Auth
+                },
             ) {
+                Auth()
                 List(scope, navigator)
                 Details(scope, navigator)
             }
         }
+    }
+}
+
+private fun NavGraphBuilder.Auth() {
+    composable<Destination.Auth> {
+        AuthScreen()
     }
 }
 
