@@ -78,7 +78,6 @@ kotlin {
         }
 
         jvmMain {
-            dependsOn(clientMain)
             dependsOn(serverMain)
             dependencies {}
         }

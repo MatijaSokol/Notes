@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -20,8 +19,6 @@ kotlin {
         }
     }
 
-    jvm("desktop")
-
     listOf(
         iosX64(),
         iosArm64(),
@@ -34,8 +31,6 @@ kotlin {
     }
 
     sourceSets {
-        val desktopMain by getting
-
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -62,11 +57,6 @@ kotlin {
             implementation(libs.koin.compose)
 
             api(libs.bundles.arrow)
-        }
-
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
@@ -107,18 +97,6 @@ android {
                     "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
                 ),
             )
-        }
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "$appId.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = appId
-            packageVersion = "1.0.0"
         }
     }
 }
