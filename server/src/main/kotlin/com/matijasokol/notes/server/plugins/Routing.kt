@@ -1,5 +1,6 @@
 package com.matijasokol.notes.server.plugins
 
+import com.matijasokol.notes.server.note.routing.noteRoutes
 import com.matijasokol.notes.server.user.routing.userRoutes
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -10,5 +11,6 @@ fun Application.configureRouting() {
     install(Resources)
     routing {
         userRoutes()
+        noteRoutes()
     }
 }

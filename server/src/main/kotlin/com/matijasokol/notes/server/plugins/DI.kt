@@ -3,6 +3,11 @@ package com.matijasokol.notes.server.plugins
 import com.matijasokol.notes.di.sharedModule
 import com.matijasokol.notes.server.ServerDatabase
 import com.matijasokol.notes.server.database.provideDatabase
+import com.matijasokol.notes.server.note.service.NoteService
+import com.matijasokol.notes.server.note.service.NoteServiceImpl
+import com.matijasokol.notes.server.note.usecase.CreateNote
+import com.matijasokol.notes.server.note.usecase.GetNoteById
+import com.matijasokol.notes.server.note.usecase.GetUserNotes
 import com.matijasokol.notes.server.user.service.UserService
 import com.matijasokol.notes.server.user.service.UserServiceImpl
 import com.matijasokol.notes.server.user.usecase.CreateUser
@@ -36,9 +41,17 @@ private val userModule = module {
     factoryOf(::UserServiceImpl) bind UserService::class
 }
 
+private val noteModule = module {
+    factoryOf(::CreateNote)
+    factoryOf(::GetUserNotes)
+    factoryOf(::GetNoteById)
+    factoryOf(::NoteServiceImpl) bind NoteService::class
+}
+
 private val serverModule = module {
     includes(
         databaseModule,
         userModule,
+        noteModule,
     )
 }

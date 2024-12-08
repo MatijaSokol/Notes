@@ -7,6 +7,15 @@ import io.ktor.resources.Resource
 @Resource("/v1")
 class V1 {
 
-    @Resource("/create-user")
+    @Resource("/user")
     class CreateUser(val v1: V1 = V1())
+
+    @Resource("/note")
+    class CreateNote(val v1: V1 = V1())
+
+    @Resource("/note")
+    class GetNote(val v1: V1 = V1(), val noteId: String)
+
+    @Resource("/notes")
+    class GetNotesByUser(val v1: V1 = V1(), val userId: String)
 }
