@@ -7,7 +7,7 @@ ktor:
 
 # local database configuration for testing
 database:
-    connection: "jdbc:postgresql://localhost:5431/postgres"
+    connection: "jdbc:postgresql://localhost:5431/notes"
     username: "postgres"
     password: ""
     poolSize: 5
