@@ -34,6 +34,7 @@ fun Application.configureKoin() {
 private val databaseModule = module {
     singleOf(::provideDatabase)
     factory { get<ServerDatabase>().userQueries }
+    factory { get<ServerDatabase>().noteQueries }
 }
 
 private val userModule = module {
