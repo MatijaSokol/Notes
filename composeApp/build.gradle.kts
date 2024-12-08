@@ -36,6 +36,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.koin.android)
+
+            implementation(libs.androidx.core.splash)
         }
 
         commonMain.dependencies {
