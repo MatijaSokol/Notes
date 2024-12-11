@@ -1,13 +1,19 @@
 package com.matijasokol.notes
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.matijasokol.notes.auth.AuthAction
 import com.matijasokol.notes.auth.AuthScreen
+import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.DetailsScreen
 import com.matijasokol.notes.list.ListScreen
 import com.matijasokol.notes.navigation.Destination
@@ -19,17 +25,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppContent(
     loggedIn: Boolean,
+    navController: NavHostController = rememberNavController(),
+    navigator: Navigator = koinInject(),
+    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     KoinContext {
         NotesTheme {
-            val navController = rememberNavController()
-            val navigator: Navigator = koinInject()
-            val scope = rememberCoroutineScope()
-
             NavigationEffect(navController)
 
             NavHost(
@@ -39,7 +45,7 @@ fun AppContent(
                     false -> Destination.Auth
                 },
             ) {
-                Auth()
+                Auth(navigator)
                 List(scope, navigator)
                 Details(scope, navigator)
             }
@@ -47,9 +53,33 @@ fun AppContent(
     }
 }
 
-private fun NavGraphBuilder.Auth() {
+private fun NavGraphBuilder.Auth(
+    navigator: Navigator,
+) {
     composable<Destination.Auth> {
-        AuthScreen()
+        val viewmodel: AuthViewModel = koinViewModel()
+        val state by viewmodel.state.collectAsStateWithLifecycle()
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(viewmodel.actions) {
+            viewmodel.actions.collect { action ->
+                when (action) {
+                    AuthAction.LoginError -> println("error")
+                    AuthAction.LoginSuccess -> scope.launch {
+                        navigator.emitDestination(
+                            NavigationEvent.Destination(
+                                route = Destination.List,
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+
+        AuthScreen(
+            state = state,
+            onEvent = viewmodel::onEvent,
+        )
     }
 }
 

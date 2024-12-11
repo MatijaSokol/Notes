@@ -2,26 +2,26 @@ package com.matijasokol.notes.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import arrow.core.getOrElse
+import com.matijasokol.notes.domain.auth.AuthProvider
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 
-class SplashViewModel : ViewModel() {
+class SplashViewModel(
+    private val authProvider: AuthProvider,
+) : ViewModel() {
 
-    private val _showSplash = MutableStateFlow(true)
-    val showSplash = _showSplash.asStateFlow()
-
-    private val _loggedIn = MutableStateFlow(false)
-    val loggedIn = _loggedIn.asStateFlow()
-
-    // for testing purposes add delay of 1s to test splash screen visibility
-    init {
-        viewModelScope.launch {
-            delay(1000)
-            _loggedIn.update { false }
-            _showSplash.update { false }
-        }
-    }
+    private val fetchTrigger = Channel<Unit>()
+    val loggedIn = fetchTrigger.receiveAsFlow()
+        .onStart { emit(Unit) }
+        .map { authProvider.userLoggedIn().getOrElse { false } }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = null,
+        )
 }

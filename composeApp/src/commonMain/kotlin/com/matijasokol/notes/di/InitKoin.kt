@@ -8,7 +8,6 @@ fun initKoin(
 ) = startKoin {
     consumerDeclaration()
     modules(
-        platformModule,
         composeAppSharedModule,
         sharedModule,
     )
