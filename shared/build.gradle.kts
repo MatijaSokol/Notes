@@ -45,6 +45,8 @@ kotlin {
 
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
+
+            implementation(libs.firebase)
         }
 
         val clientMain by creating {
