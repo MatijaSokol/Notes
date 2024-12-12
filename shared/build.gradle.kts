@@ -59,12 +59,16 @@ kotlin {
 
         androidMain {
             dependsOn(clientMain)
-            dependencies {}
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
         }
 
         iosMain {
             dependsOn(clientMain)
-            dependencies {}
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
 
         val iosX64Main by getting {
