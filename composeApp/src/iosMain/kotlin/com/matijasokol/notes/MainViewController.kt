@@ -8,5 +8,5 @@ fun MainViewController() = ComposeUIViewController(
         enforceStrictPlistSanityCheck = false
         initKoin()
     },
-    content = { AppContent() },
+    content = { AppContent(loggedIn = false) },
 )
