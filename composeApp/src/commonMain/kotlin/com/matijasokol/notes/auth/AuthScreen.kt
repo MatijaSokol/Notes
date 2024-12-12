@@ -11,12 +11,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.matijasokol.notes.ui.components.GoogleSignInButton
 import notes.composeapp.generated.resources.Res
 import notes.composeapp.generated.resources.auth_text_email
 import notes.composeapp.generated.resources.auth_text_login
 import notes.composeapp.generated.resources.auth_text_password
-import notes.composeapp.generated.resources.or
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -66,13 +64,13 @@ fun AuthScreen(
                 )
             }
 
-            Text(
-                text = stringResource(Res.string.or),
-            )
+            // Text(
+            //     text = stringResource(Res.string.or),
+            // )
 
-            GoogleSignInButton(
-                onClick = { onEvent(AuthEvent.GoogleSignInClicked) },
-            )
+            // GoogleSignInButton(
+            //     onClick = { onEvent(AuthEvent.GoogleSignInClicked) },
+            // )
         }
 
         if (state.isLoading) {
