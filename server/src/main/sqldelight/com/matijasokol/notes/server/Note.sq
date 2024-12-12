@@ -17,4 +17,4 @@ getById:
 SELECT id, text, userId, createdAt FROM NoteEntity WHERE id = ?;
 
 delete:
-DELETE FROM NoteEntity WHERE id = ?;
+DELETE FROM NoteEntity WHERE id = ? RETURNING id;
