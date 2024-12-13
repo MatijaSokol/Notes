@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import com.matijasokol.notes.ClientError
 import com.matijasokol.notes.LoginError
+import com.matijasokol.notes.RegistrationError
 import com.matijasokol.notes.data.safeNetworkCall
 import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.auth.AuthUser
@@ -31,6 +32,27 @@ class FirebaseAuthProvider(
 
         return when (result == null) {
             true -> Either.Left(LoginError.InvalidCredentials)
+            false -> Either.Right(
+                value = AuthUser(
+                    uid = result.uid,
+                    displayName = result.displayName,
+                    email = result.email,
+                    photoURL = result.photoURL,
+                ),
+            )
+        }
+    }
+
+    override suspend fun registerWithEmailAndPassword(
+        email: String,
+        password: String,
+    ): Either<ClientError, AuthUser> = either {
+        val result = safeNetworkCall {
+            auth.createUserWithEmailAndPassword(email, password).user
+        }.bind()
+
+        return when (result == null) {
+            true -> Either.Left(RegistrationError.RegistrationFailed)
             false -> Either.Right(
                 value = AuthUser(
                     uid = result.uid,

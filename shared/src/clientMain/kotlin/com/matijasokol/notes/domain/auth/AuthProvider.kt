@@ -10,4 +10,6 @@ interface AuthProvider {
     suspend fun loginWithGoogle(): Either<ClientError, AuthUser>
 
     suspend fun loginWithEmailAndPassword(email: String, password: String): Either<ClientError, AuthUser>
+
+    suspend fun registerWithEmailAndPassword(email: String, password: String): Either<ClientError, AuthUser>
 }
