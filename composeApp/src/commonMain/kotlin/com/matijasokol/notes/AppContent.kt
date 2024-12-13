@@ -11,7 +11,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.matijasokol.notes.auth.AuthAction
+import com.matijasokol.notes.auth.AuthAction.LoginError
+import com.matijasokol.notes.auth.AuthAction.LoginSuccess
+import com.matijasokol.notes.auth.AuthAction.RegistrationError
+import com.matijasokol.notes.auth.AuthAction.RegistrationSuccess
 import com.matijasokol.notes.auth.AuthScreen
 import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.DetailsScreen
@@ -64,8 +67,8 @@ private fun NavGraphBuilder.Auth(
         LaunchedEffect(viewmodel.actions) {
             viewmodel.actions.collect { action ->
                 when (action) {
-                    AuthAction.LoginError -> println("error")
-                    AuthAction.LoginSuccess -> scope.launch {
+                    LoginError, RegistrationError -> println("error")
+                    LoginSuccess, RegistrationSuccess -> scope.launch {
                         navigator.emitDestination(
                             NavigationEvent.Destination(
                                 route = Destination.List,
