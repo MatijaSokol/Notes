@@ -71,22 +71,11 @@ kotlin {
             }
         }
 
-        val iosX64Main by getting {
-            dependsOn(iosMain.get())
-        }
+        iosX64Main { dependsOn(iosMain.get()) }
+        iosArm64Main { dependsOn(iosMain.get()) }
+        iosSimulatorArm64Main { dependsOn(iosMain.get()) }
 
-        val iosArm64Main by getting {
-            dependsOn(iosMain.get())
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain.get())
-        }
-
-        jvmMain {
-            dependsOn(serverMain)
-            dependencies {}
-        }
+        jvmMain { dependsOn(serverMain) }
     }
 }
 
