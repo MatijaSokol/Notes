@@ -10,6 +10,7 @@ import com.matijasokol.notes.server.core.errorAsIncorrectInput
 import com.matijasokol.notes.server.database.mappers.toNoteDto
 import com.matijasokol.notes.server.note.model.toNoteOrError
 import com.matijasokol.notes.server.note.usecase.CreateNote
+import com.matijasokol.notes.server.note.usecase.DeleteNote
 import com.matijasokol.notes.server.note.usecase.GetNoteById
 import com.matijasokol.notes.server.note.usecase.GetUserNotes
 
@@ -17,6 +18,7 @@ class NoteServiceImpl(
     private val createNote: CreateNote,
     private val getUserNotes: GetUserNotes,
     private val getNoteById: GetNoteById,
+    private val deleteNote: DeleteNote,
 ) : NoteService {
 
     override suspend fun create(noteDto: NoteDto): Either<ServerError, NoteDto> = either {
@@ -28,6 +30,12 @@ class NoteServiceImpl(
             userId = note.userId,
             createdAt = note.createdAt,
         ).map(NoteEntity::toNoteDto).bind()
+    }
+
+    override suspend fun delete(noteId: String): Either<ServerError, Unit> = either {
+        deleteNote(
+            noteId = Uuid(noteId, "NoteId").errorAsIncorrectInput().bind(),
+        ).bind()
     }
 
     override suspend fun getUserNotes(userId: String): Either<ServerError, List<NoteDto>> = either {

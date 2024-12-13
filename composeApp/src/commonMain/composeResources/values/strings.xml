@@ -1,8 +1,13 @@
 <resources>
     <string name="or">Or</string>
 
-    <string name="auth_text_email">Email</string>
-    <string name="auth_text_password">Password</string>
-    <string name="auth_text_login">Login</string>
-    <string name="auth_text_login_with_google">Login with Google</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_login">Login</string>
+    <string name="auth_register">Register</string>
+    <string name="auth_login_google">Login with Google</string>
+    <string name="auth_register_bottom">Already have an account? Login</string>
+    <string name="auth_register_top">Create an account</string>
+    <string name="auth_login_bottom">Don't have an account? Register</string>
+    <string name="auth_login_top">Welcome back</string>
 </resources>

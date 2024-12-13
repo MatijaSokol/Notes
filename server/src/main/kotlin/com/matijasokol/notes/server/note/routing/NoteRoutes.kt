@@ -10,6 +10,7 @@ import com.matijasokol.notes.server.note.service.NoteService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
+import io.ktor.server.resources.delete
 import io.ktor.server.resources.post
 import io.ktor.server.routing.Routing
 import org.koin.ktor.ext.get
@@ -39,6 +40,13 @@ fun Routing.noteRoutes(
                 val token = call.tokenOrError().bind().token
                 noteService.getUserNotes(it.userId).bind()
             }.respond()
+        }
+
+        delete<V1.DeleteNote> {
+            either {
+                val token = call.tokenOrError().bind().token
+                noteService.delete(it.noteId).bind()
+            }.respond(HttpStatusCode.NoContent)
         }
     }
 }

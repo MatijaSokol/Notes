@@ -10,6 +10,10 @@ interface NoteService {
         noteDto: NoteDto,
     ): Either<ServerError, NoteDto>
 
+    suspend fun delete(
+        noteId: String,
+    ): Either<ServerError, Unit>
+
     suspend fun getUserNotes(
         userId: String,
     ): Either<ServerError, List<NoteDto>>

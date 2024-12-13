@@ -72,7 +72,6 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core" }
 ktor-auth = { group = "io.ktor", name = "ktor-client-auth" }
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin" }
-ktor-client-js = { group = "io.ktor", name = "ktor-client-js" }
 ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp" }
