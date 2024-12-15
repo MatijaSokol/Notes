@@ -14,11 +14,8 @@ class UserServiceImpl(
 ) : UserService {
 
     override suspend fun create(userDto: UserDto): Either<ServerError, UserDto> = either {
-        val user = userDto.toUserOrError().bind()
-
         createUser(
-            id = user.id,
-            email = user.email,
+            email = userDto.toUserOrError().bind().email,
         ).map(UserEntity::toUserDto).bind()
     }
 }

@@ -2,6 +2,7 @@ package com.matijasokol.notes.server.auth
 
 import arrow.core.Either.Left
 import arrow.core.Either.Right
+import com.matijasokol.notes.data.api.TOKEN_HEADER
 import com.matijasokol.notes.server.auth.FirebaseAuthenticationProvider.Configuration
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.AuthenticationConfig
@@ -19,7 +20,7 @@ private class FirebaseAuthenticationProvider(
 
     override suspend fun onAuthenticate(context: AuthenticationContext) {
         val call = context.call
-        val token = call.request.headers[TOKEN]
+        val token = call.request.headers[TOKEN_HEADER]
 
         when (val result = verifyToken(token)) {
             is Left -> context.challenge(
@@ -45,5 +46,4 @@ fun AuthenticationConfig.firebase(verifyToken: VerifyToken, name: String? = null
 }
 
 private const val FIREBASE_AUTH = "FirebaseAuth"
-private const val TOKEN = "token"
 private const val MESSAGE_UNAUTHORIZED = "Unauthorized access"
