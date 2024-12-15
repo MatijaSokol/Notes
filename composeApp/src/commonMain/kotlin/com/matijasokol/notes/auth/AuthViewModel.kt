@@ -3,12 +3,14 @@ package com.matijasokol.notes.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import com.matijasokol.notes.AuthError
 import com.matijasokol.notes.LoginError
 import com.matijasokol.notes.NetworkError
 import com.matijasokol.notes.RegistrationError
 import com.matijasokol.notes.auth.AuthType.Login
 import com.matijasokol.notes.auth.AuthType.Registration
 import com.matijasokol.notes.domain.auth.AuthProvider
+import com.matijasokol.notes.domain.user.RegisterUser
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
+    private val registerUser: RegisterUser,
     private val authProvider: AuthProvider,
 ) : ViewModel() {
 
@@ -82,7 +85,7 @@ class AuthViewModel(
     private suspend fun handleRegistration(email: String, password: String) {
         isLoading.update { true }
 
-        when (val result = authProvider.registerWithEmailAndPassword(email, password)) {
+        when (val result = registerUser(email, password)) {
             is Either.Left -> {
                 _actions.send(AuthAction.RegistrationError)
                 when (result.value) {
@@ -90,6 +93,7 @@ class AuthViewModel(
                     is NetworkError.BackendError -> println("Backend error")
                     NetworkError.UnknownNetworkError -> println("Unknown network error")
                     RegistrationError.RegistrationFailed -> println("Registration failed")
+                    AuthError.TokenNotAvailable -> println("Token not available")
                 }
             }
             is Either.Right -> {
@@ -115,6 +119,7 @@ class AuthViewModel(
                     is NetworkError.BackendError -> println("Backend error")
                     NetworkError.UnknownNetworkError -> println("Unknown network error")
                     RegistrationError.RegistrationFailed -> println("Registration failed")
+                    AuthError.TokenNotAvailable -> println("Token not available")
                 }
             }
             is Either.Right -> {

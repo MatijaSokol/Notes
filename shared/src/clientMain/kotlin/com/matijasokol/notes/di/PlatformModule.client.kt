@@ -4,6 +4,7 @@ import com.matijasokol.notes.data.auth.FirebaseAuthProvider
 import com.matijasokol.notes.data.client.buildHttpClient
 import com.matijasokol.notes.data.client.httpClientEngineFactory
 import com.matijasokol.notes.data.client.json
+import com.matijasokol.notes.data.client.withTokenInterceptor
 import com.matijasokol.notes.data.notes.NotesRepositoryImpl
 import com.matijasokol.notes.data.user.UserRepositoryImpl
 import com.matijasokol.notes.domain.auth.AuthProvider
@@ -17,7 +18,7 @@ import org.koin.dsl.module
 private val networkModule = module {
     factory { json }
     factoryOf(::httpClientEngineFactory)
-    factoryOf(::buildHttpClient)
+    factory { buildHttpClient(get(), get()).withTokenInterceptor(get()) }
 }
 
 private val notesModule = module {

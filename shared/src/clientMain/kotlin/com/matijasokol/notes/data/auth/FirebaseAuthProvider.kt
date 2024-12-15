@@ -2,6 +2,8 @@ package com.matijasokol.notes.data.auth
 
 import arrow.core.Either
 import arrow.core.raise.either
+import arrow.core.raise.ensureNotNull
+import com.matijasokol.notes.AuthError
 import com.matijasokol.notes.ClientError
 import com.matijasokol.notes.LoginError
 import com.matijasokol.notes.RegistrationError
@@ -13,6 +15,15 @@ import dev.gitlive.firebase.auth.FirebaseAuth
 class FirebaseAuthProvider(
     private val auth: FirebaseAuth,
 ) : AuthProvider {
+
+    override suspend fun getCurrentToken(): Either<AuthError, String> = either {
+        Either.catch {
+            val token = auth.currentUser?.getIdToken(true)
+            ensureNotNull(token) { AuthError.TokenNotAvailable }
+        }.mapLeft {
+            AuthError.TokenNotAvailable
+        }.bind()
+    }
 
     override suspend fun userLoggedIn(): Either<ClientError, Boolean> {
         return Either.Right(auth.currentUser != null)

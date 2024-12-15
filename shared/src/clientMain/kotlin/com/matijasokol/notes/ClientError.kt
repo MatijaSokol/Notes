@@ -7,6 +7,10 @@ sealed class NetworkError : ClientError() {
     data class BackendError(val responseCode: Int, val errorMessage: String?) : NetworkError()
 }
 
+sealed class AuthError : ClientError() {
+    data object TokenNotAvailable : AuthError()
+}
+
 sealed class RegistrationError : ClientError() {
     data object RegistrationFailed : RegistrationError()
 }
