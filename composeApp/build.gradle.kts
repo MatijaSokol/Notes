@@ -63,6 +63,8 @@ kotlin {
             implementation(libs.compose.navigation)
 
             implementation(libs.kotlinx.serialization)
+            implementation(libs.kotlinx.collections)
+            implementation(libs.kotlinx.datetime)
 
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)

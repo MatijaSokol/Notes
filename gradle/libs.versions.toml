@@ -15,6 +15,8 @@ kotlin = "2.1.0"
 kotlinxCoroutines = "1.9.0"
 kotlinxSerialization = "1.7.3"
 ksp = "2.1.0-1.0.29"
+kotlinxCollections = "0.3.8"
+kotlinxDatetime = "0.6.1"
 
 # Compose
 composeMultiplatform = "1.7.1"
@@ -47,6 +49,8 @@ core-library-desugaring = { group = "com.android.tools", name = "desugar_jdk_lib
 # Kotlin
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollections" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # Compose
 compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
