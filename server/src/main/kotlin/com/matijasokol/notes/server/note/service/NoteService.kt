@@ -15,7 +15,7 @@ interface NoteService {
     ): Either<ServerError, Unit>
 
     suspend fun getUserNotes(
-        userId: String,
+        email: String,
     ): Either<ServerError, List<NoteDto>>
 
     suspend fun getNote(

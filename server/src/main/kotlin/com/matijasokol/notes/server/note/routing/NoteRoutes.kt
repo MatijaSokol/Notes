@@ -35,10 +35,10 @@ fun Routing.noteRoutes(
             }.respond()
         }
 
-        getRoute<V1.GetNotesByUser> {
+        getRoute<V1.GetCurrentUserNotes> {
             either {
                 val token = call.tokenOrError().bind().token
-                noteService.getUserNotes(it.userId).bind()
+                noteService.getUserNotes(token.email).bind()
             }.respond()
         }
 

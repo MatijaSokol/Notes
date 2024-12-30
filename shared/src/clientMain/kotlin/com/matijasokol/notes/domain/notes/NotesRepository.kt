@@ -12,5 +12,5 @@ interface NotesRepository {
 
     suspend fun getNoteById(noteId: String): Either<NetworkError, NoteDto>
 
-    suspend fun getByUser(userId: String): Either<NetworkError, List<NoteDto>>
+    suspend fun getCurrentUserNotes(): Either<NetworkError, List<NoteDto>>
 }
