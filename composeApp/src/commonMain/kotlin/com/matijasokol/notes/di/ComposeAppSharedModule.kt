@@ -1,6 +1,7 @@
 package com.matijasokol.notes.di
 
 import com.matijasokol.notes.auth.AuthViewModel
+import com.matijasokol.notes.details.NoteDetailsViewModel
 import com.matijasokol.notes.list.NoteListUiMapper
 import com.matijasokol.notes.list.NoteListViewModel
 import com.matijasokol.notes.navigation.Navigator
@@ -25,6 +26,10 @@ private val noteListModule = module {
     factoryOf(::NoteListUiMapper)
 }
 
+private val noteDetailsModule = module {
+    viewModelOf(::NoteDetailsViewModel)
+}
+
 val composeAppSharedModule = module {
     singleOf(::NavigatorImpl) bind Navigator::class
 
@@ -33,5 +38,6 @@ val composeAppSharedModule = module {
         splashModule,
         authModule,
         noteListModule,
+        noteDetailsModule,
     )
 }

@@ -17,7 +17,7 @@ import com.matijasokol.notes.ui.components.withSharedBounds
 
 @Composable
 fun DetailsScreen(
-    param: String,
+    state: NoteDetailsState,
     modifier: Modifier = Modifier,
     onButtonClick: () -> Unit,
 ) {
@@ -25,7 +25,7 @@ fun DetailsScreen(
         modifier = modifier
             .fillMaxSize()
             .then(
-                when (param.isNotEmpty()) {
+                when (state.text.isNotEmpty()) {
                     true -> Modifier
                     false -> Modifier.withSharedBounds("fab")
                 },
@@ -34,7 +34,7 @@ fun DetailsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text("Details screen with param: $param")
+        Text("Details screen with param: ${state.text}")
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = onButtonClick) {
             Text(text = "Go back")

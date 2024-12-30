@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.matijasokol.notes.auth.AuthAction.LoginError
 import com.matijasokol.notes.auth.AuthAction.LoginSuccess
 import com.matijasokol.notes.auth.AuthAction.RegistrationError
@@ -20,6 +19,7 @@ import com.matijasokol.notes.auth.AuthAction.RegistrationSuccess
 import com.matijasokol.notes.auth.AuthScreen
 import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.DetailsScreen
+import com.matijasokol.notes.details.NoteDetailsViewModel
 import com.matijasokol.notes.list.ListScreen
 import com.matijasokol.notes.list.NoteListAction
 import com.matijasokol.notes.list.NoteListViewModel
@@ -133,11 +133,14 @@ private fun NavGraphBuilder.Details(
     navigator: Navigator,
 ) {
     composable<Destination.Details> {
+        val viewModel: NoteDetailsViewModel = koinViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+
         CompositionLocalProvider(
             LocalAnimatedContentScope provides this,
         ) {
             DetailsScreen(
-                param = it.toRoute<Destination.Details>().noteId ?: "",
+                state = state,
                 onButtonClick = {
                     scope.launch {
                         navigator.emitDestination(
