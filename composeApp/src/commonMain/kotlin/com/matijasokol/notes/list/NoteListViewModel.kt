@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.right
 import com.matijasokol.notes.data.api.models.NoteDto
 import com.matijasokol.notes.domain.notes.NotesRepository
+import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +37,7 @@ class NoteListViewModel(
         .onEach { isLoading.update { false } }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000L),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = emptyList<NoteDto>().right(),
         )
 
