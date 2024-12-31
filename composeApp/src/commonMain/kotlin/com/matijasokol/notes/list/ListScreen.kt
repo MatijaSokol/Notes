@@ -102,7 +102,9 @@ private fun NoteItem(
         modifier = modifier.fillMaxWidth().padding(8.dp),
         onClick = { onClick(note) },
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(8.dp),
+        ) {
             Text(text = note.text)
             Text(text = note.createdAt)
         }
