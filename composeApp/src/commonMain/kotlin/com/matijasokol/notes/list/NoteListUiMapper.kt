@@ -9,10 +9,12 @@ class NoteListUiMapper {
 
     fun toUiState(
         isLoading: Boolean,
+        logoutInProgress: Boolean,
         notesOrError: Either<ClientError, List<NoteDto>>,
     ) = NoteListState(
         notes = notesOrError.getOrNull()?.map(NoteDto::toNoteUi).orEmpty().toPersistentList(),
         errorMessage = notesOrError.leftOrNull()?.let { "Error" },
         isLoading = isLoading,
+        logoutInProgress = logoutInProgress,
     )
 }

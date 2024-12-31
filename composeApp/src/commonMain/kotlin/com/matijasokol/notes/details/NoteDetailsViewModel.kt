@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.matijasokol.notes.navigation.Destination
+import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -24,7 +25,7 @@ class NoteDetailsViewModel(
         .map(::NoteDetailsState)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = NoteDetailsState(),
         )
 }

@@ -10,6 +10,7 @@ data class NoteListState(
     val notes: ImmutableList<NoteUi> = persistentListOf(),
     val errorMessage: String? = null,
     val isLoading: Boolean = true,
+    val logoutInProgress: Boolean = false,
 )
 
 data class NoteUi(
