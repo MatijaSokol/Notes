@@ -84,6 +84,7 @@ private fun NavGraphBuilder.Auth(
                         navigator.emitDestination(
                             NavigationEvent.Destination(
                                 route = Destination.List,
+                                builder = { popUpTo(Destination.Auth) { inclusive = true } },
                             ),
                         )
                     }
@@ -111,6 +112,12 @@ private fun NavGraphBuilder.List(
                     is NoteListAction.NavigateToDetails -> navigator.emitDestination(
                         NavigationEvent.Destination(
                             route = Destination.Details(noteId = action.noteId),
+                        ),
+                    )
+                    NoteListAction.NavigateToAuth -> navigator.emitDestination(
+                        NavigationEvent.Destination(
+                            route = Destination.Auth,
+                            builder = { popUpTo(Destination.List) { inclusive = true } },
                         ),
                     )
                 }

@@ -25,8 +25,11 @@ class FirebaseAuthProvider(
         }.bind()
     }
 
-    override suspend fun userLoggedIn(): Either<ClientError, Boolean> {
-        return Either.Right(auth.currentUser != null)
+    override suspend fun userLoggedIn(): Either<ClientError, Boolean> =
+        Either.Right(auth.currentUser != null)
+
+    override suspend fun logout(): Either<ClientError, Unit> = safeNetworkCall {
+        auth.signOut()
     }
 
     override suspend fun loginWithGoogle(): Either<ClientError, AuthUser> {

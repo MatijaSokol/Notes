@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -33,6 +38,24 @@ fun ListScreen(
         topBar = {
             TopAppBar(
                 title = { Text("List screen") },
+                actions = {
+                    when (state.logoutInProgress) {
+                        true -> CircularProgressIndicator(
+                            color = Color.Black,
+                            modifier = Modifier.padding(end = 10.dp).size(30.dp),
+                            strokeWidth = 3.dp,
+                        )
+                        false -> IconButton(
+                            onClick = { onEvent(NoteListEvent.OnLogoutClick) },
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Logout,
+                                contentDescription = "Logout",
+                                tint = Color.Black,
+                            )
+                        }
+                    }
+                },
             )
         },
         floatingActionButton = {
