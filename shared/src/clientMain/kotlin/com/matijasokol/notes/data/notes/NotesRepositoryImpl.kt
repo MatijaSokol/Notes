@@ -18,7 +18,7 @@ class NotesRepositoryImpl(
 ) : NotesRepository {
 
     override suspend fun create(note: NoteDto): Either<NetworkError, NoteDto> = safeNetworkCall {
-        httpClient.post(V1.CreateNote) { setBody(note) }.body()
+        httpClient.post(V1.CreateNote()) { setBody(note) }.body()
     }
 
     override suspend fun delete(noteId: String): Either<NetworkError, Unit> = safeNetworkCall {
@@ -28,6 +28,6 @@ class NotesRepositoryImpl(
     override suspend fun getNoteById(noteId: String): Either<NetworkError, NoteDto> =
         safeNetworkCall { httpClient.get(V1.GetNote(noteId = noteId)).body() }
 
-    override suspend fun getByUser(userId: String): Either<NetworkError, List<NoteDto>> =
-        safeNetworkCall { httpClient.get(V1.GetNotesByUser(userId = userId)).body() }
+    override suspend fun getCurrentUserNotes(): Either<NetworkError, List<NoteDto>> =
+        safeNetworkCall { httpClient.get(V1.GetCurrentUserNotes()).body() }
 }

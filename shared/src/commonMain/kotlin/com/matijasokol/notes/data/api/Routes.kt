@@ -20,5 +20,5 @@ class V1 {
     class GetNote(val v1: V1 = V1(), val noteId: String)
 
     @Resource("/notes")
-    class GetNotesByUser(val v1: V1 = V1(), val userId: String)
+    class GetCurrentUserNotes(val v1: V1 = V1())
 }

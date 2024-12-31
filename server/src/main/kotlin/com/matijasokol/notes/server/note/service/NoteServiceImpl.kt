@@ -2,6 +2,7 @@ package com.matijasokol.notes.server.note.service
 
 import arrow.core.Either
 import arrow.core.raise.either
+import com.matijasokol.notes.core.models.Email
 import com.matijasokol.notes.core.models.Uuid
 import com.matijasokol.notes.data.api.models.NoteDto
 import com.matijasokol.notes.server.NoteEntity
@@ -38,9 +39,9 @@ class NoteServiceImpl(
         ).bind()
     }
 
-    override suspend fun getUserNotes(userId: String): Either<ServerError, List<NoteDto>> = either {
+    override suspend fun getUserNotes(email: String): Either<ServerError, List<NoteDto>> = either {
         getUserNotes(
-            userId = Uuid(userId, "UserId").errorAsIncorrectInput().bind(),
+            email = Email(email, "UserEmail").errorAsIncorrectInput().bind(),
         ).bind().map(NoteEntity::toNoteDto)
     }
 

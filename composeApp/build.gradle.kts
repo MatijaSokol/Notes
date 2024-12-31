@@ -36,6 +36,7 @@ kotlin {
             languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
             languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("androidx.compose.animation.ExperimentalSharedTransitionApi")
         }
     }
 
@@ -63,6 +64,8 @@ kotlin {
             implementation(libs.compose.navigation)
 
             implementation(libs.kotlinx.serialization)
+            implementation(libs.kotlinx.collections)
+            implementation(libs.kotlinx.datetime)
 
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
