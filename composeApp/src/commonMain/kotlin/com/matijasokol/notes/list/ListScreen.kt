@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.matijasokol.notes.ui.components.withSharedElement
+import com.matijasokol.notes.ui.swipetodismiss.SwipeToDeleteContainer
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -77,11 +78,16 @@ private fun ListScreen(
         items(
             items = items,
             key = NoteUi::id,
-        ) {
-            NoteItem(
-                note = it,
-                onClick = { note -> onEvent(NoteListEvent.OnNoteClick(note)) },
-            )
+        ) { note ->
+            SwipeToDeleteContainer(
+                item = note,
+                onDelete = { onEvent(NoteListEvent.OnNoteDelete(note)) },
+            ) {
+                NoteItem(
+                    note = note,
+                    onClick = { onEvent(NoteListEvent.OnNoteClick(note)) },
+                )
+            }
         }
     }
 }

@@ -58,6 +58,9 @@ class NoteListViewModel(
             is NoteListEvent.OnNoteClick -> viewModelScope.launch {
                 _actions.send(NoteListAction.NavigateToDetails(event.note.id))
             }
+            is NoteListEvent.OnNoteDelete -> viewModelScope.launch {
+                notesRepository.delete(event.note.id)
+            }
         }
     }
 }
