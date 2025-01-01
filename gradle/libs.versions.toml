@@ -19,7 +19,7 @@ kotlinxCollections = "0.3.8"
 kotlinxDatetime = "0.6.1"
 
 # Compose
-composeMultiplatform = "1.7.1"
+composeMultiplatform = "1.7.3"
 composeNavigation = "2.8.0-alpha10"
 
 # Shared
