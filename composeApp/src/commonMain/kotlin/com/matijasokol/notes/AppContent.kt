@@ -19,6 +19,7 @@ import com.matijasokol.notes.auth.AuthAction.RegistrationSuccess
 import com.matijasokol.notes.auth.AuthScreen
 import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.DetailsScreen
+import com.matijasokol.notes.details.NoteDetailsAction
 import com.matijasokol.notes.details.NoteDetailsViewModel
 import com.matijasokol.notes.list.ListScreen
 import com.matijasokol.notes.list.NoteListAction
@@ -111,7 +112,11 @@ private fun NavGraphBuilder.List(
                 when (action) {
                     is NoteListAction.NavigateToDetails -> navigator.emitDestination(
                         NavigationEvent.Destination(
-                            route = Destination.Details(noteId = action.noteId),
+                            route = Destination.Details(
+                                noteId = action.noteId,
+                                title = action.title,
+                                text = action.text,
+                            ),
                         ),
                     )
                     NoteListAction.NavigateToAuth -> navigator.emitDestination(
@@ -143,18 +148,22 @@ private fun NavGraphBuilder.Details(
         val viewModel: NoteDetailsViewModel = koinViewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
 
+        LaunchedEffect(viewModel.actions) {
+            viewModel.actions.collect { action ->
+                when (action) {
+                    NoteDetailsAction.NavigateToList -> navigator.emitDestination(
+                        event = NavigationEvent.NavigateUp,
+                    )
+                }
+            }
+        }
+
         CompositionLocalProvider(
             LocalAnimatedContentScope provides this,
         ) {
             DetailsScreen(
                 state = state,
-                onButtonClick = {
-                    scope.launch {
-                        navigator.emitDestination(
-                            NavigationEvent.NavigateUp,
-                        )
-                    }
-                },
+                onEvent = viewModel::onEvent,
             )
         }
     }

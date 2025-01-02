@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.toPersistentList
 class NoteListUiMapper {
 
     fun toUiState(
+        userEmail: String,
         isLoading: Boolean,
         logoutInProgress: Boolean,
         notesOrError: Either<ClientError, List<NoteDto>>,
@@ -16,5 +17,6 @@ class NoteListUiMapper {
         errorMessage = notesOrError.leftOrNull()?.let { "Error" },
         isLoading = isLoading,
         logoutInProgress = logoutInProgress,
+        email = userEmail,
     )
 }

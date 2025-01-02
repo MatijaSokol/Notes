@@ -94,6 +94,7 @@ class AuthViewModel(
                     NetworkError.UnknownNetworkError -> println("Unknown network error")
                     RegistrationError.RegistrationFailed -> println("Registration failed")
                     AuthError.TokenNotAvailable -> println("Token not available")
+                    AuthError.EmailNotAvailable -> println("Email not available")
                 }
             }
             is Either.Right -> {
@@ -120,6 +121,7 @@ class AuthViewModel(
                     NetworkError.UnknownNetworkError -> println("Unknown network error")
                     RegistrationError.RegistrationFailed -> println("Registration failed")
                     AuthError.TokenNotAvailable -> println("Token not available")
+                    AuthError.EmailNotAvailable -> println("Email not available")
                 }
             }
             is Either.Right -> {

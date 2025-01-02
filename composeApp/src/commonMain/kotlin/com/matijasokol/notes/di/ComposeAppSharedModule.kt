@@ -1,6 +1,7 @@
 package com.matijasokol.notes.di
 
 import com.matijasokol.notes.auth.AuthViewModel
+import com.matijasokol.notes.details.NoteDetailsUiMapper
 import com.matijasokol.notes.details.NoteDetailsViewModel
 import com.matijasokol.notes.list.NoteListUiMapper
 import com.matijasokol.notes.list.NoteListViewModel
@@ -28,6 +29,7 @@ private val noteListModule = module {
 
 private val noteDetailsModule = module {
     viewModelOf(::NoteDetailsViewModel)
+    factoryOf(::NoteDetailsUiMapper)
 }
 
 val composeAppSharedModule = module {

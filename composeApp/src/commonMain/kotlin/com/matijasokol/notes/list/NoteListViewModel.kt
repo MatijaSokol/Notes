@@ -12,6 +12,7 @@ import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -44,7 +45,12 @@ class NoteListViewModel(
             initialValue = emptyList<NoteDto>().right(),
         )
 
+    private val userEmail = flow {
+        emit(authProvider.getCurrentUserEmail().getOrNull().orEmpty())
+    }.onStart { emit("") }
+
     val state = combine(
+        userEmail,
         isLoading,
         logoutInProgress,
         notes,
@@ -58,10 +64,16 @@ class NoteListViewModel(
     fun onEvent(event: NoteListEvent) {
         when (event) {
             is NoteListEvent.OnFabClick -> viewModelScope.launch {
-                _actions.send(NoteListAction.NavigateToDetails(null))
+                _actions.send(NoteListAction.NavigateToDetails(noteId = null, title = null, text = null))
             }
             is NoteListEvent.OnNoteClick -> viewModelScope.launch {
-                _actions.send(NoteListAction.NavigateToDetails(event.note.id))
+                _actions.send(
+                    NoteListAction.NavigateToDetails(
+                        noteId = event.note.id,
+                        title = event.note.title,
+                        text = event.note.text,
+                    ),
+                )
             }
             is NoteListEvent.OnNoteDelete -> viewModelScope.launch {
                 notesRepository.delete(event.note.id)

@@ -35,6 +35,7 @@ fun <T> SwipeToDeleteContainer(
     animationDuration: Int = 500,
     onDelete: (T) -> Unit,
     content: @Composable (T) -> Unit,
+    deleteBackground: @Composable (SwipeToDismissBoxValue) -> Unit = { DeleteBackground(it) },
 ) {
     var isRemoved by remember { mutableStateOf(false) }
 
@@ -66,11 +67,7 @@ fun <T> SwipeToDeleteContainer(
     ) {
         SwipeToDismissBox(
             state = state,
-            backgroundContent = {
-                DeleteBackground(
-                    direction = state.dismissDirection,
-                )
-            },
+            backgroundContent = { deleteBackground(state.dismissDirection) },
             enableDismissFromStartToEnd = false,
         ) {
             content(item)

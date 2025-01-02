@@ -10,6 +10,7 @@ import kotlin.uuid.Uuid
 
 data class Note(
     val id: Uuid,
+    val title: NonEmptyString,
     val text: NonEmptyString,
     val userId: Uuid,
     val createdAt: Timestamp,
@@ -18,11 +19,13 @@ data class Note(
     companion object {
         operator fun invoke(
             id: String,
+            title: String,
             text: String,
             userId: String,
             createdAt: Long,
         ): Either<ValidationError.IncorrectInput, Note> = Either.zipOrAccumulate(
             Uuid(value = id, field = "Id"),
+            NonEmptyString(value = title, field = "Title"),
             NonEmptyString(value = text, field = "Text"),
             Uuid(value = userId, field = "UserId"),
             Timestamp(value = createdAt, field = "CreatedAt"),
@@ -33,6 +36,7 @@ data class Note(
 
 fun NoteDto.toNoteOrError(): Either<ValidationError.IncorrectInput, Note> = Note(
     id = id,
+    title = title,
     text = text,
     userId = userId,
     createdAt = createdAt,

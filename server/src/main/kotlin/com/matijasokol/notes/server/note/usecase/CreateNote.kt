@@ -17,6 +17,7 @@ class CreateNote(
 ) {
 
     suspend operator fun invoke(
+        title: NonEmptyString,
         text: NonEmptyString,
         userId: Uuid,
         createdAt: Timestamp,
@@ -28,10 +29,11 @@ class CreateNote(
         return databaseOperation {
             noteQueries.insert(
                 id = dbId,
+                title = title.value,
                 text = text.value,
                 userId = userDbId,
                 createdAt = createdAt.value,
             )
-        }.map { NoteEntity(dbId, text.value, userDbId, createdAt.value) }
+        }.map { NoteEntity(dbId, title.value, text.value, userDbId, createdAt.value) }
     }
 }

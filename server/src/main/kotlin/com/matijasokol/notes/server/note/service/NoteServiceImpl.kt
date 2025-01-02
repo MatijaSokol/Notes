@@ -27,6 +27,7 @@ class NoteServiceImpl(
 
         createNote(
             id = note.id,
+            title = note.title,
             text = note.text,
             userId = note.userId,
             createdAt = note.createdAt,

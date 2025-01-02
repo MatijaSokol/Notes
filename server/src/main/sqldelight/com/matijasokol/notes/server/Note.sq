@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS NoteEntity (
     id UUID PRIMARY KEY,
+    title TEXT NOT NULL,
     text TEXT NOT NULL,
     userId UUID NOT NULL REFERENCES UserEntity(id) ON DELETE CASCADE,
     createdAt BIGINT NOT NULL
@@ -8,13 +9,13 @@ CREATE TABLE IF NOT EXISTS NoteEntity (
 CREATE INDEX IF NOT EXISTS index_noteEntity_userId ON NoteEntity(userId);
 
 insert:
-INSERT INTO NoteEntity (id, text, userId, createdAt) VALUES (?, ?, ?, ?);
+INSERT INTO NoteEntity (id, title, text, userId, createdAt) VALUES (?, ?, ?, ?, ?);
 
 getAllByUserId:
-SELECT id, text, userId, createdAt FROM NoteEntity WHERE userId = ?;
+SELECT id, title, text, userId, createdAt FROM NoteEntity WHERE userId = ?;
 
 getById:
-SELECT id, text, userId, createdAt FROM NoteEntity WHERE id = ?;
+SELECT id, title, text, userId, createdAt FROM NoteEntity WHERE id = ?;
 
 delete:
 DELETE FROM NoteEntity WHERE id = ? RETURNING id;
