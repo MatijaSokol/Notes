@@ -6,6 +6,7 @@ import com.matijasokol.notes.server.core.models.value
 
 fun NoteEntity.toNoteDto() = NoteDto(
     id = id.value,
+    title = title,
     text = text,
     userId = userId.value,
     createdAt = createdAt,

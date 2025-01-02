@@ -15,12 +15,14 @@ data class NoteListState(
 
 data class NoteUi(
     val id: String,
+    val title: String,
     val text: String,
     val createdAt: String,
 )
 
 fun NoteDto.toNoteUi() = NoteUi(
     id = id,
+    title = title,
     text = text,
     createdAt = timestampToDateFormatted(createdAt),
 )
