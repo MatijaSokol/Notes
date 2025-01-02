@@ -16,6 +16,14 @@ class FirebaseAuthProvider(
     private val auth: FirebaseAuth,
 ) : AuthProvider {
 
+    override suspend fun getCurrentUserEmail(): Either<ClientError, String> = either {
+        Either.catch {
+            ensureNotNull(auth.currentUser?.email) { AuthError.EmailNotAvailable }
+        }.mapLeft {
+            AuthError.EmailNotAvailable
+        }.bind()
+    }
+
     override suspend fun getCurrentToken(): Either<AuthError, String> = either {
         Either.catch {
             val token = auth.currentUser?.getIdToken(true)

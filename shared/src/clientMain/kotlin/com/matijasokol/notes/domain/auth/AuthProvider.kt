@@ -5,6 +5,8 @@ import com.matijasokol.notes.ClientError
 
 interface AuthProvider {
 
+    suspend fun getCurrentUserEmail(): Either<ClientError, String>
+
     suspend fun getCurrentToken(): Either<ClientError, String>
 
     suspend fun userLoggedIn(): Either<ClientError, Boolean>

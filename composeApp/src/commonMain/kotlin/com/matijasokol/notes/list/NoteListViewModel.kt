@@ -12,6 +12,7 @@ import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -44,7 +45,12 @@ class NoteListViewModel(
             initialValue = emptyList<NoteDto>().right(),
         )
 
+    private val userEmail = flow {
+        emit(authProvider.getCurrentUserEmail().getOrNull().orEmpty())
+    }.onStart { emit("") }
+
     val state = combine(
+        userEmail,
         isLoading,
         logoutInProgress,
         notes,

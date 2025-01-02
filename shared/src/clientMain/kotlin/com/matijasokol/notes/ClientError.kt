@@ -8,6 +8,7 @@ sealed class NetworkError : ClientError() {
 }
 
 sealed class AuthError : ClientError() {
+    data object EmailNotAvailable : AuthError()
     data object TokenNotAvailable : AuthError()
 }
 

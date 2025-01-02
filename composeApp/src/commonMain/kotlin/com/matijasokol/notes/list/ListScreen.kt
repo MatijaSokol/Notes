@@ -37,7 +37,7 @@ fun ListScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text("List screen") },
+                title = { Text(state.email) },
                 actions = {
                     when (state.logoutInProgress) {
                         true -> CircularProgressIndicator(
