@@ -111,7 +111,11 @@ private fun NavGraphBuilder.List(
                 when (action) {
                     is NoteListAction.NavigateToDetails -> navigator.emitDestination(
                         NavigationEvent.Destination(
-                            route = Destination.Details(noteId = action.noteId),
+                            route = Destination.Details(
+                                noteId = action.noteId,
+                                title = action.title,
+                                text = action.text,
+                            ),
                         ),
                     )
                     NoteListAction.NavigateToAuth -> navigator.emitDestination(

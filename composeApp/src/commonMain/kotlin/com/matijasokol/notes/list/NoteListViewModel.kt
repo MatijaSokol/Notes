@@ -64,10 +64,16 @@ class NoteListViewModel(
     fun onEvent(event: NoteListEvent) {
         when (event) {
             is NoteListEvent.OnFabClick -> viewModelScope.launch {
-                _actions.send(NoteListAction.NavigateToDetails(null))
+                _actions.send(NoteListAction.NavigateToDetails(noteId = null, title = null, text = null))
             }
             is NoteListEvent.OnNoteClick -> viewModelScope.launch {
-                _actions.send(NoteListAction.NavigateToDetails(event.note.id))
+                _actions.send(
+                    NoteListAction.NavigateToDetails(
+                        noteId = event.note.id,
+                        title = event.note.title,
+                        text = event.note.text,
+                    ),
+                )
             }
             is NoteListEvent.OnNoteDelete -> viewModelScope.launch {
                 notesRepository.delete(event.note.id)
