@@ -26,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.matijasokol.notes.ui.components.withSharedBounds
-import com.matijasokol.notes.ui.components.withSharedElement
 import com.matijasokol.notes.ui.sharedelement.SHARED_ELEMENT_KEY_FAB
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyContent
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyTitle
@@ -66,9 +65,9 @@ fun ListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier.withSharedElement(SHARED_ELEMENT_KEY_FAB),
+                modifier = Modifier.withSharedBounds(SHARED_ELEMENT_KEY_FAB),
                 onClick = { onEvent(NoteListEvent.OnFabClick) },
-                containerColor = Color.Red,
+                containerColor = Color.DarkGray,
             ) {
                 Text("+")
             }

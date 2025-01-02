@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.matijasokol.notes.ui.components.withSharedBounds
-import com.matijasokol.notes.ui.components.withSharedElement
 import com.matijasokol.notes.ui.sharedelement.SHARED_ELEMENT_KEY_FAB
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyContent
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyTitle
@@ -49,13 +48,13 @@ fun DetailsScreen(
                 .fillMaxSize()
                 .then(
                     when (state.noteId == null) {
-                        true -> Modifier.withSharedElement(SHARED_ELEMENT_KEY_FAB)
+                        true -> Modifier.withSharedBounds(SHARED_ELEMENT_KEY_FAB)
                         false -> Modifier.withSharedBounds(buildSharedElementKeyContent(state.noteId))
                     },
                 )
                 .background(
                     color = when (state.noteId == null) {
-                        true -> Color.Red
+                        true -> Color.LightGray
                         false -> Color.LightGray
                     },
                 ),
