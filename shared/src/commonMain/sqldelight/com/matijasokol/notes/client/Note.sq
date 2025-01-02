@@ -1,0 +1,45 @@
+import kotlin.Boolean;
+
+CREATE TABLE IF NOT EXISTS NoteEntity (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    text TEXT NOT NULL,
+    userId TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    waiting_for_upload INTEGER AS Boolean NOT NULL DEFAULT 0,
+    waiting_for_delete INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS index_noteEntity_userId ON NoteEntity(userId);
+
+insert:
+INSERT INTO NoteEntity
+(id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE NoteEntity
+SET title = ?, text = ?, created_at = ?, waiting_for_upload = ?, waiting_for_delete = ?
+WHERE id = ?;
+
+getAll:
+SELECT id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete
+FROM NoteEntity
+WHERE waiting_for_delete = 0;
+
+getById:
+SELECT id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete
+FROM NoteEntity
+WHERE id = ?;
+
+delete:
+DELETE FROM NoteEntity WHERE id = ?;
+
+deleteAll:
+DELETE FROM NoteEntity;
+
+unsyncedDataExists:
+SELECT EXISTS(SELECT 1 FROM NoteEntity WHERE waiting_for_upload = 1 OR waiting_for_delete = 1);
+
+changes:
+SELECT changes();

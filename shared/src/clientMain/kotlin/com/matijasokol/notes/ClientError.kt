@@ -19,3 +19,11 @@ sealed class RegistrationError : ClientError() {
 sealed class LoginError : ClientError() {
     data object InvalidCredentials : LoginError()
 }
+
+sealed class DatabaseError : ClientError() {
+    data object GenericError : DatabaseError()
+}
+
+sealed class NoteDatabaseError : DatabaseError() {
+    data class NoteNotFound(val noteId: String) : NoteDatabaseError()
+}

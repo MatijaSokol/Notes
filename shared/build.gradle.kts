@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.notes.quality)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -51,6 +52,9 @@ kotlin {
 
         val clientMain by creating {
             dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.sqldelight.coroutines)
+            }
         }
 
         val serverMain by creating {
@@ -61,6 +65,7 @@ kotlin {
             dependsOn(clientMain)
             dependencies {
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.sqldelight.driver.android)
             }
         }
 
@@ -68,6 +73,7 @@ kotlin {
             dependsOn(clientMain)
             dependencies {
                 implementation(libs.ktor.client.darwin)
+                implementation(libs.sqldelight.driver.native)
             }
         }
 
@@ -88,5 +94,21 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
+    }
+}
+
+sqldelight {
+    // this will be the name of the generated database class
+    databases.create("ClientDatabase") {
+        // package name used for the database class
+        packageName.set("com.matijasokol.notes.client")
+
+        // directory where .db schema files should be stored, relative to the project root
+        // use ./gradlew data:tasks to list all available tasks for generating schema
+        // available task should be run before every migration
+        schemaOutputDirectory.set(file("src/main/sqldelight/databases"))
+
+        // migration files will fail during the build process if there are any errors in them
+        verifyMigrations.set(true)
     }
 }

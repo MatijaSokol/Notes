@@ -1,7 +1,7 @@
 package com.matijasokol.notes.list
 
-import com.matijasokol.notes.data.api.models.NoteDto
 import com.matijasokol.notes.date.timestampToDateFormatted
+import com.matijasokol.notes.domain.notes.model.Note
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -11,6 +11,7 @@ data class NoteListState(
     val errorMessage: String? = null,
     val isLoading: Boolean = true,
     val logoutInProgress: Boolean = false,
+    val unsyncedData: Boolean = false,
     val email: String = "",
 )
 
@@ -21,7 +22,7 @@ data class NoteUi(
     val createdAt: String,
 )
 
-fun NoteDto.toNoteUi() = NoteUi(
+fun Note.toNoteUi() = NoteUi(
     id = id,
     title = title,
     text = text,
