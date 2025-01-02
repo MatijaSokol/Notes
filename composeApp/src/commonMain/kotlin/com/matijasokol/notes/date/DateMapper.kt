@@ -4,14 +4,13 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 
 val dateTimeFormat = LocalDateTime.Format {
     dayOfMonth()
     char('.')
-    monthNumber(padding = Padding.SPACE)
+    monthNumber()
     char('.')
     year()
     char('.')
