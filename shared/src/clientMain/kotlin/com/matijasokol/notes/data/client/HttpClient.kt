@@ -32,4 +32,4 @@ fun buildHttpClient(
 
 // add localhost url so app can be run on emulator
 private const val BASE_URL = ""
-private const val TIMEOUT_MS = 60_000L
+private const val TIMEOUT_MS = 5_000L
