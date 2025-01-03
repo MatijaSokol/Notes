@@ -9,4 +9,6 @@ sealed class NoteListEvent {
     data class OnNoteClick(val note: NoteUi) : NoteListEvent()
 
     data class OnNoteDelete(val note: NoteUi) : NoteListEvent()
+
+    data object OnSyncClick : NoteListEvent()
 }

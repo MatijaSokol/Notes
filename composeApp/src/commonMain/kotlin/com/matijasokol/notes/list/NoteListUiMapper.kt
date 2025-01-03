@@ -1,8 +1,6 @@
 package com.matijasokol.notes.list
 
-import arrow.core.Either
-import com.matijasokol.notes.ClientError
-import com.matijasokol.notes.data.api.models.NoteDto
+import com.matijasokol.notes.domain.notes.model.Note
 import kotlinx.collections.immutable.toPersistentList
 
 class NoteListUiMapper {
@@ -11,12 +9,14 @@ class NoteListUiMapper {
         userEmail: String,
         isLoading: Boolean,
         logoutInProgress: Boolean,
-        notesOrError: Either<ClientError, List<NoteDto>>,
+        unsyncedData: Boolean,
+        notes: List<Note>,
     ) = NoteListState(
-        notes = notesOrError.getOrNull()?.map(NoteDto::toNoteUi).orEmpty().toPersistentList(),
-        errorMessage = notesOrError.leftOrNull()?.let { "Error" },
+        notes = notes.map(Note::toNoteUi).toPersistentList(),
+        errorMessage = null,
         isLoading = isLoading,
         logoutInProgress = logoutInProgress,
+        unsyncedData = unsyncedData,
         email = userEmail,
     )
 }

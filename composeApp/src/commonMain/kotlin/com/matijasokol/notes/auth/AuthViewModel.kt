@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import com.matijasokol.notes.AuthError
+import com.matijasokol.notes.DatabaseError
 import com.matijasokol.notes.LoginError
 import com.matijasokol.notes.NetworkError
+import com.matijasokol.notes.NoteDatabaseError
 import com.matijasokol.notes.RegistrationError
 import com.matijasokol.notes.auth.AuthType.Login
 import com.matijasokol.notes.auth.AuthType.Registration
@@ -95,6 +97,8 @@ class AuthViewModel(
                     RegistrationError.RegistrationFailed -> println("Registration failed")
                     AuthError.TokenNotAvailable -> println("Token not available")
                     AuthError.EmailNotAvailable -> println("Email not available")
+                    DatabaseError.GenericError -> println("Generic error")
+                    is NoteDatabaseError.NoteNotFound -> println("Note not found")
                 }
             }
             is Either.Right -> {
@@ -122,6 +126,8 @@ class AuthViewModel(
                     RegistrationError.RegistrationFailed -> println("Registration failed")
                     AuthError.TokenNotAvailable -> println("Token not available")
                     AuthError.EmailNotAvailable -> println("Email not available")
+                    DatabaseError.GenericError -> println("Generic error")
+                    is NoteDatabaseError.NoteNotFound -> println("Note not found")
                 }
             }
             is Either.Right -> {

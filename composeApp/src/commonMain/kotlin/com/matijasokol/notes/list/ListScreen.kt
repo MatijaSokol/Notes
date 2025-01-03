@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.matijasokol.notes.ui.components.withSharedBounds
-import com.matijasokol.notes.ui.components.withSharedElement
 import com.matijasokol.notes.ui.sharedelement.SHARED_ELEMENT_KEY_FAB
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyContent
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyTitle
@@ -42,33 +42,17 @@ fun ListScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { Text(state.email) },
-                actions = {
-                    when (state.logoutInProgress) {
-                        true -> CircularProgressIndicator(
-                            color = Color.Black,
-                            modifier = Modifier.padding(end = 10.dp).size(30.dp),
-                            strokeWidth = 3.dp,
-                        )
-                        false -> IconButton(
-                            onClick = { onEvent(NoteListEvent.OnLogoutClick) },
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Logout,
-                                contentDescription = "Logout",
-                                tint = Color.Black,
-                            )
-                        }
-                    }
-                },
+            ListTopAppBar(
+                state = state,
+                onSyncClick = { onEvent(NoteListEvent.OnSyncClick) },
+                onLogoutClick = { onEvent(NoteListEvent.OnLogoutClick) },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier.withSharedElement(SHARED_ELEMENT_KEY_FAB),
+                modifier = Modifier.withSharedBounds(SHARED_ELEMENT_KEY_FAB),
                 onClick = { onEvent(NoteListEvent.OnFabClick) },
-                containerColor = Color.Red,
+                containerColor = Color.DarkGray,
             ) {
                 Text("+")
             }
@@ -142,5 +126,48 @@ private fun NoteItem(
         supportingContent = { Text(text = note.text) },
         trailingContent = { Text(text = note.createdAt) },
         colors = ListItemDefaults.colors(containerColor = Color.LightGray),
+    )
+}
+
+@Composable
+private fun ListTopAppBar(
+    state: NoteListState,
+    modifier: Modifier = Modifier,
+    onSyncClick: () -> Unit,
+    onLogoutClick: () -> Unit,
+) {
+    TopAppBar(
+        modifier = modifier,
+        title = { Text(state.email) },
+        actions = {
+            if (state.unsyncedData) {
+                IconButton(
+                    onClick = onSyncClick,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.CloudOff,
+                        contentDescription = "Sync",
+                        tint = Color.Black,
+                    )
+                }
+            }
+
+            when (state.logoutInProgress) {
+                true -> CircularProgressIndicator(
+                    color = Color.Black,
+                    modifier = Modifier.padding(end = 10.dp).size(30.dp),
+                    strokeWidth = 3.dp,
+                )
+                false -> IconButton(
+                    onClick = onLogoutClick,
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Logout,
+                        contentDescription = "Logout",
+                        tint = Color.Black,
+                    )
+                }
+            }
+        },
     )
 }

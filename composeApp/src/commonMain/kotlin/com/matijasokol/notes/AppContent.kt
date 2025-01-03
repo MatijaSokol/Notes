@@ -31,7 +31,6 @@ import com.matijasokol.notes.navigation.Navigator
 import com.matijasokol.notes.ui.components.LocalAnimatedContentScope
 import com.matijasokol.notes.ui.components.LocalSharedTransitionScope
 import com.matijasokol.notes.ui.theme.NotesTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
@@ -42,7 +41,6 @@ fun AppContent(
     loggedIn: Boolean,
     navController: NavHostController = rememberNavController(),
     navigator: Navigator = koinInject(),
-    scope: CoroutineScope = rememberCoroutineScope(),
 ) {
     KoinContext {
         NotesTheme {
@@ -61,7 +59,7 @@ fun AppContent(
                     ) {
                         Auth(navigator)
                         List(navigator)
-                        Details(scope, navigator)
+                        Details(navigator)
                     }
                 }
             }
@@ -141,7 +139,6 @@ private fun NavGraphBuilder.List(
 }
 
 private fun NavGraphBuilder.Details(
-    scope: CoroutineScope,
     navigator: Navigator,
 ) {
     composable<Destination.Details> {

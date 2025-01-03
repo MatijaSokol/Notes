@@ -1,16 +1,22 @@
 package com.matijasokol.notes.domain.notes
 
 import arrow.core.Either
+import com.matijasokol.notes.ClientError
 import com.matijasokol.notes.NetworkError
-import com.matijasokol.notes.data.api.models.NoteDto
+import com.matijasokol.notes.domain.notes.model.Note
+import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
 
-    suspend fun create(note: NoteDto): Either<NetworkError, NoteDto>
+    suspend fun create(note: Note): Either<ClientError, Note>
 
-    suspend fun delete(noteId: String): Either<NetworkError, Unit>
+    suspend fun delete(noteId: String): Either<ClientError, Unit>
 
-    suspend fun getNoteById(noteId: String): Either<NetworkError, NoteDto>
+    suspend fun getNoteById(noteId: String): Either<NetworkError, Note>
 
-    suspend fun getCurrentUserNotes(): Either<NetworkError, List<NoteDto>>
+    suspend fun getCurrentUserNotes(): Either<NetworkError, Unit>
+
+    fun observeLocalUserNotes(): Flow<List<Note>>
+
+    fun unsyncedDataExists(): Flow<Boolean>
 }

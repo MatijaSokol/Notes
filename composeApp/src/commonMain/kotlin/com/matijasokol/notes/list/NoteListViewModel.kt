@@ -2,8 +2,7 @@ package com.matijasokol.notes.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.right
-import com.matijasokol.notes.data.api.models.NoteDto
+import arrow.core.Either
 import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -27,32 +27,45 @@ class NoteListViewModel(
     private val uiMapper: NoteListUiMapper,
 ) : ViewModel() {
 
+    private val fetchTrigger = Channel<Unit>()
+
     private val _actions = Channel<NoteListAction>(capacity = BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    private val fetchTrigger = Channel<Unit>()
     private val isLoading = MutableStateFlow(true)
     private val logoutInProgress = MutableStateFlow(false)
-
-    private val notes = fetchTrigger.receiveAsFlow()
-        .onStart { emit(Unit) }
-        .onEach { isLoading.update { true } }
-        .map { notesRepository.getCurrentUserNotes() }
-        .onEach { isLoading.update { false } }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-            initialValue = emptyList<NoteDto>().right(),
-        )
 
     private val userEmail = flow {
         emit(authProvider.getCurrentUserEmail().getOrNull().orEmpty())
     }.onStart { emit("") }
 
+    private val notes = notesRepository.observeLocalUserNotes()
+        .onStart {
+            isLoading.update { true }
+            fetchTrigger.send(Unit)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            initialValue = emptyList(),
+        )
+
+    private val loadFailed = MutableStateFlow(false)
+    private val unsyncedData = combine(
+        notesRepository.unsyncedDataExists(),
+        loadFailed,
+    ) { unsyncedData, loadFailed -> unsyncedData || loadFailed }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            initialValue = false,
+        )
+
     val state = combine(
         userEmail,
         isLoading,
         logoutInProgress,
+        unsyncedData,
         notes,
         uiMapper::toUiState,
     ).stateIn(
@@ -60,6 +73,17 @@ class NoteListViewModel(
         started = SharingStarted.WhileSubscribed(5_000L),
         initialValue = NoteListState(),
     )
+
+    init {
+        fetchTrigger.receiveAsFlow()
+            .onEach { loadFailed.update { false } }
+            .map { notesRepository.getCurrentUserNotes().isLeft() }
+            .onEach { result ->
+                isLoading.update { false }
+                loadFailed.update { result }
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun onEvent(event: NoteListEvent) {
         when (event) {
@@ -79,6 +103,7 @@ class NoteListViewModel(
                 notesRepository.delete(event.note.id)
             }
             NoteListEvent.OnLogoutClick -> viewModelScope.launch { handleLogout() }
+            NoteListEvent.OnSyncClick -> viewModelScope.launch { fetchTrigger.send(Unit) }
         }
     }
 
@@ -86,8 +111,8 @@ class NoteListViewModel(
         logoutInProgress.update { true }
 
         when (authProvider.logout()) {
-            is arrow.core.Either.Left -> Unit // handle error
-            is arrow.core.Either.Right -> {
+            is Either.Left -> Unit // handle error
+            is Either.Right -> {
                 logoutInProgress.update { false }
                 _actions.send(NoteListAction.NavigateToAuth)
             }

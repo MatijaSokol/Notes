@@ -1,33 +1,78 @@
 package com.matijasokol.notes.data.notes
 
 import arrow.core.Either
+import arrow.core.raise.either
+import com.matijasokol.notes.ClientError
 import com.matijasokol.notes.NetworkError
+import com.matijasokol.notes.client.NoteEntity
 import com.matijasokol.notes.data.api.V1
 import com.matijasokol.notes.data.api.models.NoteDto
+import com.matijasokol.notes.data.database.NoteDao
 import com.matijasokol.notes.data.safeNetworkCall
 import com.matijasokol.notes.domain.notes.NotesRepository
+import com.matijasokol.notes.domain.notes.model.Note
+import com.matijasokol.notes.domain.notes.model.toDto
+import com.matijasokol.notes.domain.notes.model.toEntity
+import com.matijasokol.notes.domain.notes.model.toNote
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.delete
 import io.ktor.client.plugins.resources.get
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 
 class NotesRepositoryImpl(
     private val httpClient: HttpClient,
+    private val noteDao: NoteDao,
 ) : NotesRepository {
 
-    override suspend fun create(note: NoteDto): Either<NetworkError, NoteDto> = safeNetworkCall {
-        httpClient.post(V1.CreateNote()) { setBody(note) }.body()
+    override suspend fun create(note: Note): Either<ClientError, Note> = either {
+        noteDao.upsertNote(note.toEntity(waitingForUpload = true)).bind()
+
+        val networkNote = safeNetworkCall {
+            httpClient.post(V1.CreateNote()) { setBody(note.toDto()) }.body<NoteDto>().toNote()
+        }.bind()
+
+        noteDao.deleteNoteById(note.id).bind()
+        noteDao.upsertNote(networkNote.toEntity()).bind()
+
+        networkNote
     }
 
-    override suspend fun delete(noteId: String): Either<NetworkError, Unit> = safeNetworkCall {
-        httpClient.delete(V1.DeleteNote(noteId = noteId))
+    override suspend fun delete(noteId: String): Either<ClientError, Unit> = either {
+        val note = noteDao.getNoteById(noteId).bind()
+
+        noteDao.upsertNote(note.copy(waiting_for_delete = true)).bind()
+
+        safeNetworkCall { httpClient.delete(V1.DeleteNote(noteId = noteId)) }.bind()
+
+        noteDao.deleteNoteById(noteId).bind()
     }
 
-    override suspend fun getNoteById(noteId: String): Either<NetworkError, NoteDto> =
-        safeNetworkCall { httpClient.get(V1.GetNote(noteId = noteId)).body() }
+    override suspend fun getNoteById(noteId: String): Either<NetworkError, Note> =
+        safeNetworkCall { httpClient.get(V1.GetNote(noteId = noteId)).body<NoteDto>().toNote() }
 
-    override suspend fun getCurrentUserNotes(): Either<NetworkError, List<NoteDto>> =
-        safeNetworkCall { httpClient.get(V1.GetCurrentUserNotes()).body() }
+    override suspend fun getCurrentUserNotes(): Either<NetworkError, Unit> = either {
+        val notes = safeNetworkCall {
+            httpClient.get(V1.GetCurrentUserNotes()).body<List<NoteDto>>().map(NoteDto::toNote)
+        }.bind()
+
+        val localNotes = observeLocalUserNotes().firstOrNull()
+
+        notes.forEach { note ->
+            val localNote = localNotes?.firstOrNull { it.id == note.id }
+
+            if (localNote?.waitingForDelete == true) return@forEach
+
+            noteDao.upsertNote(note.toEntity())
+        }
+    }
+
+    override fun observeLocalUserNotes(): Flow<List<Note>> = noteDao.observeAllNotes()
+        .map { it.map(NoteEntity::toNote) }
+
+    override fun unsyncedDataExists(): Flow<Boolean> = noteDao.unsyncedDataExists()
 }
