@@ -51,21 +51,30 @@ class NoteListViewModel(
         )
 
     private val loadFailed = MutableStateFlow(false)
-    private val unsyncedData = combine(
+    private val syncInProgress = MutableStateFlow(true)
+    private val syncStatus = combine(
         notesRepository.unsyncedDataExists(),
+        syncInProgress,
         loadFailed,
-    ) { unsyncedData, loadFailed -> unsyncedData || loadFailed }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-            initialValue = false,
-        )
+    ) { unsyncedDataExists, syncInProgress, loadFailed ->
+        when (syncInProgress) {
+            true -> SyncStatus.SYNCING
+            false -> when (unsyncedDataExists || loadFailed) {
+                true -> SyncStatus.FAILED
+                false -> SyncStatus.SYNCED
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+        initialValue = SyncStatus.SYNCING,
+    )
 
     val state = combine(
         userEmail,
         isLoading,
         logoutInProgress,
-        unsyncedData,
+        syncStatus,
         notes,
         uiMapper::toUiState,
     ).stateIn(
@@ -76,9 +85,13 @@ class NoteListViewModel(
 
     init {
         fetchTrigger.receiveAsFlow()
-            .onEach { loadFailed.update { false } }
+            .onEach {
+                syncInProgress.update { true }
+                loadFailed.update { false }
+            }
             .map { notesRepository.getCurrentUserNotes().isLeft() }
             .onEach { result ->
+                syncInProgress.update { false }
                 isLoading.update { false }
                 loadFailed.update { result }
             }

@@ -11,7 +11,7 @@ data class NoteListState(
     val errorMessage: String? = null,
     val isLoading: Boolean = true,
     val logoutInProgress: Boolean = false,
-    val unsyncedData: Boolean = false,
+    val syncStatus: SyncStatus = SyncStatus.SYNCING,
     val email: String = "",
 )
 
