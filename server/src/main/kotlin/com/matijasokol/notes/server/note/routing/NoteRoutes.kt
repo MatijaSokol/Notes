@@ -12,6 +12,7 @@ import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.resources.delete
 import io.ktor.server.resources.post
+import io.ktor.server.resources.put
 import io.ktor.server.routing.Routing
 import org.koin.ktor.ext.get
 import io.ktor.server.resources.get as getRoute
@@ -25,6 +26,14 @@ fun Routing.noteRoutes(
                 val token = call.tokenOrError().bind().token
                 val noteDto = call.receiveOrError<NoteDto>().bind()
                 noteService.create(noteDto).bind()
+            }.respond(HttpStatusCode.Created)
+        }
+
+        put<V1.UpdateNote> {
+            either {
+                val token = call.tokenOrError().bind().token
+                val noteDto = call.receiveOrError<NoteDto>().bind()
+                noteService.update(noteDto).bind()
             }.respond(HttpStatusCode.Created)
         }
 

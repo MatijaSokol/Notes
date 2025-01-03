@@ -11,6 +11,9 @@ CREATE INDEX IF NOT EXISTS index_noteEntity_userId ON NoteEntity(userId);
 insert:
 INSERT INTO NoteEntity (id, title, text, userId, createdAt) VALUES (?, ?, ?, ?, ?);
 
+update:
+UPDATE NoteEntity SET title = ?, text = ? WHERE id = ? RETURNING id;
+
 getAllByUserId:
 SELECT id, title, text, userId, createdAt FROM NoteEntity WHERE userId = ?;
 

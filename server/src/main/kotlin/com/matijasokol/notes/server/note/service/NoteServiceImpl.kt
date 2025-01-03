@@ -14,9 +14,11 @@ import com.matijasokol.notes.server.note.usecase.CreateNote
 import com.matijasokol.notes.server.note.usecase.DeleteNote
 import com.matijasokol.notes.server.note.usecase.GetNoteById
 import com.matijasokol.notes.server.note.usecase.GetUserNotes
+import com.matijasokol.notes.server.note.usecase.UpdateNote
 
 class NoteServiceImpl(
     private val createNote: CreateNote,
+    private val updateNote: UpdateNote,
     private val getUserNotes: GetUserNotes,
     private val getNoteById: GetNoteById,
     private val deleteNote: DeleteNote,
@@ -26,6 +28,18 @@ class NoteServiceImpl(
         val note = noteDto.toNoteOrError().bind()
 
         createNote(
+            id = note.id,
+            title = note.title,
+            text = note.text,
+            userId = note.userId,
+            createdAt = note.createdAt,
+        ).map(NoteEntity::toNoteDto).bind()
+    }
+
+    override suspend fun update(noteDto: NoteDto): Either<ServerError, NoteDto> = either {
+        val note = noteDto.toNoteOrError().bind()
+
+        updateNote(
             id = note.id,
             title = note.title,
             text = note.text,
