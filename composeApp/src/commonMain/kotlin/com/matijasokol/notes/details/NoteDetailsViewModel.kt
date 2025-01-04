@@ -12,6 +12,7 @@ import com.matijasokol.notes.domain.UUIDProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.notes.model.Note
 import com.matijasokol.notes.navigation.Destination
+import com.matijasokol.notes.ui.dictionary.Dictionary
 import com.matijasokol.notes.ui.error.ErrorMapper
 import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
@@ -23,6 +24,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import notes.composeapp.generated.resources.Res
+import notes.composeapp.generated.resources.details_invalid_data
 
 class NoteDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -30,6 +33,7 @@ class NoteDetailsViewModel(
     private val notesRepository: NotesRepository,
     private val uuidProvider: UUIDProvider,
     private val errorMapper: ErrorMapper,
+    private val dictionary: Dictionary,
 ) : ViewModel() {
 
     private val _actions = Channel<NoteDetailsAction>(capacity = BUFFERED)
@@ -69,7 +73,7 @@ class NoteDetailsViewModel(
         }
     }
 
-    private fun toUiState(
+    private suspend fun toUiState(
         title: String,
         text: String,
         saveActive: Boolean,
@@ -100,6 +104,11 @@ class NoteDetailsViewModel(
         title: String,
         text: String,
     ) {
+        if (title.isBlank() || text.isBlank()) {
+            _actions.send(NoteDetailsAction.ShowMessage(dictionary.getString(Res.string.details_invalid_data.key)))
+            return
+        }
+
         saveActive.update { true }
 
         val note = when (val noteResult = buildNote(title = title, text = text)) {

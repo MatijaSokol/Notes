@@ -14,11 +14,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.matijasokol.notes.ui.components.withSharedBounds
 import com.matijasokol.notes.ui.sharedelement.SHARED_ELEMENT_KEY_FAB
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyContent
@@ -37,6 +40,7 @@ fun DetailsScreen(
                 title = state.title,
                 noteId = state.noteId,
                 saveActive = state.saveActive,
+                titleLabel = state.titleLabel,
                 onTitleChanged = { onEvent(NoteDetailsEvent.OnTitleChanged(it)) },
                 onBackClick = { onEvent(NoteDetailsEvent.OnBackClick) },
                 onSaveClick = { onEvent(NoteDetailsEvent.OnSaveClick(state.title, state.text)) },
@@ -70,6 +74,7 @@ private fun DetailsTopAppBar(
     title: String,
     noteId: String?,
     saveActive: Boolean,
+    titleLabel: String,
     onTitleChanged: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -88,6 +93,14 @@ private fun DetailsTopAppBar(
                             false -> Modifier
                         },
                     ),
+                decorationBox = { innerTextField ->
+                    if (title.isNotEmpty()) {
+                        innerTextField()
+                    } else {
+                        Text(titleLabel)
+                    }
+                },
+                textStyle = TextStyle.Default.copy(fontSize = 20.sp),
             )
         },
         navigationIcon = {

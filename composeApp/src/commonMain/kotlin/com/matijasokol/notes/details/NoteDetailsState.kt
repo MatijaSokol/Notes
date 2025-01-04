@@ -5,4 +5,5 @@ data class NoteDetailsState(
     val title: String = "",
     val text: String = "",
     val saveActive: Boolean = false,
+    val titleLabel: String = "",
 )

@@ -21,5 +21,8 @@
     <string name="auth_login_top">Welcome back</string>
     <string name="auth_google_error">Not available at the moment</string>
 
+    <string name="details_invalid_data">Set title and text</string>
+    <string name="details_title_label">Title</string>
+
     <string name="list_empty">No items found</string>
 </resources>
