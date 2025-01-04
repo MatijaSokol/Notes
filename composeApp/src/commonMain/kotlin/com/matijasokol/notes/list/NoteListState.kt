@@ -9,6 +9,7 @@ data class NoteListState(
     val query: String = "",
     val notes: ImmutableList<NoteUi> = persistentListOf(),
     val errorMessage: String? = null,
+    val emptyListMessage: String = "",
     val isLoading: Boolean = true,
     val logoutInProgress: Boolean = false,
     val syncStatus: SyncStatus = SyncStatus.SYNCING,

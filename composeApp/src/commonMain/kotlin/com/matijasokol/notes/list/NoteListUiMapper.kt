@@ -18,5 +18,6 @@ class NoteListUiMapper {
         logoutInProgress = logoutInProgress,
         syncStatus = syncStatus,
         email = userEmail,
+        emptyListMessage = "No notes found",
     )
 }
