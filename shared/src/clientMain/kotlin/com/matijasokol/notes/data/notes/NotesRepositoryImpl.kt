@@ -90,7 +90,9 @@ class NotesRepositoryImpl(
         notes.forEach { note ->
             val localNote = localNotes?.firstOrNull { it.id == note.id }
 
-            if (localNote?.waitingForDelete == true) return@forEach
+            localNote?.run {
+                if (waitingForDelete || waitingForUpload) return@forEach
+            }
 
             noteDao.upsertNote(note.toEntity())
         }
