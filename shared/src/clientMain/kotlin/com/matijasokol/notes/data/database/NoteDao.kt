@@ -18,4 +18,6 @@ interface NoteDao {
     fun observeUnsyncedNotes(): Flow<List<NoteEntity>>
 
     fun unsyncedDataExists(): Flow<Boolean>
+
+    suspend fun deleteAllNotes()
 }

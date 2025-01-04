@@ -6,6 +6,7 @@ import arrow.core.Either
 import com.matijasokol.notes.auth.AuthType.Login
 import com.matijasokol.notes.auth.AuthType.Registration
 import com.matijasokol.notes.domain.auth.AuthProvider
+import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.user.RegisterUser
 import com.matijasokol.notes.ui.dictionary.Dictionary
 import com.matijasokol.notes.ui.error.ErrorMapper
@@ -27,6 +28,7 @@ class AuthViewModel(
     private val errorMapper: ErrorMapper,
     private val uiMapper: AuthUiMapper,
     private val dictionary: Dictionary,
+    private val notesRepository: NotesRepository,
 ) : ViewModel() {
 
     private val _actions = Channel<AuthAction>(Channel.BUFFERED)
@@ -106,7 +108,10 @@ class AuthViewModel(
 
         when (val result = authProvider.loginWithEmailAndPassword(email, password)) {
             is Either.Left -> _actions.send(AuthAction.LoginError(errorMapper.map(result.value)))
-            is Either.Right -> _actions.send(AuthAction.LoginSuccess)
+            is Either.Right -> {
+                notesRepository.deleteAllLocalNotes()
+                _actions.send(AuthAction.LoginSuccess)
+            }
         }
 
         isLoading.update { false }

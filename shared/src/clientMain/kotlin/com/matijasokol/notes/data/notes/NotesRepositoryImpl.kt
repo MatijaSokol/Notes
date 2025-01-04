@@ -112,4 +112,6 @@ class NotesRepositoryImpl(
             }
         }
     }
+
+    override suspend fun deleteAllLocalNotes() = noteDao.deleteAllNotes()
 }

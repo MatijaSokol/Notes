@@ -76,4 +76,8 @@ class NoteDaoImpl(
 
     override fun unsyncedDataExists(): Flow<Boolean> = observeUnsyncedNotes()
         .map(List<NoteEntity>::isNotEmpty)
+
+    override suspend fun deleteAllNotes() {
+        databaseOperation(appDispatchers) { noteQueries.deleteAll() }
+    }
 }

@@ -24,4 +24,6 @@ interface NotesRepository {
     fun unsyncedDataExists(): Flow<Boolean>
 
     suspend fun syncNotes()
+
+    suspend fun deleteAllLocalNotes()
 }
