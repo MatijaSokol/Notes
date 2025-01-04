@@ -140,8 +140,14 @@ private fun ListTopAppBar(
         modifier = modifier,
         title = { Text(state.email) },
         actions = {
-            if (state.unsyncedData) {
-                IconButton(
+            when (state.syncStatus) {
+                SyncStatus.SYNCED -> Unit
+                SyncStatus.SYNCING -> CircularProgressIndicator(
+                    color = Color.Black,
+                    modifier = Modifier.padding(end = 10.dp).size(30.dp),
+                    strokeWidth = 3.dp,
+                )
+                SyncStatus.FAILED -> IconButton(
                     onClick = onSyncClick,
                 ) {
                     Icon(

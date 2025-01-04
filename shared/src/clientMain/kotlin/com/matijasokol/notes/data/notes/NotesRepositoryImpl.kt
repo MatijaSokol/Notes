@@ -19,6 +19,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.delete
 import io.ktor.client.plugins.resources.get
 import io.ktor.client.plugins.resources.post
+import io.ktor.client.plugins.resources.put
 import io.ktor.client.request.setBody
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -32,14 +33,32 @@ class NotesRepositoryImpl(
     override suspend fun create(note: Note): Either<ClientError, Note> = either {
         noteDao.upsertNote(note.toEntity(waitingForUpload = true)).bind()
 
-        val networkNote = safeNetworkCall {
+        val networkResult = safeNetworkCall {
             httpClient.post(V1.CreateNote()) { setBody(note.toDto()) }.body<NoteDto>().toNote()
-        }.bind()
+        }
 
-        noteDao.deleteNoteById(note.id).bind()
-        noteDao.upsertNote(networkNote.toEntity()).bind()
+        when (networkResult) {
+            is Either.Left -> note
+            is Either.Right -> networkResult.value.also { networkNote ->
+                noteDao.deleteNoteById(note.id).bind()
+                noteDao.upsertNote(networkNote.toEntity(waitingForUpload = false)).bind()
+            }
+        }
+    }
 
-        networkNote
+    override suspend fun update(note: Note): Either<ClientError, Note> = either {
+        noteDao.upsertNote(note.toEntity(waitingForUpload = true)).bind()
+
+        val networkResult = safeNetworkCall {
+            httpClient.put(V1.UpdateNote()) { setBody(note.toDto()) }.body<NoteDto>().toNote()
+        }
+
+        when (networkResult) {
+            is Either.Left -> note
+            is Either.Right -> networkResult.value.also { networkNote ->
+                noteDao.upsertNote(networkNote.toEntity(waitingForUpload = false)).bind()
+            }
+        }
     }
 
     override suspend fun delete(noteId: String): Either<ClientError, Unit> = either {
@@ -47,9 +66,14 @@ class NotesRepositoryImpl(
 
         noteDao.upsertNote(note.copy(waiting_for_delete = true)).bind()
 
-        safeNetworkCall { httpClient.delete(V1.DeleteNote(noteId = noteId)) }.bind()
+        val networkResult = safeNetworkCall {
+            httpClient.delete(V1.DeleteNote(noteId = noteId))
+        }
 
-        noteDao.deleteNoteById(noteId).bind()
+        when (networkResult) {
+            is Either.Left -> Unit
+            is Either.Right -> noteDao.deleteNoteById(noteId).bind()
+        }
     }
 
     override suspend fun getNoteById(noteId: String): Either<NetworkError, Note> =

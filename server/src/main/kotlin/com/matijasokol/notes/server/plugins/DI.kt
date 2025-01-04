@@ -12,8 +12,11 @@ import com.matijasokol.notes.server.note.service.NoteService
 import com.matijasokol.notes.server.note.service.NoteServiceImpl
 import com.matijasokol.notes.server.note.usecase.CreateNote
 import com.matijasokol.notes.server.note.usecase.DeleteNote
+import com.matijasokol.notes.server.note.usecase.EnsureUser
 import com.matijasokol.notes.server.note.usecase.GetNoteById
+import com.matijasokol.notes.server.note.usecase.GetUserIdByEmail
 import com.matijasokol.notes.server.note.usecase.GetUserNotes
+import com.matijasokol.notes.server.note.usecase.UpdateNote
 import com.matijasokol.notes.server.system.EnvironmentProvider
 import com.matijasokol.notes.server.user.service.UserService
 import com.matijasokol.notes.server.user.service.UserServiceImpl
@@ -71,9 +74,12 @@ private val userModule = module {
 
 private val noteModule = module {
     factoryOf(::CreateNote)
+    factoryOf(::UpdateNote)
     factoryOf(::GetUserNotes)
+    factoryOf(::GetUserIdByEmail)
     factoryOf(::GetNoteById)
     factoryOf(::DeleteNote)
+    factoryOf(::EnsureUser)
     factoryOf(::NoteServiceImpl) bind NoteService::class
 }
 

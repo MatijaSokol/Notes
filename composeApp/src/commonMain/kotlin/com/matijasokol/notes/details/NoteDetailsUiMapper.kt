@@ -4,7 +4,7 @@ class NoteDetailsUiMapper {
 
     fun toUiState(
         noteId: String?,
-        title: String?,
+        title: String,
         text: String,
         saveActive: Boolean,
     ) = NoteDetailsState(

@@ -9,14 +9,14 @@ class NoteListUiMapper {
         userEmail: String,
         isLoading: Boolean,
         logoutInProgress: Boolean,
-        unsyncedData: Boolean,
+        syncStatus: SyncStatus,
         notes: List<Note>,
     ) = NoteListState(
         notes = notes.map(Note::toNoteUi).toPersistentList(),
         errorMessage = null,
         isLoading = isLoading,
         logoutInProgress = logoutInProgress,
-        unsyncedData = unsyncedData,
+        syncStatus = syncStatus,
         email = userEmail,
     )
 }

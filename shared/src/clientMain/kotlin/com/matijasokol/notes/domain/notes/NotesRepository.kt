@@ -10,6 +10,8 @@ interface NotesRepository {
 
     suspend fun create(note: Note): Either<ClientError, Note>
 
+    suspend fun update(note: Note): Either<ClientError, Note>
+
     suspend fun delete(noteId: String): Either<ClientError, Unit>
 
     suspend fun getNoteById(noteId: String): Either<NetworkError, Note>

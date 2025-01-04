@@ -13,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,8 +36,9 @@ fun DetailsScreen(
                 title = state.title,
                 noteId = state.noteId,
                 saveActive = state.saveActive,
+                onTitleChanged = { onEvent(NoteDetailsEvent.OnTitleChanged(it)) },
                 onBackClick = { onEvent(NoteDetailsEvent.OnBackClick) },
-                onSaveClick = { onEvent(NoteDetailsEvent.OnSaveClick) },
+                onSaveClick = { onEvent(NoteDetailsEvent.OnSaveClick(state.title, state.text)) },
             )
         },
     ) { innerPadding ->
@@ -71,19 +71,22 @@ fun DetailsScreen(
 
 @Composable
 private fun DetailsTopAppBar(
-    title: String?,
+    title: String,
     noteId: String?,
     saveActive: Boolean,
+    onTitleChanged: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
 ) {
     TopAppBar(
         title = {
-            Text(
-                text = title.orEmpty(),
+            BasicTextField(
+                value = title,
+                onValueChange = onTitleChanged,
+                singleLine = true,
                 modifier = Modifier
                     .then(
-                        when (title != null && noteId != null) {
+                        when (noteId != null) {
                             true -> Modifier.withSharedBounds(buildSharedElementKeyTitle(noteId))
                             false -> Modifier
                         },
