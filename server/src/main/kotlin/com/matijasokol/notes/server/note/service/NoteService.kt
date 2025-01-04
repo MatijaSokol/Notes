@@ -8,14 +8,17 @@ interface NoteService {
 
     suspend fun create(
         noteDto: NoteDto,
+        userEmail: String,
     ): Either<ServerError, NoteDto>
 
     suspend fun update(
         noteDto: NoteDto,
+        userEmail: String,
     ): Either<ServerError, NoteDto>
 
     suspend fun delete(
         noteId: String,
+        userEmail: String,
     ): Either<ServerError, Unit>
 
     suspend fun getUserNotes(
@@ -24,5 +27,6 @@ interface NoteService {
 
     suspend fun getNote(
         noteId: String,
+        userEmail: String,
     ): Either<ServerError, NoteDto>
 }

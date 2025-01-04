@@ -25,7 +25,7 @@ fun Routing.noteRoutes(
             either {
                 val token = call.tokenOrError().bind().token
                 val noteDto = call.receiveOrError<NoteDto>().bind()
-                noteService.create(noteDto).bind()
+                noteService.create(noteDto, token.email).bind()
             }.respond(HttpStatusCode.Created)
         }
 
@@ -33,14 +33,14 @@ fun Routing.noteRoutes(
             either {
                 val token = call.tokenOrError().bind().token
                 val noteDto = call.receiveOrError<NoteDto>().bind()
-                noteService.update(noteDto).bind()
+                noteService.update(noteDto, token.email).bind()
             }.respond(HttpStatusCode.Created)
         }
 
         getRoute<V1.GetNote> {
             either {
                 val token = call.tokenOrError().bind().token
-                noteService.getNote(it.noteId).bind()
+                noteService.getNote(it.noteId, token.email).bind()
             }.respond()
         }
 
@@ -54,7 +54,7 @@ fun Routing.noteRoutes(
         delete<V1.DeleteNote> {
             either {
                 val token = call.tokenOrError().bind().token
-                noteService.delete(it.noteId).bind()
+                noteService.delete(it.noteId, token.email).bind()
             }.respond(HttpStatusCode.NoContent)
         }
     }

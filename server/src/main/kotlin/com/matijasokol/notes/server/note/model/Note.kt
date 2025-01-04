@@ -34,7 +34,10 @@ data class Note(
     }
 }
 
-fun NoteDto.toNoteOrError(): Either<ValidationError.IncorrectInput, Note> = Note(
+fun NoteDto.toNoteOrError(
+    id: String = this.id,
+    userId: String = this.userId,
+): Either<ValidationError.IncorrectInput, Note> = Note(
     id = id,
     title = title,
     text = text,
