@@ -59,7 +59,7 @@ fun AppContent(
                     ) {
                         Auth(navigator, toast)
                         List(navigator)
-                        Details(navigator)
+                        Details(navigator, toast)
                     }
                 }
             }
@@ -139,6 +139,7 @@ private fun NavGraphBuilder.List(
 
 private fun NavGraphBuilder.Details(
     navigator: Navigator,
+    toast: Toast,
 ) {
     composable<Destination.Details> {
         val viewModel: NoteDetailsViewModel = koinViewModel()
@@ -150,6 +151,7 @@ private fun NavGraphBuilder.Details(
                     NoteDetailsAction.NavigateToList -> navigator.emitDestination(
                         event = NavigationEvent.NavigateUp,
                     )
+                    is NoteDetailsAction.ShowMessage -> toast.show(action.message)
                 }
             }
         }

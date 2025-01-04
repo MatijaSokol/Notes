@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import arrow.core.Either
+import arrow.core.right
+import com.matijasokol.notes.DatabaseError
 import com.matijasokol.notes.date.millisNow
 import com.matijasokol.notes.domain.UUIDProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.notes.model.Note
 import com.matijasokol.notes.navigation.Destination
+import com.matijasokol.notes.ui.error.ErrorMapper
 import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -26,6 +29,7 @@ class NoteDetailsViewModel(
     private val uiMapper: NoteDetailsUiMapper,
     private val notesRepository: NotesRepository,
     private val uuidProvider: UUIDProvider,
+    private val errorMapper: ErrorMapper,
 ) : ViewModel() {
 
     private val _actions = Channel<NoteDetailsAction>(capacity = BUFFERED)
@@ -79,7 +83,7 @@ class NoteDetailsViewModel(
     private suspend fun buildNote(
         title: String,
         text: String,
-    ) = when (noteId) {
+    ): Either<DatabaseError, Note> = when (noteId) {
         null -> Note(
             id = uuidProvider.generateValue(),
             title = title,
@@ -88,10 +92,8 @@ class NoteDetailsViewModel(
             createdAt = millisNow(),
             waitingForUpload = false,
             waitingForDelete = false,
-        )
-        else -> notesRepository.getNoteById(noteId).getOrNull()
-            ?.copy(title = title, text = text)
-            ?: error("Handle error")
+        ).right()
+        else -> notesRepository.getNoteById(noteId).map { it.copy(title = title, text = text) }
     }
 
     private suspend fun handleSaveNote(
@@ -100,17 +102,24 @@ class NoteDetailsViewModel(
     ) {
         saveActive.update { true }
 
-        val note = buildNote(title = title, text = text)
-        val result = when (noteId) {
+        val note = when (val noteResult = buildNote(title = title, text = text)) {
+            is Either.Left -> {
+                _actions.send(NoteDetailsAction.ShowMessage(errorMapper.map(noteResult.value)))
+                return
+            }
+            is Either.Right -> noteResult.value
+        }
+
+        val saveResult = when (noteId) {
             null -> notesRepository.create(note)
             else -> notesRepository.update(note)
         }
 
         saveActive.update { false }
 
-        when (result) {
-            is Either.Left -> Unit // handle error
-            is Either.Right -> _actions.send(NoteDetailsAction.NavigateToList) // handle success
+        when (saveResult) {
+            is Either.Left -> _actions.send(NoteDetailsAction.ShowMessage(errorMapper.map(saveResult.value)))
+            is Either.Right -> _actions.send(NoteDetailsAction.NavigateToList)
         }
     }
 }
