@@ -1,6 +1,15 @@
 <resources>
     <string name="or">Or</string>
 
+    <string name="error_email_not_available">Email not available</string>
+    <string name="error_token_not_available">Token not available</string>
+    <string name="error_generic">Something went wrong</string>
+    <string name="error_note_not_found">Note not found</string>
+    <string name="error_invalid_credentials">Invalid credentials</string>
+    <string name="error_backend">Backend error</string>
+    <string name="error_network">Network error</string>
+    <string name="error_registration_failed">Registration failed</string>
+
     <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
     <string name="auth_login">Login</string>
