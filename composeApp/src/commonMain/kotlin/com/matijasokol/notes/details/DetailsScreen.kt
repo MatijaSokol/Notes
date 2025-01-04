@@ -3,6 +3,7 @@ package com.matijasokol.notes.details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
@@ -85,6 +86,7 @@ private fun DetailsTopAppBar(
                 onValueChange = onTitleChanged,
                 singleLine = true,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .then(
                         when (noteId != null) {
                             true -> Modifier.withSharedBounds(buildSharedElementKeyTitle(noteId))
