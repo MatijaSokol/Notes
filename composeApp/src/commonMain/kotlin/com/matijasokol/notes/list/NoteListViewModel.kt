@@ -32,6 +32,7 @@ class NoteListViewModel(
 
     private val isLoading = MutableStateFlow(true)
     private val logoutInProgress = MutableStateFlow(false)
+    private val deleteInProgress = MutableStateFlow(false)
 
     private val userEmail = flow {
         emit(authProvider.getCurrentUserEmail().getOrNull().orEmpty())
@@ -53,8 +54,9 @@ class NoteListViewModel(
         notesRepository.unsyncedDataExists(),
         syncInProgress,
         loadFailed,
-    ) { unSyncedDataExists, syncInProgress, loadFailed ->
-        when (syncInProgress) {
+        deleteInProgress,
+    ) { unSyncedDataExists, syncInProgress, loadFailed, deleteInProgress ->
+        when (syncInProgress || deleteInProgress) {
             true -> SyncStatus.SYNCING
             false -> when (unSyncedDataExists || loadFailed) {
                 true -> SyncStatus.FAILED
@@ -94,12 +96,16 @@ class NoteListViewModel(
                     ),
                 )
             }
-            is NoteListEvent.OnNoteDelete -> viewModelScope.launch {
-                notesRepository.delete(event.note.id)
-            }
+            is NoteListEvent.OnNoteDelete -> viewModelScope.launch { handleDeleteNote(event.note.id) }
             NoteListEvent.OnLogoutClick -> viewModelScope.launch { handleLogout() }
             NoteListEvent.OnSyncClick -> viewModelScope.launch { syncNotes() }
         }
+    }
+
+    private suspend fun handleDeleteNote(noteId: String) {
+        deleteInProgress.update { true }
+        notesRepository.delete(noteId)
+        deleteInProgress.update { false }
     }
 
     private suspend fun handleLogout() {
