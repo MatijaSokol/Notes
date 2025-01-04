@@ -3,6 +3,7 @@ package com.matijasokol.notes.data.notes
 import arrow.core.Either
 import arrow.core.raise.either
 import com.matijasokol.notes.ClientError
+import com.matijasokol.notes.DatabaseError
 import com.matijasokol.notes.NetworkError
 import com.matijasokol.notes.client.NoteEntity
 import com.matijasokol.notes.data.api.V1
@@ -76,8 +77,8 @@ class NotesRepositoryImpl(
         }
     }
 
-    override suspend fun getNoteById(noteId: String): Either<NetworkError, Note> =
-        safeNetworkCall { httpClient.get(V1.GetNote(noteId = noteId)).body<NoteDto>().toNote() }
+    override suspend fun getNoteById(noteId: String): Either<DatabaseError, Note> =
+        noteDao.getNoteById(noteId).map(NoteEntity::toNote)
 
     override suspend fun getCurrentUserNotes(): Either<NetworkError, Unit> = either {
         val notes = safeNetworkCall {
@@ -99,4 +100,16 @@ class NotesRepositoryImpl(
         .map { it.map(NoteEntity::toNote) }
 
     override fun unsyncedDataExists(): Flow<Boolean> = noteDao.unsyncedDataExists()
+
+    override suspend fun syncNotes() {
+        noteDao.observeUnsyncedNotes().firstOrNull()?.forEach { note ->
+            when {
+                note.waiting_for_delete -> delete(note.id)
+                note.waiting_for_upload -> when (note.userId.isEmpty()) {
+                    true -> create(note.toNote())
+                    false -> update(note.toNote())
+                }
+            }
+        }
+    }
 }

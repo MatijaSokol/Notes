@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,8 +25,6 @@ class NoteListViewModel(
     private val uiMapper: NoteListUiMapper,
 ) : ViewModel() {
 
-    private val fetchTrigger = Channel<Unit>()
-
     private val _actions = Channel<NoteListAction>(capacity = BUFFERED)
     val actions = _actions.receiveAsFlow()
 
@@ -40,10 +36,9 @@ class NoteListViewModel(
     }.onStart { emit("") }
 
     private val notes = notesRepository.observeLocalUserNotes()
-        .onStart {
-            isLoading.update { true }
-            fetchTrigger.send(Unit)
-        }
+        // run in separate coroutine to avoid blocking notes flow
+        .onStart { viewModelScope.launch { syncNotes() } }
+        .onEach { if (it.isNotEmpty()) { isLoading.update { false } } }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
@@ -56,10 +51,10 @@ class NoteListViewModel(
         notesRepository.unsyncedDataExists(),
         syncInProgress,
         loadFailed,
-    ) { unsyncedDataExists, syncInProgress, loadFailed ->
+    ) { unSyncedDataExists, syncInProgress, loadFailed ->
         when (syncInProgress) {
             true -> SyncStatus.SYNCING
-            false -> when (unsyncedDataExists || loadFailed) {
+            false -> when (unSyncedDataExists || loadFailed) {
                 true -> SyncStatus.FAILED
                 false -> SyncStatus.SYNCED
             }
@@ -83,21 +78,6 @@ class NoteListViewModel(
         initialValue = NoteListState(),
     )
 
-    init {
-        fetchTrigger.receiveAsFlow()
-            .onEach {
-                syncInProgress.update { true }
-                loadFailed.update { false }
-            }
-            .map { notesRepository.getCurrentUserNotes().isLeft() }
-            .onEach { result ->
-                syncInProgress.update { false }
-                isLoading.update { false }
-                loadFailed.update { result }
-            }
-            .launchIn(viewModelScope)
-    }
-
     fun onEvent(event: NoteListEvent) {
         when (event) {
             is NoteListEvent.OnFabClick -> viewModelScope.launch {
@@ -116,7 +96,7 @@ class NoteListViewModel(
                 notesRepository.delete(event.note.id)
             }
             NoteListEvent.OnLogoutClick -> viewModelScope.launch { handleLogout() }
-            NoteListEvent.OnSyncClick -> viewModelScope.launch { fetchTrigger.send(Unit) }
+            NoteListEvent.OnSyncClick -> viewModelScope.launch { syncNotes() }
         }
     }
 
@@ -130,5 +110,18 @@ class NoteListViewModel(
                 _actions.send(NoteListAction.NavigateToAuth)
             }
         }
+    }
+
+    private suspend fun syncNotes() {
+        syncInProgress.update { true }
+        loadFailed.update { false }
+
+        val notesUpdateFailed = notesRepository.getCurrentUserNotes()
+            .onRight { notesRepository.syncNotes() }
+            .isLeft()
+
+        syncInProgress.update { false }
+        isLoading.update { false }
+        loadFailed.update { notesUpdateFailed }
     }
 }

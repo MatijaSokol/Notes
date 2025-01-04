@@ -70,7 +70,10 @@ class NoteDaoImpl(
         .asFlow()
         .mapToList(appDispatchers.io)
 
-    override fun unsyncedDataExists(): Flow<Boolean> = noteQueries.unsyncedDataExists()
+    override fun observeUnsyncedNotes(): Flow<List<NoteEntity>> = noteQueries.getUnsyncedData()
         .asFlow()
-        .map { it.executeAsOne() }
+        .mapToList(appDispatchers.io)
+
+    override fun unsyncedDataExists(): Flow<Boolean> = observeUnsyncedNotes()
+        .map(List<NoteEntity>::isNotEmpty)
 }

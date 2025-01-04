@@ -2,6 +2,7 @@ package com.matijasokol.notes.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -124,7 +125,21 @@ private fun NoteItem(
             )
         },
         supportingContent = { Text(text = note.text) },
-        trailingContent = { Text(text = note.createdAt) },
+        trailingContent = {
+            Column(
+                horizontalAlignment = Alignment.End,
+            ) {
+                Text(text = note.createdAt)
+
+                if (!note.synced) {
+                    Icon(
+                        imageVector = Icons.Filled.CloudOff,
+                        contentDescription = "Sync",
+                        tint = Color.Black,
+                    )
+                }
+            }
+        },
         colors = ListItemDefaults.colors(containerColor = Color.LightGray),
     )
 }

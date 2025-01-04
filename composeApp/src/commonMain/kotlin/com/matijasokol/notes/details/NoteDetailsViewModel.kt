@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import arrow.core.Either
 import com.matijasokol.notes.date.millisNow
+import com.matijasokol.notes.domain.UUIDProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.notes.model.Note
 import com.matijasokol.notes.navigation.Destination
@@ -24,6 +25,7 @@ class NoteDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val uiMapper: NoteDetailsUiMapper,
     private val notesRepository: NotesRepository,
+    private val uuidProvider: UUIDProvider,
 ) : ViewModel() {
 
     private val _actions = Channel<NoteDetailsAction>(capacity = BUFFERED)
@@ -79,7 +81,7 @@ class NoteDetailsViewModel(
         text: String,
     ) = when (noteId) {
         null -> Note(
-            id = "",
+            id = uuidProvider.generateValue(),
             title = title,
             text = text,
             userId = "",

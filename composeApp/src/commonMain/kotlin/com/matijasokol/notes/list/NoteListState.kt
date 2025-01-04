@@ -20,6 +20,7 @@ data class NoteUi(
     val title: String,
     val text: String,
     val createdAt: String,
+    val synced: Boolean,
 )
 
 fun Note.toNoteUi() = NoteUi(
@@ -27,4 +28,5 @@ fun Note.toNoteUi() = NoteUi(
     title = title,
     text = text,
     createdAt = timestampToDateFormatted(createdAt),
+    synced = !waitingForDelete && !waitingForUpload,
 )
