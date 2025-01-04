@@ -25,7 +25,8 @@ WHERE id = ?;
 getAll:
 SELECT id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete
 FROM NoteEntity
-WHERE waiting_for_delete = 0;
+WHERE waiting_for_delete = 0
+ORDER BY created_at DESC;
 
 getById:
 SELECT id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete
