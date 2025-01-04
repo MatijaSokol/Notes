@@ -19,4 +19,7 @@
     <string name="auth_register_top">Create an account</string>
     <string name="auth_login_bottom">Don't have an account? Register</string>
     <string name="auth_login_top">Welcome back</string>
+    <string name="auth_google_error">Not available at the moment</string>
+
+    <string name="list_empty">No items found</string>
 </resources>

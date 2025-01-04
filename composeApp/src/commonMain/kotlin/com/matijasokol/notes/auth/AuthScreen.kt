@@ -16,24 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.matijasokol.notes.ui.components.EmailTextField
 import com.matijasokol.notes.ui.components.PasswordTextField
-import com.matijasokol.notes.ui.components.Toast
-import notes.composeapp.generated.resources.Res
-import notes.composeapp.generated.resources.auth_email
-import notes.composeapp.generated.resources.auth_login
-import notes.composeapp.generated.resources.auth_login_bottom
-import notes.composeapp.generated.resources.auth_login_top
-import notes.composeapp.generated.resources.auth_password
-import notes.composeapp.generated.resources.auth_register
-import notes.composeapp.generated.resources.auth_register_bottom
-import notes.composeapp.generated.resources.auth_register_top
-import notes.composeapp.generated.resources.or
-import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 
 @Composable
 fun AuthScreen(
     state: AuthState,
-    toast: Toast = koinInject(),
     onEvent: (AuthEvent) -> Unit,
 ) {
     Box(
@@ -47,12 +33,12 @@ fun AuthScreen(
             AnimatedContent(targetState = state.authType) {
                 when (state.authType) {
                     AuthType.Login -> Text(
-                        text = stringResource(Res.string.auth_login_top),
+                        text = state.loginTopText,
                         fontSize = 20.sp,
                         modifier = Modifier.padding(vertical = 20.dp),
                     )
                     AuthType.Registration -> Text(
-                        text = stringResource(Res.string.auth_register_top),
+                        text = state.registerTopText,
                         fontSize = 20.sp,
                         modifier = Modifier.padding(vertical = 20.dp),
                     )
@@ -63,7 +49,7 @@ fun AuthScreen(
                 value = state.email,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { onEvent(AuthEvent.EmailChanged(state.authType, it)) },
-                labelValue = stringResource(Res.string.auth_email),
+                labelValue = state.emailLabel,
             )
 
             PasswordTextField(
@@ -72,27 +58,27 @@ fun AuthScreen(
                 onValueChange = { onEvent(AuthEvent.PasswordChanged(state.authType, it)) },
                 valueVisible = state.passwordVisible,
                 onValueVisibleToggle = { onEvent(AuthEvent.TogglePasswordVisibility) },
-                labelValue = stringResource(Res.string.auth_password),
+                labelValue = state.passwordLabel,
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             BottomAuthComponent(
                 buttonText = when (state.authType) {
-                    AuthType.Login -> stringResource(Res.string.auth_login)
-                    AuthType.Registration -> stringResource(Res.string.auth_register)
+                    AuthType.Login -> state.loginLabel
+                    AuthType.Registration -> state.registerLabel
                 },
-                spacerText = stringResource(Res.string.or),
+                spacerText = state.typeSpacerText,
                 onButtonClick = {
                     when (state.authType) {
                         AuthType.Login -> onEvent(AuthEvent.LoginClicked(state.email, state.password))
                         AuthType.Registration -> onEvent(AuthEvent.RegistrationClicked(state.email, state.password))
                     }
                 },
-                onGoogleClick = { toast.show("Not available at the moment") },
+                onGoogleClick = { onEvent(AuthEvent.GoogleSignInClicked) },
                 bottomText = when (state.authType) {
-                    AuthType.Login -> stringResource(Res.string.auth_login_bottom)
-                    AuthType.Registration -> stringResource(Res.string.auth_register_bottom)
+                    AuthType.Login -> state.loginBottomText
+                    AuthType.Registration -> state.registerBottomText
                 },
                 onBottomTextClick = { onEvent(AuthEvent.ToggleAuthType) },
             )

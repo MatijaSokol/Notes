@@ -1,5 +1,6 @@
 package com.matijasokol.notes.di
 
+import com.matijasokol.notes.auth.AuthUiMapper
 import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.NoteDetailsUiMapper
 import com.matijasokol.notes.details.NoteDetailsViewModel
@@ -23,6 +24,7 @@ private val splashModule = module {
 
 private val authModule = module {
     viewModelOf(::AuthViewModel)
+    factoryOf(::AuthUiMapper)
 }
 
 private val noteListModule = module {
