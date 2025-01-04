@@ -1,5 +1,6 @@
 package com.matijasokol.notes.di
 
+import com.matijasokol.notes.auth.AuthUiMapper
 import com.matijasokol.notes.auth.AuthViewModel
 import com.matijasokol.notes.details.NoteDetailsUiMapper
 import com.matijasokol.notes.details.NoteDetailsViewModel
@@ -8,6 +9,9 @@ import com.matijasokol.notes.list.NoteListViewModel
 import com.matijasokol.notes.navigation.Navigator
 import com.matijasokol.notes.navigation.NavigatorImpl
 import com.matijasokol.notes.splash.SplashViewModel
+import com.matijasokol.notes.ui.dictionary.Dictionary
+import com.matijasokol.notes.ui.dictionary.DictionaryImpl
+import com.matijasokol.notes.ui.error.ErrorMapper
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -20,6 +24,7 @@ private val splashModule = module {
 
 private val authModule = module {
     viewModelOf(::AuthViewModel)
+    factoryOf(::AuthUiMapper)
 }
 
 private val noteListModule = module {
@@ -34,6 +39,8 @@ private val noteDetailsModule = module {
 
 val composeAppSharedModule = module {
     singleOf(::NavigatorImpl) bind Navigator::class
+    factoryOf(::DictionaryImpl) bind Dictionary::class
+    factoryOf(::ErrorMapper)
 
     includes(
         composeAppPlatformModule,

@@ -39,8 +39,10 @@ DELETE FROM NoteEntity WHERE id = ?;
 deleteAll:
 DELETE FROM NoteEntity;
 
-unsyncedDataExists:
-SELECT EXISTS(SELECT 1 FROM NoteEntity WHERE waiting_for_upload = 1 OR waiting_for_delete = 1);
+getUnsyncedData:
+SELECT id, title, text, userId, created_at, waiting_for_upload, waiting_for_delete
+FROM NoteEntity
+WHERE waiting_for_delete = 1 OR waiting_for_upload = 1;
 
 changes:
 SELECT changes();

@@ -6,4 +6,13 @@ data class AuthState(
     val passwordVisible: Boolean = false,
     val isLoading: Boolean = false,
     val authType: AuthType = AuthType.Login,
+    val loginTopText: String = "",
+    val loginBottomText: String = "",
+    val registerTopText: String = "",
+    val registerBottomText: String = "",
+    val emailLabel: String = "",
+    val passwordLabel: String = "",
+    val loginLabel: String = "",
+    val registerLabel: String = "",
+    val typeSpacerText: String = "",
 )

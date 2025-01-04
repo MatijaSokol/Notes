@@ -2,6 +2,7 @@ package com.matijasokol.notes.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,6 +64,7 @@ fun ListScreen(
             false -> ListScreen(
                 modifier = Modifier.padding(innerPadding),
                 items = state.notes,
+                emptyListMessage = state.emptyListMessage,
                 onEvent = onEvent,
             )
         }
@@ -85,27 +87,37 @@ private fun LoadingScreen(
 private fun ListScreen(
     modifier: Modifier = Modifier,
     items: ImmutableList<NoteUi>,
+    emptyListMessage: String,
     onEvent: (NoteListEvent) -> Unit,
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        items(
-            items = items,
-            key = NoteUi::id,
-        ) { note ->
-            SwipeToDeleteContainer(
-                item = note,
-                onDelete = { onEvent(NoteListEvent.OnNoteDelete(note)) },
-                content = {
-                    NoteItem(
-                        modifier = Modifier
-                            .withSharedBounds(buildSharedElementKeyContent(note.id))
-                            .padding(8.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .clickable { onEvent(NoteListEvent.OnNoteClick(note)) },
-                        note = note,
-                    )
-                },
-            )
+    if (items.isEmpty()) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(text = emptyListMessage)
+        }
+    } else {
+        LazyColumn(modifier = modifier.fillMaxSize()) {
+            items(
+                items = items,
+                key = NoteUi::id,
+            ) { note ->
+                SwipeToDeleteContainer(
+                    item = note,
+                    onDelete = { onEvent(NoteListEvent.OnNoteDelete(note)) },
+                    content = {
+                        NoteItem(
+                            modifier = Modifier
+                                .withSharedBounds(buildSharedElementKeyContent(note.id))
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable { onEvent(NoteListEvent.OnNoteClick(note)) },
+                            note = note,
+                        )
+                    },
+                )
+            }
         }
     }
 }
@@ -124,7 +136,21 @@ private fun NoteItem(
             )
         },
         supportingContent = { Text(text = note.text) },
-        trailingContent = { Text(text = note.createdAt) },
+        trailingContent = {
+            Column(
+                horizontalAlignment = Alignment.End,
+            ) {
+                Text(text = note.createdAt)
+
+                if (!note.synced) {
+                    Icon(
+                        imageVector = Icons.Filled.CloudOff,
+                        contentDescription = "Sync",
+                        tint = Color.Black,
+                    )
+                }
+            }
+        },
         colors = ListItemDefaults.colors(containerColor = Color.LightGray),
     )
 }

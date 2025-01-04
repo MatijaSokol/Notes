@@ -3,16 +3,13 @@ package com.matijasokol.notes.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
-import com.matijasokol.notes.AuthError
-import com.matijasokol.notes.DatabaseError
-import com.matijasokol.notes.LoginError
-import com.matijasokol.notes.NetworkError
-import com.matijasokol.notes.NoteDatabaseError
-import com.matijasokol.notes.RegistrationError
 import com.matijasokol.notes.auth.AuthType.Login
 import com.matijasokol.notes.auth.AuthType.Registration
 import com.matijasokol.notes.domain.auth.AuthProvider
+import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.user.RegisterUser
+import com.matijasokol.notes.ui.dictionary.Dictionary
+import com.matijasokol.notes.ui.error.ErrorMapper
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,10 +19,16 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import notes.composeapp.generated.resources.Res
+import notes.composeapp.generated.resources.auth_google_error
 
 class AuthViewModel(
     private val registerUser: RegisterUser,
     private val authProvider: AuthProvider,
+    private val errorMapper: ErrorMapper,
+    private val uiMapper: AuthUiMapper,
+    private val dictionary: Dictionary,
+    private val notesRepository: NotesRepository,
 ) : ViewModel() {
 
     private val _actions = Channel<AuthAction>(Channel.BUFFERED)
@@ -59,7 +62,7 @@ class AuthViewModel(
         passwordVisible,
         isLoading,
         authType,
-        ::AuthState,
+        uiMapper::toUiState,
     ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -78,7 +81,9 @@ class AuthViewModel(
             }
             AuthEvent.TogglePasswordVisibility -> passwordVisible.update { !it }
             is AuthEvent.LoginClicked -> viewModelScope.launch { handleLogin(event.email, event.password) }
-            AuthEvent.GoogleSignInClicked -> Unit
+            AuthEvent.GoogleSignInClicked -> viewModelScope.launch {
+                _actions.send(AuthAction.LoginError(dictionary.getString(Res.string.auth_google_error.key)))
+            }
             AuthEvent.ToggleAuthType -> authType.update { it.toggle() }
             is AuthEvent.RegistrationClicked -> viewModelScope.launch { handleRegistration(event.email, event.password) }
         }
@@ -88,23 +93,8 @@ class AuthViewModel(
         isLoading.update { true }
 
         when (val result = registerUser(email, password)) {
-            is Either.Left -> {
-                _actions.send(AuthAction.RegistrationError)
-                when (result.value) {
-                    LoginError.InvalidCredentials -> println("Invalid credentials")
-                    is NetworkError.BackendError -> println("Backend error")
-                    NetworkError.UnknownNetworkError -> println("Unknown network error")
-                    RegistrationError.RegistrationFailed -> println("Registration failed")
-                    AuthError.TokenNotAvailable -> println("Token not available")
-                    AuthError.EmailNotAvailable -> println("Email not available")
-                    DatabaseError.GenericError -> println("Generic error")
-                    is NoteDatabaseError.NoteNotFound -> println("Note not found")
-                }
-            }
-            is Either.Right -> {
-                println(result.value)
-                _actions.send(AuthAction.RegistrationSuccess)
-            }
+            is Either.Left -> _actions.send(AuthAction.RegistrationError(errorMapper.map(result.value)))
+            is Either.Right -> _actions.send(AuthAction.RegistrationSuccess)
         }
 
         isLoading.update { false }
@@ -117,21 +107,9 @@ class AuthViewModel(
         isLoading.update { true }
 
         when (val result = authProvider.loginWithEmailAndPassword(email, password)) {
-            is Either.Left -> {
-                _actions.send(AuthAction.LoginError)
-                when (result.value) {
-                    LoginError.InvalidCredentials -> println("Invalid credentials")
-                    is NetworkError.BackendError -> println("Backend error")
-                    NetworkError.UnknownNetworkError -> println("Unknown network error")
-                    RegistrationError.RegistrationFailed -> println("Registration failed")
-                    AuthError.TokenNotAvailable -> println("Token not available")
-                    AuthError.EmailNotAvailable -> println("Email not available")
-                    DatabaseError.GenericError -> println("Generic error")
-                    is NoteDatabaseError.NoteNotFound -> println("Note not found")
-                }
-            }
+            is Either.Left -> _actions.send(AuthAction.LoginError(errorMapper.map(result.value)))
             is Either.Right -> {
-                println(result.value)
+                notesRepository.deleteAllLocalNotes()
                 _actions.send(AuthAction.LoginSuccess)
             }
         }

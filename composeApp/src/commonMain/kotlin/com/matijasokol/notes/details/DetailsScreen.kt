@@ -3,6 +3,7 @@ package com.matijasokol.notes.details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
@@ -13,11 +14,14 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.matijasokol.notes.ui.components.withSharedBounds
 import com.matijasokol.notes.ui.sharedelement.SHARED_ELEMENT_KEY_FAB
 import com.matijasokol.notes.ui.sharedelement.buildSharedElementKeyContent
@@ -36,6 +40,7 @@ fun DetailsScreen(
                 title = state.title,
                 noteId = state.noteId,
                 saveActive = state.saveActive,
+                titleLabel = state.titleLabel,
                 onTitleChanged = { onEvent(NoteDetailsEvent.OnTitleChanged(it)) },
                 onBackClick = { onEvent(NoteDetailsEvent.OnBackClick) },
                 onSaveClick = { onEvent(NoteDetailsEvent.OnSaveClick(state.title, state.text)) },
@@ -52,12 +57,7 @@ fun DetailsScreen(
                         false -> Modifier.withSharedBounds(buildSharedElementKeyContent(state.noteId))
                     },
                 )
-                .background(
-                    color = when (state.noteId == null) {
-                        true -> Color.LightGray
-                        false -> Color.LightGray
-                    },
-                ),
+                .background(color = Color.LightGray),
         ) {
             BasicTextField(
                 value = state.text,
@@ -74,6 +74,7 @@ private fun DetailsTopAppBar(
     title: String,
     noteId: String?,
     saveActive: Boolean,
+    titleLabel: String,
     onTitleChanged: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -85,12 +86,21 @@ private fun DetailsTopAppBar(
                 onValueChange = onTitleChanged,
                 singleLine = true,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .then(
                         when (noteId != null) {
                             true -> Modifier.withSharedBounds(buildSharedElementKeyTitle(noteId))
                             false -> Modifier
                         },
                     ),
+                decorationBox = { innerTextField ->
+                    if (title.isNotEmpty()) {
+                        innerTextField()
+                    } else {
+                        Text(titleLabel)
+                    }
+                },
+                textStyle = TextStyle.Default.copy(fontSize = 20.sp),
             )
         },
         navigationIcon = {

@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -30,8 +29,8 @@ import com.matijasokol.notes.navigation.NavigationEvent
 import com.matijasokol.notes.navigation.Navigator
 import com.matijasokol.notes.ui.components.LocalAnimatedContentScope
 import com.matijasokol.notes.ui.components.LocalSharedTransitionScope
+import com.matijasokol.notes.ui.components.Toast
 import com.matijasokol.notes.ui.theme.NotesTheme
-import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -41,6 +40,7 @@ fun AppContent(
     loggedIn: Boolean,
     navController: NavHostController = rememberNavController(),
     navigator: Navigator = koinInject(),
+    toast: Toast = koinInject(),
 ) {
     KoinContext {
         NotesTheme {
@@ -57,9 +57,9 @@ fun AppContent(
                             false -> Destination.Auth
                         },
                     ) {
-                        Auth(navigator)
-                        List(navigator)
-                        Details(navigator)
+                        Auth(navigator, toast)
+                        List(navigator, toast)
+                        Details(navigator, toast)
                     }
                 }
             }
@@ -69,24 +69,23 @@ fun AppContent(
 
 private fun NavGraphBuilder.Auth(
     navigator: Navigator,
+    toast: Toast,
 ) {
     composable<Destination.Auth> {
         val viewmodel: AuthViewModel = koinViewModel()
         val state by viewmodel.state.collectAsStateWithLifecycle()
-        val scope = rememberCoroutineScope()
 
         LaunchedEffect(viewmodel.actions) {
             viewmodel.actions.collect { action ->
                 when (action) {
-                    LoginError, RegistrationError -> println("error")
-                    LoginSuccess, RegistrationSuccess -> scope.launch {
-                        navigator.emitDestination(
-                            NavigationEvent.Destination(
-                                route = Destination.List,
-                                builder = { popUpTo(Destination.Auth) { inclusive = true } },
-                            ),
-                        )
-                    }
+                    LoginSuccess, RegistrationSuccess -> navigator.emitDestination(
+                        NavigationEvent.Destination(
+                            route = Destination.List,
+                            builder = { popUpTo(Destination.Auth) { inclusive = true } },
+                        ),
+                    )
+                    is LoginError -> toast.show(action.message)
+                    is RegistrationError -> toast.show(action.message)
                 }
             }
         }
@@ -100,6 +99,7 @@ private fun NavGraphBuilder.Auth(
 
 private fun NavGraphBuilder.List(
     navigator: Navigator,
+    toast: Toast,
 ) {
     composable<Destination.List> {
         val viewModel: NoteListViewModel = koinViewModel()
@@ -123,6 +123,7 @@ private fun NavGraphBuilder.List(
                             builder = { popUpTo(Destination.List) { inclusive = true } },
                         ),
                     )
+                    is NoteListAction.ShowMessage -> toast.show(action.message)
                 }
             }
         }
@@ -140,6 +141,7 @@ private fun NavGraphBuilder.List(
 
 private fun NavGraphBuilder.Details(
     navigator: Navigator,
+    toast: Toast,
 ) {
     composable<Destination.Details> {
         val viewModel: NoteDetailsViewModel = koinViewModel()
@@ -151,6 +153,7 @@ private fun NavGraphBuilder.Details(
                     NoteDetailsAction.NavigateToList -> navigator.emitDestination(
                         event = NavigationEvent.NavigateUp,
                     )
+                    is NoteDetailsAction.ShowMessage -> toast.show(action.message)
                 }
             }
         }
