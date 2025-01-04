@@ -8,6 +8,8 @@ import com.matijasokol.notes.list.NoteListViewModel
 import com.matijasokol.notes.navigation.Navigator
 import com.matijasokol.notes.navigation.NavigatorImpl
 import com.matijasokol.notes.splash.SplashViewModel
+import com.matijasokol.notes.ui.dictionary.Dictionary
+import com.matijasokol.notes.ui.dictionary.DictionaryImpl
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -34,6 +36,7 @@ private val noteDetailsModule = module {
 
 val composeAppSharedModule = module {
     singleOf(::NavigatorImpl) bind Navigator::class
+    factoryOf(::DictionaryImpl) bind Dictionary::class
 
     includes(
         composeAppPlatformModule,

@@ -37,6 +37,7 @@ kotlin {
             languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("androidx.compose.animation.ExperimentalSharedTransitionApi")
+            languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
         }
     }
 
