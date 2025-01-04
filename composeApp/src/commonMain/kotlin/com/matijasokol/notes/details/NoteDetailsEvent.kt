@@ -6,5 +6,10 @@ sealed class NoteDetailsEvent {
 
     data class OnTextChanged(val text: String) : NoteDetailsEvent()
 
-    data object OnSaveClick : NoteDetailsEvent()
+    data class OnTitleChanged(val title: String) : NoteDetailsEvent()
+
+    data class OnSaveClick(
+        val title: String,
+        val text: String,
+    ) : NoteDetailsEvent()
 }
