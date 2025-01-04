@@ -53,12 +53,7 @@ fun DetailsScreen(
                         false -> Modifier.withSharedBounds(buildSharedElementKeyContent(state.noteId))
                     },
                 )
-                .background(
-                    color = when (state.noteId == null) {
-                        true -> Color.LightGray
-                        false -> Color.LightGray
-                    },
-                ),
+                .background(color = Color.LightGray),
         ) {
             BasicTextField(
                 value = state.text,
