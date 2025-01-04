@@ -1,11 +1,16 @@
 package com.matijasokol.notes.list
 
 import com.matijasokol.notes.domain.notes.model.Note
+import com.matijasokol.notes.ui.dictionary.Dictionary
 import kotlinx.collections.immutable.toPersistentList
+import notes.composeapp.generated.resources.Res
+import notes.composeapp.generated.resources.list_empty
 
-class NoteListUiMapper {
+class NoteListUiMapper(
+    private val dictionary: Dictionary,
+) {
 
-    fun toUiState(
+    suspend fun toUiState(
         userEmail: String,
         isLoading: Boolean,
         logoutInProgress: Boolean,
@@ -18,6 +23,6 @@ class NoteListUiMapper {
         logoutInProgress = logoutInProgress,
         syncStatus = syncStatus,
         email = userEmail,
-        emptyListMessage = "No notes found",
+        emptyListMessage = dictionary.getString(Res.string.list_empty.key),
     )
 }

@@ -58,7 +58,7 @@ fun AppContent(
                         },
                     ) {
                         Auth(navigator, toast)
-                        List(navigator)
+                        List(navigator, toast)
                         Details(navigator, toast)
                     }
                 }
@@ -99,6 +99,7 @@ private fun NavGraphBuilder.Auth(
 
 private fun NavGraphBuilder.List(
     navigator: Navigator,
+    toast: Toast,
 ) {
     composable<Destination.List> {
         val viewModel: NoteListViewModel = koinViewModel()
@@ -122,6 +123,7 @@ private fun NavGraphBuilder.List(
                             builder = { popUpTo(Destination.List) { inclusive = true } },
                         ),
                     )
+                    is NoteListAction.ShowMessage -> toast.show(action.message)
                 }
             }
         }

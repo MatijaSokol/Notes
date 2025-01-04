@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
+import com.matijasokol.notes.ui.error.ErrorMapper
 import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -23,6 +24,7 @@ class NoteListViewModel(
     private val authProvider: AuthProvider,
     private val notesRepository: NotesRepository,
     private val uiMapper: NoteListUiMapper,
+    private val errorMapper: ErrorMapper,
 ) : ViewModel() {
 
     private val _actions = Channel<NoteListAction>(capacity = BUFFERED)
@@ -103,8 +105,11 @@ class NoteListViewModel(
     private suspend fun handleLogout() {
         logoutInProgress.update { true }
 
-        when (authProvider.logout()) {
-            is Either.Left -> Unit // handle error
+        when (val result = authProvider.logout()) {
+            is Either.Left -> {
+                logoutInProgress.update { false }
+                _actions.send(NoteListAction.ShowMessage(errorMapper.map(result.value)))
+            }
             is Either.Right -> {
                 logoutInProgress.update { false }
                 _actions.send(NoteListAction.NavigateToAuth)

@@ -9,4 +9,6 @@ sealed class NoteListAction {
     ) : NoteListAction()
 
     data object NavigateToAuth : NoteListAction()
+
+    data class ShowMessage(val message: String) : NoteListAction()
 }
