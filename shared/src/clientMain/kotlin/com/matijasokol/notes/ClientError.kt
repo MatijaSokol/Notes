@@ -1,6 +1,16 @@
 package com.matijasokol.notes
 
+import arrow.core.Either
+import com.matijasokol.notes.core.models.InvalidField
+
 sealed class ClientError
+
+sealed class ValidationError : ClientError() {
+    data class IncorrectInput(val error: InvalidField) : ValidationError()
+}
+
+fun <T> Either<InvalidField, T>.errorAsIncorrectInput(): Either<ValidationError.IncorrectInput, T> =
+    mapLeft(ValidationError::IncorrectInput)
 
 sealed class NetworkError : ClientError() {
     data object UnknownNetworkError : NetworkError()

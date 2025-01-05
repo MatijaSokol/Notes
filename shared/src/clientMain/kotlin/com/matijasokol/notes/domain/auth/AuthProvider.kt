@@ -2,6 +2,8 @@ package com.matijasokol.notes.domain.auth
 
 import arrow.core.Either
 import com.matijasokol.notes.ClientError
+import com.matijasokol.notes.core.models.Email
+import com.matijasokol.notes.core.models.NonEmptyString
 
 interface AuthProvider {
 
@@ -15,7 +17,7 @@ interface AuthProvider {
 
     suspend fun loginWithGoogle(): Either<ClientError, AuthUser>
 
-    suspend fun loginWithEmailAndPassword(email: String, password: String): Either<ClientError, AuthUser>
+    suspend fun loginWithEmailAndPassword(email: Email, password: NonEmptyString): Either<ClientError, AuthUser>
 
-    suspend fun registerWithEmailAndPassword(email: String, password: String): Either<ClientError, AuthUser>
+    suspend fun registerWithEmailAndPassword(email: Email, password: NonEmptyString): Either<ClientError, AuthUser>
 }

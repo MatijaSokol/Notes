@@ -9,6 +9,7 @@
     <string name="error_backend">Backend error</string>
     <string name="error_network">Network error</string>
     <string name="error_registration_failed">Registration failed</string>
+    <string name="error_incorrect_input">Incorrect input: %s</string>
 
     <string name="auth_email">Email</string>
     <string name="auth_password">Password</string>
