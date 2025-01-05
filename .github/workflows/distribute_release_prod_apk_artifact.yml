@@ -5,7 +5,7 @@ on:
 
 jobs:
   distribute_release_build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       NOTES_STORE_PASSWORD: '${{ secrets.NOTES_STORE_PASSWORD }}'
       NOTES_KEY_PASSWORD: '${{ secrets.NOTES_KEY_PASSWORD }}'
@@ -25,11 +25,10 @@ jobs:
           cache: 'gradle'
 
       - name: Assemble
-        run: |
-          ./gradlew assembleProdRelease --stacktrace
+        run: ./gradlew assembleProdRelease --stacktrace
 
       - name: Upload to artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
-          name: app-prod-release.apk
-          path: app/build/outputs/apk/prod/release/
+          name: composeApp-prod-release.apk
+          path: composeApp/build/outputs/apk/prod/release/

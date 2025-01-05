@@ -32,8 +32,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Static Analysis
-        run: |
-          ./gradlew ktlintCheck detekt --stacktrace
+        run: ./gradlew ktlintCheck detekt --stacktrace
 
   build_android:
     runs-on: macos-latest
@@ -53,16 +52,14 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
       - name: Assemble
-        run: |
-          ./gradlew assembleProdRelease --stacktrace
+        run: ./gradlew assembleProdRelease --stacktrace
 
   build_server:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4.2.2
       - name: Build server
-        run: |
-          ./gradlew :server:build --stacktrace
+        run: ./gradlew :server:build --stacktrace
 
   unit_tests:
     runs-on: macos-latest
