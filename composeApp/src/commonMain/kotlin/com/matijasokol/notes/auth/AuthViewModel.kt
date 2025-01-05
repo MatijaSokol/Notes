@@ -106,7 +106,10 @@ class AuthViewModel(
 
         when (result) {
             is Either.Left -> _actions.send(AuthAction.RegistrationError(errorMapper.map(result.value)))
-            is Either.Right -> _actions.send(AuthAction.RegistrationSuccess)
+            is Either.Right -> {
+                notesRepository.deleteAllLocalNotes()
+                _actions.send(AuthAction.RegistrationSuccess)
+            }
         }
 
         isLoading.update { false }
