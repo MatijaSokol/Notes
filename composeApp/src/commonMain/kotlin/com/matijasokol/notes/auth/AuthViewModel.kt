@@ -3,13 +3,18 @@ package com.matijasokol.notes.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.core.raise.either
 import com.matijasokol.notes.auth.AuthType.Login
 import com.matijasokol.notes.auth.AuthType.Registration
+import com.matijasokol.notes.core.models.Email
+import com.matijasokol.notes.core.models.NonEmptyString
 import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.notes.NotesRepository
 import com.matijasokol.notes.domain.user.RegisterUser
+import com.matijasokol.notes.errorAsIncorrectInput
 import com.matijasokol.notes.ui.dictionary.Dictionary
 import com.matijasokol.notes.ui.error.ErrorMapper
+import com.matijasokol.notes.ui.viewmodel.STOP_TIMEOUT_MILLIS
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -65,7 +70,7 @@ class AuthViewModel(
         uiMapper::toUiState,
     ).stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
         initialValue = AuthState(),
     )
 
@@ -92,9 +97,19 @@ class AuthViewModel(
     private suspend fun handleRegistration(email: String, password: String) {
         isLoading.update { true }
 
-        when (val result = registerUser(email, password)) {
+        val result = either {
+            registerUser(
+                Email(value = email, field = "Email").errorAsIncorrectInput().bind(),
+                NonEmptyString(value = password, field = "Password").errorAsIncorrectInput().bind(),
+            ).bind()
+        }
+
+        when (result) {
             is Either.Left -> _actions.send(AuthAction.RegistrationError(errorMapper.map(result.value)))
-            is Either.Right -> _actions.send(AuthAction.RegistrationSuccess)
+            is Either.Right -> {
+                notesRepository.deleteAllLocalNotes()
+                _actions.send(AuthAction.RegistrationSuccess)
+            }
         }
 
         isLoading.update { false }
@@ -106,7 +121,14 @@ class AuthViewModel(
     ) {
         isLoading.update { true }
 
-        when (val result = authProvider.loginWithEmailAndPassword(email, password)) {
+        val result = either {
+            authProvider.loginWithEmailAndPassword(
+                Email(value = email, field = "Email").errorAsIncorrectInput().bind(),
+                NonEmptyString(value = password, field = "Password").errorAsIncorrectInput().bind(),
+            ).bind()
+        }
+
+        when (result) {
             is Either.Left -> _actions.send(AuthAction.LoginError(errorMapper.map(result.value)))
             is Either.Right -> {
                 notesRepository.deleteAllLocalNotes()

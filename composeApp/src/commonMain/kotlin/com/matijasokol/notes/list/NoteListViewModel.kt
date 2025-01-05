@@ -63,11 +63,7 @@ class NoteListViewModel(
                 false -> SyncStatus.SYNCED
             }
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-        initialValue = SyncStatus.SYNCING,
-    )
+    }.onStart { emit(SyncStatus.SYNCING) }
 
     val state = combine(
         userEmail,
@@ -78,7 +74,7 @@ class NoteListViewModel(
         uiMapper::toUiState,
     ).stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000L),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
         initialValue = NoteListState(),
     )
 

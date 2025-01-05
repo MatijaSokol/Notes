@@ -7,6 +7,8 @@ import com.matijasokol.notes.AuthError
 import com.matijasokol.notes.ClientError
 import com.matijasokol.notes.LoginError
 import com.matijasokol.notes.RegistrationError
+import com.matijasokol.notes.core.models.Email
+import com.matijasokol.notes.core.models.NonEmptyString
 import com.matijasokol.notes.data.safeNetworkCall
 import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.auth.AuthUser
@@ -45,11 +47,11 @@ class FirebaseAuthProvider(
     }
 
     override suspend fun loginWithEmailAndPassword(
-        email: String,
-        password: String,
+        email: Email,
+        password: NonEmptyString,
     ): Either<ClientError, AuthUser> = either {
         val result = safeNetworkCall {
-            auth.signInWithEmailAndPassword(email, password).user
+            auth.signInWithEmailAndPassword(email.value, password.value).user
         }.bind()
 
         return when (result == null) {
@@ -66,11 +68,11 @@ class FirebaseAuthProvider(
     }
 
     override suspend fun registerWithEmailAndPassword(
-        email: String,
-        password: String,
+        email: Email,
+        password: NonEmptyString,
     ): Either<ClientError, AuthUser> = either {
         val result = safeNetworkCall {
-            auth.createUserWithEmailAndPassword(email, password).user
+            auth.createUserWithEmailAndPassword(email.value, password.value).user
         }.bind()
 
         return when (result == null) {
