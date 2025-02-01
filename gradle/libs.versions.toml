@@ -6,7 +6,7 @@ targetSdk = "34"
 
 androidxActivityCompose = "1.9.3"
 androidxSplash = "1.0.1"
-agp = "8.7.2"
+agp = "8.8.0"
 coreLibraryDesugaring = "2.1.4"
 googleServices = "4.4.2"
 
