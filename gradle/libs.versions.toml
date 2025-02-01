@@ -4,17 +4,17 @@ compileSdk = "34"
 minSdk = "24"
 targetSdk = "34"
 
-androidxActivityCompose = "1.9.3"
+androidxActivityCompose = "1.9.3" # newer versions require targetSdk 35
 androidxSplash = "1.0.1"
-agp = "8.7.2"
+agp = "8.8.0"
 coreLibraryDesugaring = "2.1.4"
 googleServices = "4.4.2"
 
 # Kotlin
-kotlin = "2.1.0"
+kotlin = "2.1.10"
 kotlinxCoroutines = "1.9.0"
-kotlinxSerialization = "1.7.3"
-ksp = "2.1.0-1.0.29"
+kotlinxSerialization = "1.8.0"
+ksp = "2.1.10-1.0.29"
 kotlinxCollections = "0.3.8"
 kotlinxDatetime = "0.6.1"
 
@@ -28,7 +28,7 @@ ktlint = "0.50.0"
 detekt = "1.23.6"
 detektCompose = "0.0.26"
 koin = "4.0.0"
-arrow = "2.0.0"
+arrow = "2.0.1"
 sqldelight = "2.0.2"
 firebaseGitLive = "2.1.0"
 
