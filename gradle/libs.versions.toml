@@ -28,7 +28,7 @@ ktlint = "0.50.0"
 detekt = "1.23.6"
 detektCompose = "0.0.26"
 koin = "4.0.0"
-arrow = "2.0.0"
+arrow = "2.0.1"
 sqldelight = "2.0.2"
 firebaseGitLive = "2.1.0"
 
