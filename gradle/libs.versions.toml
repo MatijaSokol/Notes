@@ -7,7 +7,7 @@ targetSdk = "34"
 androidxActivityCompose = "1.9.3" # newer versions require targetSdk 35
 androidxSplash = "1.0.1"
 agp = "8.8.0"
-coreLibraryDesugaring = "2.1.4"
+coreLibraryDesugaring = "2.1.5"
 googleServices = "4.4.2"
 
 # Kotlin
