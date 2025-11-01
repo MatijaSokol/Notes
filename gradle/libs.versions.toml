@@ -34,7 +34,7 @@ firebaseGitLive = "2.1.0"
 
 # Server
 ktor = "2.3.12" # update to 3.x.x when available (check Koin support), check https://github.com/InsertKoinIO/koin/pull/1978
-logback = "1.5.7"
+logback = "1.5.20"
 postgresql = "42.5.1"
 h2-version = "2.2.224"
 firebaseAdmin = "9.3.0"
