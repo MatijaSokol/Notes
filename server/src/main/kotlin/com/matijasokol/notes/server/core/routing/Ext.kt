@@ -19,6 +19,7 @@ import io.ktor.server.auth.principal
 import io.ktor.server.plugins.BadRequestException
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.routing.RoutingContext
 import io.ktor.util.pipeline.PipelineContext
 import kotlinx.serialization.MissingFieldException
 
@@ -41,12 +42,12 @@ suspend inline fun <reified T : Any> ApplicationCall.receiveOrError(): Either<Va
         )
     }
 
-context(PipelineContext<Unit, ApplicationCall>)
+context(routingContext: RoutingContext)
 suspend inline fun <reified A : Any> Either<ServerError, A>.respond(
     status: HttpStatusCode = HttpStatusCode.OK,
 ): Unit = when (this) {
-    is Either.Left -> respond(value)
-    is Either.Right -> call.respond(status, value)
+    is Either.Left -> routingContext.call.respond(value)
+    is Either.Right -> routingContext.call.respond(status, value)
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.respond(error: ServerError): Unit =
