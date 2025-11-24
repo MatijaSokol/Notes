@@ -31,7 +31,6 @@ import com.matijasokol.notes.ui.components.LocalAnimatedContentScope
 import com.matijasokol.notes.ui.components.LocalSharedTransitionScope
 import com.matijasokol.notes.ui.components.Toast
 import com.matijasokol.notes.ui.theme.NotesTheme
-import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -42,25 +41,23 @@ fun AppContent(
     navigator: Navigator = koinInject(),
     toast: Toast = koinInject(),
 ) {
-    KoinContext {
-        NotesTheme {
-            NavigationEffect(navController)
+    NotesTheme {
+        NavigationEffect(navController)
 
-            SharedTransitionLayout {
-                CompositionLocalProvider(
-                    LocalSharedTransitionScope provides this,
+        SharedTransitionLayout {
+            CompositionLocalProvider(
+                LocalSharedTransitionScope provides this,
+            ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = when (loggedIn) {
+                        true -> Destination.List
+                        false -> Destination.Auth
+                    },
                 ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = when (loggedIn) {
-                            true -> Destination.List
-                            false -> Destination.Auth
-                        },
-                    ) {
-                        Auth(navigator, toast)
-                        List(navigator, toast)
-                        Details(navigator, toast)
-                    }
+                    Auth(navigator, toast)
+                    List(navigator, toast)
+                    Details(navigator, toast)
                 }
             }
         }

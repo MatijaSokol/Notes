@@ -32,8 +32,6 @@ internal fun Project.configureAndroidCompose(
   extensions.configure<ComposeCompilerGradlePluginExtension> {
     featureFlags.set(
       setOf(
-        ComposeFeatureFlag.StrongSkipping,
-        ComposeFeatureFlag.IntrinsicRemember,
         ComposeFeatureFlag.OptimizeNonSkippingGroups,
       ),
     )

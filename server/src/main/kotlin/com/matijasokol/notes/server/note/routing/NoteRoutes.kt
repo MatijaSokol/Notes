@@ -8,7 +8,6 @@ import com.matijasokol.notes.server.core.routing.respond
 import com.matijasokol.notes.server.core.routing.tokenOrError
 import com.matijasokol.notes.server.note.service.NoteService
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.resources.delete
 import io.ktor.server.resources.post
