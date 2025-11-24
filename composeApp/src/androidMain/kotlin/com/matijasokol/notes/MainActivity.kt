@@ -3,12 +3,10 @@ package com.matijasokol.notes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.matijasokol.notes.splash.SplashViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -19,21 +17,11 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        // this code block should be added just to trigger flow emission
-        // if you don't have it, splashViewModel.loggedIn will be always null since it default value is null
-        // revisit if there is workaround with using different SharingStarted value
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                splashViewModel.loggedIn.collect {}
-            }
-        }
-
         splashScreen.setKeepOnScreenCondition { splashViewModel.loggedIn.value == null }
 
         setContent {
-            splashViewModel.loggedIn.value?.let {
-                AppContent(loggedIn = it)
-            }
+            val loggedIn by splashViewModel.loggedIn.collectAsStateWithLifecycle(null)
+            loggedIn?.let { AppContent(loggedIn = it) }
         }
     }
 }
