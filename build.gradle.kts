@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-@file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -15,6 +14,6 @@ plugins {
     alias(libs.plugins.sqldelight) apply false
 }
 
-task<Delete>("clean") {
+tasks.register<Delete>("clean") {
   delete(rootProject.layout.buildDirectory)
 }

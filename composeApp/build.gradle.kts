@@ -16,7 +16,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
@@ -38,6 +38,7 @@ kotlin {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("androidx.compose.animation.ExperimentalSharedTransitionApi")
             languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
 
@@ -103,7 +104,7 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }

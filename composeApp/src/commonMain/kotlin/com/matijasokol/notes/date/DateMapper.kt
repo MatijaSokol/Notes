@@ -1,17 +1,17 @@
 package com.matijasokol.notes.date
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 val dateTimeFormat = LocalDateTime.Format {
-    dayOfMonth()
+    day()
     char('.')
     monthNumber()
     char('.')
