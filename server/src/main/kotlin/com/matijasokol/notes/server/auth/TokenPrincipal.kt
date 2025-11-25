@@ -3,6 +3,4 @@ package com.matijasokol.notes.server.auth
 import com.google.firebase.auth.FirebaseToken
 import io.ktor.server.auth.Principal
 
-data class TokenPrincipal(
-    val token: FirebaseToken,
-) : Principal
+data class TokenPrincipal(val token: FirebaseToken) : Principal

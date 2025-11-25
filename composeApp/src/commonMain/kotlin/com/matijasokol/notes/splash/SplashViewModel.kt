@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
-class SplashViewModel(
-    private val authProvider: AuthProvider,
-) : ViewModel() {
+class SplashViewModel(private val authProvider: AuthProvider) : ViewModel() {
 
     val loggedIn = flow {
         emit(authProvider.userLoggedIn().getOrElse { false })

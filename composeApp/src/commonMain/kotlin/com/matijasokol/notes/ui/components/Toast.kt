@@ -5,5 +5,6 @@ interface Toast {
 }
 
 enum class ToastDuration {
-    SHORT, LONG
+    SHORT,
+    LONG,
 }

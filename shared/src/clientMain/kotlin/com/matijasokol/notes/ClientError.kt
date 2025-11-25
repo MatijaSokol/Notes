@@ -14,11 +14,16 @@ fun <T> Either<InvalidField, T>.errorAsIncorrectInput(): Either<ValidationError.
 
 sealed class NetworkError : ClientError() {
     data object UnknownNetworkError : NetworkError()
-    data class BackendError(val responseCode: Int, val errorMessage: String?) : NetworkError()
+
+    data class BackendError(
+        val responseCode: Int,
+        val errorMessage: String?,
+    ) : NetworkError()
 }
 
 sealed class AuthError : ClientError() {
     data object EmailNotAvailable : AuthError()
+
     data object TokenNotAvailable : AuthError()
 }
 

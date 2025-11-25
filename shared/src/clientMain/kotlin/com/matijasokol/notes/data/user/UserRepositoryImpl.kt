@@ -11,9 +11,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
 
-class UserRepositoryImpl(
-    private val client: HttpClient,
-) : UserRepository {
+class UserRepositoryImpl(private val client: HttpClient) : UserRepository {
 
     override suspend fun createUser(user: UserDto): Either<NetworkError, UserDto> = safeNetworkCall {
         client.post(V1.CreateUser()) { setBody(user) }.body()

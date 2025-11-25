@@ -10,9 +10,7 @@ import com.matijasokol.notes.server.database.databaseOperation
 import kotlin.uuid.Uuid
 import kotlin.uuid.toJavaUuid
 
-class GetNoteById(
-    private val noteQueries: NoteQueries,
-) {
+class GetNoteById(private val noteQueries: NoteQueries) {
 
     suspend operator fun invoke(noteId: Uuid): Either<NoteError, NoteEntity> = either {
         val noteOrNull = databaseOperation {

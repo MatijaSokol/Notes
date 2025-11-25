@@ -55,16 +55,16 @@ fun AppContent(
                         false -> Destination.Auth
                     },
                 ) {
-                    Auth(navigator, toast)
-                    List(navigator, toast)
-                    Details(navigator, toast)
+                    auth(navigator, toast)
+                    list(navigator, toast)
+                    details(navigator, toast)
                 }
             }
         }
     }
 }
 
-private fun NavGraphBuilder.Auth(
+private fun NavGraphBuilder.auth(
     navigator: Navigator,
     toast: Toast,
 ) {
@@ -94,7 +94,7 @@ private fun NavGraphBuilder.Auth(
     }
 }
 
-private fun NavGraphBuilder.List(
+private fun NavGraphBuilder.list(
     navigator: Navigator,
     toast: Toast,
 ) {
@@ -136,7 +136,7 @@ private fun NavGraphBuilder.List(
     }
 }
 
-private fun NavGraphBuilder.Details(
+private fun NavGraphBuilder.details(
     navigator: Navigator,
     toast: Toast,
 ) {

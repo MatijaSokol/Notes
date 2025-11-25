@@ -9,9 +9,7 @@ import com.matijasokol.notes.server.database.databaseOperation
 import kotlin.uuid.Uuid
 import kotlin.uuid.toKotlinUuid
 
-class GetUserIdByEmail(
-    private val userQueries: UserQueries,
-) {
+class GetUserIdByEmail(private val userQueries: UserQueries) {
 
     suspend operator fun invoke(email: Email): Either<UserError, Uuid> = either {
         databaseOperation {

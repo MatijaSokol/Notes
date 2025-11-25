@@ -20,9 +20,7 @@ import notes.composeapp.generated.resources.error_note_not_found
 import notes.composeapp.generated.resources.error_registration_failed
 import notes.composeapp.generated.resources.error_token_not_available
 
-class ErrorMapper(
-    private val dictionary: Dictionary,
-) {
+class ErrorMapper(private val dictionary: Dictionary) {
 
     suspend fun map(error: ClientError) = with(dictionary) {
         when (error) {

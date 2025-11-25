@@ -4,9 +4,7 @@ import android.content.Context
 import com.matijasokol.notes.ui.components.ToastDuration.LONG
 import com.matijasokol.notes.ui.components.ToastDuration.SHORT
 
-class ToastAndroid(
-    private val context: Context,
-) : Toast {
+class ToastAndroid(private val context: Context) : Toast {
 
     override fun show(message: String, duration: ToastDuration) {
         android.widget.Toast.makeText(

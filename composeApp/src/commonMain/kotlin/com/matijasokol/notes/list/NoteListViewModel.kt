@@ -41,7 +41,7 @@ class NoteListViewModel(
     private val notes = notesRepository.observeLocalUserNotes()
         // run in separate coroutine to avoid blocking notes flow
         .onStart { viewModelScope.launch { syncNotes() } }
-        .onEach { if (it.isNotEmpty()) { isLoading.update { false } } }
+        .onEach { if (it.isNotEmpty()) isLoading.update { false } }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),

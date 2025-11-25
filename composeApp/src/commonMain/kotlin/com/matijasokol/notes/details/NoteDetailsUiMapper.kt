@@ -4,9 +4,7 @@ import com.matijasokol.notes.ui.dictionary.Dictionary
 import notes.composeapp.generated.resources.Res
 import notes.composeapp.generated.resources.details_title_label
 
-class NoteDetailsUiMapper(
-    private val dictionary: Dictionary,
-) {
+class NoteDetailsUiMapper(private val dictionary: Dictionary) {
 
     suspend fun toUiState(
         noteId: String?,

@@ -100,7 +100,9 @@ class NoteDetailsViewModel(
                 waitingForUpload = false,
                 waitingForDelete = false,
             ).right()
-            else -> notesRepository.getNoteById(noteId).map { it.copy(title = validTitle.value, text = validText.value) }
+            else -> notesRepository.getNoteById(noteId).map {
+                it.copy(title = validTitle.value, text = validText.value)
+            }
         }.bind()
     }
 

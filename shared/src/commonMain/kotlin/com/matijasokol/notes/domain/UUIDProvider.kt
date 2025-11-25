@@ -5,5 +5,6 @@ import kotlin.uuid.Uuid
 interface UUIDProvider {
 
     fun generate(): Uuid
+
     fun generateValue(): String
 }
