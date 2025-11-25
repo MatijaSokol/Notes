@@ -26,7 +26,8 @@ class RegisterUser(
 
         userRepository.createUser(
             UserDto(
-                id = uuidProvider.generateValue(), // Actually, server generates the ID so we could pass empty string here
+                // Actually, server generates the ID so we could pass empty string here
+                id = uuidProvider.generateValue(),
                 email = authEmail,
             ),
         ).bind()

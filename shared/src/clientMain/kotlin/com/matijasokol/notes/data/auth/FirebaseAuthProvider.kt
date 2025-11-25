@@ -14,9 +14,7 @@ import com.matijasokol.notes.domain.auth.AuthProvider
 import com.matijasokol.notes.domain.auth.AuthUser
 import dev.gitlive.firebase.auth.FirebaseAuth
 
-class FirebaseAuthProvider(
-    private val auth: FirebaseAuth,
-) : AuthProvider {
+class FirebaseAuthProvider(private val auth: FirebaseAuth) : AuthProvider {
 
     override suspend fun getCurrentUserEmail(): Either<ClientError, String> = either {
         Either.catch {

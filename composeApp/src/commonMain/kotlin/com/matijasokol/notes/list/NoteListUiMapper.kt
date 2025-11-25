@@ -6,9 +6,7 @@ import kotlinx.collections.immutable.toPersistentList
 import notes.composeapp.generated.resources.Res
 import notes.composeapp.generated.resources.list_empty
 
-class NoteListUiMapper(
-    private val dictionary: Dictionary,
-) {
+class NoteListUiMapper(private val dictionary: Dictionary) {
 
     suspend fun toUiState(
         userEmail: String,

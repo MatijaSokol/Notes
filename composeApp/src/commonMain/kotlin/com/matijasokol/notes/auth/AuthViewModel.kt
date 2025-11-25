@@ -90,7 +90,9 @@ class AuthViewModel(
                 _actions.send(AuthAction.LoginError(dictionary.getString(Res.string.auth_google_error.key)))
             }
             AuthEvent.ToggleAuthType -> authType.update { it.toggle() }
-            is AuthEvent.RegistrationClicked -> viewModelScope.launch { handleRegistration(event.email, event.password) }
+            is AuthEvent.RegistrationClicked -> viewModelScope.launch {
+                handleRegistration(event.email, event.password)
+            }
         }
     }
 

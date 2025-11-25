@@ -12,9 +12,7 @@ import notes.composeapp.generated.resources.auth_register_bottom
 import notes.composeapp.generated.resources.auth_register_top
 import notes.composeapp.generated.resources.or
 
-class AuthUiMapper(
-    private val dictionary: Dictionary,
-) {
+class AuthUiMapper(private val dictionary: Dictionary) {
 
     suspend fun toUiState(
         email: String,

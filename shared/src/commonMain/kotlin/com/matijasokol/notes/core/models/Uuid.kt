@@ -3,7 +3,7 @@ package com.matijasokol.notes.core.models
 import arrow.core.Either
 import kotlin.uuid.Uuid
 
-@Suppress("FunctionNaming")
+@Suppress("FunctionName")
 fun Uuid(
     value: String,
     field: String = "UUID",
