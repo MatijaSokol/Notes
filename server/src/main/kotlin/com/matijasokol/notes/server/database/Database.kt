@@ -24,7 +24,7 @@ fun provideDatabase(
     ServerDatabase.Schema.create(driver)
 
     return ServerDatabase(driver = driver).also {
-        app.environment.monitor.subscribe(ApplicationStopped) { driver.close() }
+        app.monitor.subscribe(ApplicationStopped) { driver.close() }
     }
 }
 
