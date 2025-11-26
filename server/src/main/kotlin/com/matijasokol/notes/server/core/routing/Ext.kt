@@ -1,3 +1,6 @@
+@file:Suppress("NoUnusedImports", "SpacingAroundColon")
+// Add @Suppress because of detekt issue with Context Parameters
+
 package com.matijasokol.notes.server.core.routing
 
 import arrow.core.Either
