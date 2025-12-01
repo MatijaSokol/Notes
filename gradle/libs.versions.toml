@@ -30,7 +30,7 @@ detektCompose = "0.0.26"
 koin = "4.1.1"
 arrow = "2.2.0"
 sqldelight = "2.2.1"
-firebaseGitLive = "2.1.0"
+firebaseGitLive = "2.4.0"
 
 # Server
 ktor = "3.3.2"
