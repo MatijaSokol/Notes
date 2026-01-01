@@ -34,7 +34,7 @@ firebaseGitLive = "2.1.0"
 
 # Server
 ktor = "3.3.3"
-logback = "1.5.21"
+logback = "1.5.23"
 postgresql = "42.7.8"
 h2-version = "2.4.240"
 firebaseAdmin = "9.7.0"
