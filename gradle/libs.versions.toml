@@ -11,7 +11,7 @@ coreLibraryDesugaring = "2.1.5"
 googleServices = "4.4.4"
 
 # Kotlin
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 kotlinxCoroutines = "1.10.2"
 kotlinxSerialization = "1.9.0"
 ksp = "2.3.3"
