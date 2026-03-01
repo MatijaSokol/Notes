@@ -28,7 +28,7 @@ jobs:
         run: ./gradlew assembleProdRelease --stacktrace
 
       - name: Upload to artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: composeApp-prod-release.apk
           path: composeApp/build/outputs/apk/prod/release/
