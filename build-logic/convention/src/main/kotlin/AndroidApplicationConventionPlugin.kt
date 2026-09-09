@@ -3,20 +3,14 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import versioning.Versioning
-import versioning.Versioning.Version
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
 
   override fun apply(project: Project) {
     with(project) {
-      val version = Versioning(project.rootDir.path).readVersion()
-
       applyPlugins()
-
-      extensions.configure<ApplicationExtension> {
-        configureAndroid(version, this)
-        configureKotlinAndroid(this)
-      }
+      extensions.configure<ApplicationExtension> { configureAndroid(this) }
+      configureKotlinAndroid()
     }
   }
 
@@ -32,16 +26,16 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     }
   }
 
-  private fun Project.configureAndroid(
-    version: Version,
-    applicationExtension: ApplicationExtension,
-  ) = applicationExtension.apply {
+  private fun Project.configureAndroid(applicationExtension: ApplicationExtension) = applicationExtension.apply {
     buildFeatures {
+      resValues = true
       buildConfig = true
     }
 
     defaultConfig {
       targetSdk = libs.versions.targetSdk.get().toInt()
+
+      val version = Versioning(project.rootDir.path).readVersion()
 
       versionCode = version.versionCode
       versionName = version.versionName

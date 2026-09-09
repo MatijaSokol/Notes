@@ -21,7 +21,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach { iosTarget ->
@@ -34,7 +33,6 @@ kotlin {
     sourceSets {
         all {
             languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
-            languageSettings.optIn("androidx.compose.material.ExperimentalMaterialApi")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("androidx.compose.animation.ExperimentalSharedTransitionApi")
             languageSettings.optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
@@ -44,7 +42,7 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.koin.android)
@@ -55,13 +53,13 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.shared)
 
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.materialIconsExtended)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.components.ui.tooling.preview)
+            implementation(libs.compose.material.icons.extended)
 
             implementation(libs.compose.navigation)
 
@@ -77,6 +75,10 @@ kotlin {
 
             api(libs.bundles.arrow)
         }
+
+        iosMain { dependsOn(commonMain.get()) }
+        iosArm64Main { dependsOn(iosMain.get()) }
+        iosSimulatorArm64Main { dependsOn(iosMain.get()) }
     }
 }
 
@@ -84,6 +86,10 @@ private val appId = "com.matijasokol.notes"
 
 android {
     namespace = "com.matijasokol.notes"
+
+    buildFeatures {
+        resValues = true
+    }
 
     defaultConfig {
         applicationId = appId

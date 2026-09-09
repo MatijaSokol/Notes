@@ -28,7 +28,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach { iosTarget ->
@@ -78,7 +77,6 @@ kotlin {
             }
         }
 
-        iosX64Main { dependsOn(iosMain.get()) }
         iosArm64Main { dependsOn(iosMain.get()) }
         iosSimulatorArm64Main { dependsOn(iosMain.get()) }
 

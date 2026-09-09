@@ -6,21 +6,23 @@ targetSdk = "35"
 
 androidxActivityCompose = "1.10.1" # newer versions require targetSdk 36
 androidxSplash = "1.2.0"
-agp = "8.13.1"
+agp = "9.4.0"
 coreLibraryDesugaring = "2.1.5"
 googleServices = "4.4.4"
 
 # Kotlin
-kotlin = "2.2.21"
-kotlinxCoroutines = "1.10.2"
-kotlinxSerialization = "1.9.0"
-ksp = "2.3.3"
-kotlinxCollections = "0.4.0"
-kotlinxDatetime = "0.7.1"
+kotlin = "2.4.20"
+kotlinxCoroutines = "1.11.0"
+kotlinxSerialization = "1.11.0"
+ksp = "2.3.9"
+kotlinxCollections = "0.5.2"
+kotlinxDatetime = "0.8.0"
 
 # Compose
-composeMultiplatform = "1.9.3"
-composeNavigation = "2.9.1"
+composeMultiplatform = "1.12.0"
+composeMaterial3 = "1.9.0"
+composeNavigation = "2.9.2"
+composeMaterialIcons = "1.7.3"
 
 # Shared
 ktlintGradlePlugin = "14.0.1"
@@ -30,10 +32,10 @@ detektCompose = "0.0.26"
 koin = "4.1.1"
 arrow = "2.2.0"
 sqldelight = "2.2.1"
-firebaseGitLive = "2.1.0"
+firebaseGitLive = "2.7.0"
 
 # Server
-ktor = "3.3.3"
+ktor = "3.5.2"
 logback = "1.5.21"
 postgresql = "42.7.8"
 h2-version = "2.4.240"
@@ -55,6 +57,14 @@ kotlinx-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collect
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 # Compose
+compose-runtime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "composeMultiplatform" }
+compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "composeMaterial3" }
+compose-ui = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "composeMultiplatform" }
+compose-ui-tooling-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "composeMultiplatform" }
+compose-components-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "composeMultiplatform" }
+compose-components-ui-tooling-preview = { group = "org.jetbrains.compose.components", name = "components-ui-tooling-preview", version.ref = "composeMultiplatform" }
+compose-material-icons-extended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version.ref = "composeMaterialIcons" }
 compose-navigation = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 
 # Shared
