@@ -8,7 +8,7 @@ androidxActivityCompose = "1.13.0"
 androidxSplash = "1.2.0"
 agp = "9.4.0"
 coreLibraryDesugaring = "2.1.5"
-googleServices = "4.4.4"
+googleServices = "4.5.0"
 
 # Kotlin
 kotlin = "2.4.20"
@@ -25,22 +25,22 @@ composeNavigation = "2.9.2"
 composeMaterialIcons = "1.7.3"
 
 # Shared
-ktlintGradlePlugin = "14.0.1"
+ktlintGradlePlugin = "14.2.0"
 ktlint = "1.8.0"
 detekt = "1.23.8"
 detektCompose = "0.0.26"
-koin = "4.1.1"
-arrow = "2.2.0"
-sqldelight = "2.2.1"
+koin = "4.2.2"
+arrow = "2.2.3"
+sqldelight = "2.3.2"
 firebaseGitLive = "2.7.0"
 
 # Server
 ktor = "3.5.2"
-logback = "1.5.21"
-postgresql = "42.7.8"
-h2-version = "2.4.240"
+logback = "1.6.3"
+postgresql = "42.7.13"
+h2-version = "2.5.250"
 firebaseAdmin = "9.7.0"
-hikari = "7.0.2"
+hikari = "7.1.0"
 
 [libraries]
 # Android
