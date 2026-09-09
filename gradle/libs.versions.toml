@@ -1,10 +1,10 @@
 [versions]
 # Android
-compileSdk = "35"
+compileSdk = "37"
 minSdk = "24"
-targetSdk = "35"
+targetSdk = "37"
 
-androidxActivityCompose = "1.10.1" # newer versions require targetSdk 36
+androidxActivityCompose = "1.13.0"
 androidxSplash = "1.2.0"
 agp = "9.4.0"
 coreLibraryDesugaring = "2.1.5"
