@@ -19,7 +19,7 @@ kotlinxCollections = "0.5.2"
 kotlinxDatetime = "0.8.0"
 
 # Compose
-composeMultiplatform = "1.12.0"
+composeMultiplatform = "1.12.1"
 composeMaterial3 = "1.9.0"
 composeNavigation = "2.9.2"
 composeMaterialIcons = "1.7.3"
